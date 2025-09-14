@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /api/
+Disallow: /checkout/
+Disallow: /account/
+
+# Allow important pages
+Allow: /products/
+Allow: /collections/
+Allow: /reviews/
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
+
+# Crawl delay (optional)
+Crawl-delay: 1 

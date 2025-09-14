@@ -1,0 +1,36 @@
+User-agent: *
+Allow: /
+
+# Allow all major search engine bots
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+# Block access to admin areas
+Disallow: /admin/
+Disallow: /api/private/
+Disallow: /_next/
+Disallow: /.next/
+
+# Block access to checkout and account pages (for privacy)
+Disallow: /checkout/
+Disallow: /account/
+Disallow: /login/
+Disallow: /register/
+
+# Allow sitemap
+Sitemap: https://mabji-india.vercel.app/sitemap.xml
