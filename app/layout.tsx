@@ -5,8 +5,8 @@ import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ModelViewerProvider from "@/components/ui/model-viewer-provider";
 import { generateDefaultMetadata } from "./lib/seo-config";
-import { Schema } from "components/ui/schema";
-import { generateOrganizationSchema } from "lib/seo";
+// import { Schema } from "components/ui/schema";
+// import { generateOrganizationSchema } from "lib/seo";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,13 +17,11 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const organizationSchema = generateOrganizationSchema();
+  // const organizationSchema = generateOrganizationSchema();
 
   return (
     <html lang="en">
-      <head>
-        <Schema schema={organizationSchema} />
-      </head>
+      <head>{/* <Schema schema={organizationSchema} /> */}</head>
       <body className={inter.className}>
         <AuthProvider>
           <CartProvider>

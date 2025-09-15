@@ -158,7 +158,7 @@ export default function ProductStickyBar({ product }: ProductStickyBarProps) {
         <div className="flex items-center space-x-4">
           <div className="hidden md:block h-16 w-16 relative rounded-md overflow-hidden">
             <Image
-              src={imageError ? "/logo.png" : product.images[0]}
+              src={imageError ? "/logo.png" : product?.images[0]}
               alt={product.name}
               fill
               className={`object-${imageError ? "contain" : "cover"}`}

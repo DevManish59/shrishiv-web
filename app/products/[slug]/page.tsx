@@ -3,8 +3,8 @@ import SimilarProducts from "@/components/similar-products";
 import ReviewSection from "@/components/product/review-section";
 import CartModal from "@/components/ui/cart-modal";
 import { mockFeaturedProducts } from "@/lib/mock-data";
-import { generateProductSchema, generateBreadcrumbSchema } from "lib/seo";
-import { Schema } from "components/ui/schema";
+// import { generateProductSchema, generateBreadcrumbSchema } from "lib/seo";
+// import { Schema } from "components/ui/schema";
 import { Metadata } from "next";
 
 // Force dynamic rendering - disable static generation
@@ -321,34 +321,34 @@ export default async function ProductPage({
   }
 
   // Generate initial images for gallery
-  const initialImages = product.images || [];
+  // const initialImages = product.images || [];
 
   // Generate SEO schemas
-  const productSchema = generateProductSchema({
-    title: product.name,
-    description: product.description,
-    price: product.price,
-    currency: "USD",
-    availability: "InStock",
-    brand: "Shrishiv",
-    category: "Engagement Rings",
-    rating: product.rating,
-    reviewCount: product.reviewCount,
-    sku: product.sku,
-    image: initialImages[0],
-    url: `/products/${slug}`,
-  });
+  // const productSchema = generateProductSchema({
+  //   title: product.name,
+  //   description: product.description,
+  //   price: product.price,
+  //   currency: "USD",
+  //   availability: "InStock",
+  //   brand: "Shrishiv",
+  //   category: "Engagement Rings",
+  //   rating: product.rating,
+  //   reviewCount: product.reviewCount,
+  //   sku: product.sku,
+  //   image: initialImages[0],
+  //   url: `/products/${slug}`,
+  // });
 
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: "Home", url: "/" },
-    { name: "Products", url: "/products" },
-    { name: product.name, url: `/products/${slug}` },
-  ]);
+  // const breadcrumbSchema = generateBreadcrumbSchema([
+  //   { name: "Home", url: "/" },
+  //   { name: "Products", url: "/products" },
+  //   { name: product.name, url: `/products/${slug}` },
+  // ]);
 
   return (
     <div className="bg-white">
-      <Schema schema={productSchema} />
-      <Schema schema={breadcrumbSchema} />
+      {/* <Schema schema={productSchema} /> */}
+      {/* <Schema schema={breadcrumbSchema} /> */}
       <div className="mx-auto">
         <ProductPageWrapper product={product} />
       </div>

@@ -1,28 +1,29 @@
-import { Metadata } from 'next';
+import { Metadata } from "next";
 
 // SEO Configuration
 export const SEO_CONFIG = {
-  siteName: 'Shrishiv',
-  siteDescription: 'Lab Grown Diamond Jewelry - Premium quality diamonds, ethical sourcing, and stunning designs for every occasion.',
-  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || 'https://mabji-india.vercel.app',
-  siteImage: '/logo.png',
-  twitterHandle: '@shrishiv',
-  facebookPage: 'https://facebook.com/shrishiv',
-  instagramPage: 'https://instagram.com/shrishiv',
-  phone: '+1-555-0123',
-  email: 'info@shrishiv.com',
+  siteName: "Shrishiv",
+  siteDescription:
+    "Lab Grown Diamond Jewelry - Premium quality diamonds, ethical sourcing, and stunning designs for every occasion.",
+  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://mabji-india.vercel.app",
+  siteImage: "/logo.png",
+  twitterHandle: "@shrishiv",
+  facebookPage: "https://facebook.com/shrishiv",
+  instagramPage: "https://instagram.com/shrishiv",
+  phone: "+1-555-0123",
+  email: "info@shrishiv.com",
   address: {
-    street: '123 Jewelry Street',
-    city: 'New York',
-    state: 'NY',
-    zip: '10001',
-    country: 'US'
+    street: "123 Jewelry Street",
+    city: "New York",
+    state: "NY",
+    zip: "10001",
+    country: "US",
   },
   businessHours: {
-    open: '09:00',
-    close: '18:00',
-    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  }
+    open: "09:00",
+    close: "18:00",
+    days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+  },
 };
 
 // Default metadata for pages
@@ -30,19 +31,19 @@ export function generateDefaultMetadata(): Metadata {
   return {
     title: {
       default: SEO_CONFIG.siteName,
-      template: `%s | ${SEO_CONFIG.siteName}`
+      template: `%s | ${SEO_CONFIG.siteName}`,
     },
     description: SEO_CONFIG.siteDescription,
     keywords: [
-      'lab grown diamonds',
-      'diamond jewelry',
-      'engagement rings',
-      'wedding rings',
-      'diamond necklaces',
-      'ethical jewelry',
-      'lab grown diamond rings',
-      'diamond earrings',
-      'diamond bracelets'
+      "lab grown diamonds",
+      "diamond jewelry",
+      "engagement rings",
+      "wedding rings",
+      "diamond necklaces",
+      "ethical jewelry",
+      "lab grown diamond rings",
+      "diamond earrings",
+      "diamond bracelets",
     ],
     authors: [{ name: SEO_CONFIG.siteName }],
     creator: SEO_CONFIG.siteName,
@@ -57,8 +58,8 @@ export function generateDefaultMetadata(): Metadata {
       canonical: SEO_CONFIG.siteUrl,
     },
     openGraph: {
-      type: 'website',
-      locale: 'en_US',
+      type: "website",
+      locale: "en_US",
       url: SEO_CONFIG.siteUrl,
       title: SEO_CONFIG.siteName,
       description: SEO_CONFIG.siteDescription,
@@ -73,7 +74,7 @@ export function generateDefaultMetadata(): Metadata {
       ],
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: SEO_CONFIG.siteName,
       description: SEO_CONFIG.siteDescription,
       images: [`${SEO_CONFIG.siteUrl}${SEO_CONFIG.siteImage}`],
@@ -85,15 +86,15 @@ export function generateDefaultMetadata(): Metadata {
       googleBot: {
         index: true,
         follow: true,
-        'max-video-preview': -1,
-        'max-image-preview': 'large',
-        'max-snippet': -1,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1,
       },
     },
     verification: {
-      google: 'your-google-verification-code',
-      yandex: 'your-yandex-verification-code',
-      yahoo: 'your-yahoo-verification-code',
+      google: "your-google-verification-code",
+      yandex: "your-yandex-verification-code",
+      yahoo: "your-yahoo-verification-code",
     },
   };
 }
@@ -117,11 +118,11 @@ export function generateProductMetadata(product: {
     description: product.description,
     keywords: [
       product.name.toLowerCase(),
-      'lab grown diamond',
-      'jewelry',
+      "lab grown diamond",
+      "jewelry",
       product.category?.toLowerCase(),
-      'engagement ring',
-      'diamond ring'
+      "engagement ring",
+      "diamond ring",
     ].filter(Boolean),
     openGraph: {
       title: product.name,
@@ -136,10 +137,10 @@ export function generateProductMetadata(product: {
           alt: product.name,
         },
       ],
-      type: 'website',
+      type: "website",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: product.name,
       description: product.description,
       images: [productImage],
@@ -148,10 +149,10 @@ export function generateProductMetadata(product: {
       canonical: productUrl,
     },
     other: {
-      'product:price:amount': product.price.toString(),
-      'product:price:currency': 'USD',
-      'product:availability': 'in stock',
-      'product:condition': 'new',
+      "product:price:amount": product.price.toString(),
+      "product:price:currency": "USD",
+      "product:availability": "in stock",
+      "product:condition": "new",
     },
   };
 }
@@ -171,10 +172,10 @@ export function generateCategoryMetadata(category: {
     description: category.description,
     keywords: [
       category.name.toLowerCase(),
-      'jewelry',
-      'diamond jewelry',
-      'lab grown diamonds',
-      category.slug
+      "jewelry",
+      "diamond jewelry",
+      "lab grown diamonds",
+      category.slug,
     ],
     openGraph: {
       title: category.name,
@@ -189,10 +190,10 @@ export function generateCategoryMetadata(category: {
           alt: category.name,
         },
       ],
-      type: 'website',
+      type: "website",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: category.name,
       description: category.description,
       images: [categoryImage],
@@ -218,10 +219,10 @@ export function generateCollectionMetadata(collection: {
     description: collection.description,
     keywords: [
       collection.name.toLowerCase(),
-      'jewelry',
-      'diamond jewelry',
-      'lab grown diamonds',
-      collection.slug
+      "jewelry",
+      "diamond jewelry",
+      "lab grown diamonds",
+      collection.slug,
     ],
     openGraph: {
       title: collection.name,
@@ -236,10 +237,10 @@ export function generateCollectionMetadata(collection: {
           alt: collection.name,
         },
       ],
-      type: 'website',
+      type: "website",
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title: collection.name,
       description: collection.description,
       images: [collectionImage],
@@ -248,4 +249,4 @@ export function generateCollectionMetadata(collection: {
       canonical: collectionUrl,
     },
   };
-} 
+}

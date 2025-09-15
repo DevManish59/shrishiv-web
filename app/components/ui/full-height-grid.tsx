@@ -28,7 +28,7 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
             className="relative h-full w-full"
           >
             <Image
-              src={item.image || item.imageUrls[0] || ""}
+              src={item.image || item?.imageUrls?.[0] || ""}
               alt={item.title}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"

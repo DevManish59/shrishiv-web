@@ -290,7 +290,7 @@ export default function ReviewsPage() {
             <div className="flex-1 flex justify-center items-center">
               <button
                 onClick={() => setShowWriteReview(true)}
-                className="px-6 py-3 bg-black text-white rounded hover:bg-black/90 transition-colors"
+                className="px-6 py-3 bg-black text-white rounded hover:bg-black/90 transition-colors cursor-pointer"
               >
                 Write a Review
               </button>
