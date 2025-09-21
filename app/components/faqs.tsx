@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { HelpCategory, HelpItem } from "@/lib/types";
 
 const faqs = [
   {
@@ -38,7 +39,7 @@ const faqs = [
 ];
 
 export default function FAQSection() {
-  const [faqListdata, setFaqListdata] = useState<any>([]);
+  const [faqListdata, setFaqListdata] = useState<HelpCategory[]>([]);
   const [activeCategory, setActiveCategory] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -49,7 +50,7 @@ export default function FAQSection() {
       (cat) => cat?.displayOrder === activeCategory
     );
     // ✅ filter helpItems by published
-    return category?.helpItems?.filter((faq: any) => faq.published) || [];
+    return category?.helpItems?.filter((faq: HelpItem) => faq.published) || [];
   }, [faqListdata, activeCategory]);
 
   const toggleItem = (id: number) => {
@@ -61,21 +62,12 @@ export default function FAQSection() {
   const fetchFaqData = async () => {
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `${process.env.EXTERNAL_API_URL}/help-category`
-      );
+      const response = await fetch(`/api/faq`);
       const faqListdata = await response.json();
-
-      // ✅ filter categories by published
-      const filteredCategories = faqListdata.filter(
-        (cat: any) => cat.published
-      );
-
-      setFaqListdata(filteredCategories);
-
+      setFaqListdata(faqListdata);
       // set the first published category active by default
-      if (filteredCategories.length > 0) {
-        setActiveCategory(filteredCategories[0].displayOrder);
+      if (faqListdata.length > 0) {
+        setActiveCategory(faqListdata?.[0].displayOrder);
       }
     } catch (error) {
       console.error("Error fetching header data:", error);
@@ -108,7 +100,7 @@ export default function FAQSection() {
         ) : (
           <>
             <div className="flex flex-wrap items-center justify-center mb-6 pb-2">
-              {faqListdata?.map((cat: any) => (
+              {faqListdata?.map((cat: HelpCategory) => (
                 <button
                   key={cat?.id}
                   onClick={() => {

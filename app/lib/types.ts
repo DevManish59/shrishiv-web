@@ -2,7 +2,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'user' | 'admin';
+  role: "user" | "admin";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -34,7 +34,7 @@ export interface Product {
   categoryIds: string[];
   tags: string[];
   featured: boolean;
-  status: 'active' | 'inactive' | 'draft';
+  status: "active" | "inactive" | "draft";
   seoTitle?: string;
   seoDescription?: string;
   weight?: number;
@@ -75,9 +75,9 @@ export interface Order {
   shippingAmount: number;
   couponDiscount: number;
   total: number;
-  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
-  paymentMethod: 'paypal' | 'card';
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  paymentStatus: "pending" | "paid" | "failed" | "refunded";
+  paymentMethod: "paypal" | "card";
   paymentId?: string;
   shippingAddress: Address;
   billingAddress: Address;
@@ -101,14 +101,14 @@ export interface Address {
 export interface Coupon {
   id: string;
   code: string;
-  type: 'percentage' | 'fixed';
+  type: "percentage" | "fixed";
   value: number;
   minOrderAmount?: number;
   maxDiscount?: number;
   usageLimit?: number;
   usedCount: number;
   expiresAt?: Date;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
   createdAt: Date;
   updatedAt: Date;
 }
@@ -255,3 +255,26 @@ export interface TransformedProduct {
   }>;
 }
 
+// Types for new API response format
+export interface HelpItem {
+  id: number;
+  displayOrder: number;
+  question: string;
+  answer: string;
+  deleted: boolean;
+  published: boolean;
+  createdAt: string; // ISO timestamp
+  updatedAt: string; // ISO timestamp
+  categoryId: number | null;
+}
+
+export interface HelpCategory {
+  id: number;
+  name: string;
+  deleted: boolean;
+  published: boolean;
+  displayOrder: number;
+  createdAt: string; // ISO timestamp
+  updatedAt: string; // ISO timestamp
+  helpItems: HelpItem[];
+}
