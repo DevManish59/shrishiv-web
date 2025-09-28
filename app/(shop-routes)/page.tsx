@@ -130,7 +130,7 @@ export default async function Home() {
 
   // Extract banner and grid items from the unified array
   const bannerData = homeData[0];
-  const gridItems = homeData.slice(1);
+  const gridItems = homeData?.slice(1);
 
   return (
     <div>
@@ -144,7 +144,7 @@ export default async function Home() {
 
 // Add metadata for SEO
 export const metadata = {
-  title: "Home | Shrishiv Jewelry",
+  title: "Home | Shrishiv Jewellery",
   description:
     "Discover our premium collection of lab-grown diamond jewelry with exceptional craftsmanship and ethical sourcing. Exclusive sales and new collections available.",
   keywords: [
@@ -157,13 +157,13 @@ export const metadata = {
     "ethical jewelry",
   ],
   openGraph: {
-    title: "Home | Shrishiv Jewelry",
+    title: "Home | Shrishiv Jewellery",
     description: "Discover our premium collection of lab-grown diamond jewelry",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Home | Shrishiv Jewelry",
+    title: "Home | Shrishiv Jewellery",
     description: "Discover our premium collection of lab-grown diamond jewelry",
   },
 };

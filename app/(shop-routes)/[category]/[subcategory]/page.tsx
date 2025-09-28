@@ -364,6 +364,11 @@ export default async function SubcategoryPage({
     productsData = generateDummyData(category, subcategory);
     categoryData = {};
   }
+  // console.log("++++++++++++productsData++++++++++++", productsData);
+  // console.log(
+  //   "+++++++++++++++++++categoryData+++++++++++++++++++",
+  //   categoryData
+  // );
 
   // Create collection object for CollectionHeader
   const collection: Collection = {

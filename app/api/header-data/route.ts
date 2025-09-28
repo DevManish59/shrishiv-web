@@ -64,20 +64,21 @@ export async function GET() {
     if (cachedData) {
       return NextResponse.json(cachedData, {
         headers: {
-          'Cache-Control': `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
+          "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
         },
       });
     }
 
     // Fetch from external API
-    const externalApiUrl = process.env.EXTERNAL_API_URL || 'http://44.198.188.164:8080';
+    const externalApiUrl =
+      process.env.EXTERNAL_API_URL || "http://44.198.188.164:8080";
 
     const url = `${externalApiUrl}/product-category/headers`;
-    
+
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       // Add timeout
       signal: AbortSignal.timeout(5000), // 5 second timeout
@@ -88,14 +89,15 @@ export async function GET() {
     }
 
     const data = await response.json();
-    console.log('Data:', data);
 
     // Check if we have valid data, otherwise use fallback
     if (!Array.isArray(data) || data.length === 0) {
-      console.log('External API returned empty or invalid data, using fallback');
+      console.log(
+        "External API returned empty or invalid data, using fallback"
+      );
       return NextResponse.json(getFallbackData(), {
         headers: {
-          'Cache-Control': 'public, s-maxage=300', // 5 minutes for fallback
+          "Cache-Control": "public, s-maxage=300", // 5 minutes for fallback
         },
       });
     }
@@ -108,18 +110,17 @@ export async function GET() {
 
     return NextResponse.json(transformedData, {
       headers: {
-        'Cache-Control': `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
+        "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
       },
     });
-
   } catch (error) {
-    console.error('Header data fetch error:', error);
-    
+    console.error("Header data fetch error:", error);
+
     // Return fallback data
     return NextResponse.json(getFallbackData(), {
       status: 200, // Still return 200 to avoid client errors
       headers: {
-        'Cache-Control': 'public, s-maxage=300', // 5 minutes for fallback
+        "Cache-Control": "public, s-maxage=300", // 5 minutes for fallback
       },
     });
   }
@@ -148,13 +149,17 @@ function transformExternalData(externalData: NewApiResponse | OldApiResponse) {
     externalData.forEach((parentCategory: ParentCategory) => {
       const dynamicCategory: DynamicCategory = {
         id: parentCategory.id,
-        name: parentCategory.name || 'Unknown',
-        slug: parentCategory.slug || parentCategory.name?.toLowerCase().replace(/\s+/g, '-') || 'unknown',
-        categories: parentCategory.subCategories?.map((sub: SubCategory) => ({
-          label: sub.name,
-          slug: sub.slug,
-        })) || [],
-        featured: [] // You can populate this from API or leave empty for now
+        name: parentCategory.name || "Unknown",
+        slug:
+          parentCategory.slug ||
+          parentCategory.name?.toLowerCase().replace(/\s+/g, "-") ||
+          "unknown",
+        categories:
+          parentCategory.subCategories?.map((sub: SubCategory) => ({
+            label: sub.name,
+            slug: sub.slug,
+          })) || [],
+        featured: [], // You can populate this from API or leave empty for now
       };
       dynamicCategories.push(dynamicCategory);
     });
@@ -164,28 +169,28 @@ function transformExternalData(externalData: NewApiResponse | OldApiResponse) {
     if (externalData.women?.categories?.length) {
       dynamicCategories.push({
         id: 1,
-        name: 'Women',
-        slug: 'women',
+        name: "Women",
+        slug: "women",
         categories: externalData.women.categories,
-        featured: externalData.women.featured || []
+        featured: externalData.women.featured || [],
       });
     }
     if (externalData.men?.categories?.length) {
       dynamicCategories.push({
         id: 2,
-        name: 'Men',
-        slug: 'men',
+        name: "Men",
+        slug: "men",
         categories: externalData.men.categories,
-        featured: externalData.men.featured || []
+        featured: externalData.men.featured || [],
       });
     }
     if (externalData.kids?.categories?.length) {
       dynamicCategories.push({
         id: 3,
-        name: 'Kids',
-        slug: 'kids',
+        name: "Kids",
+        slug: "kids",
         categories: externalData.kids.categories,
-        featured: externalData.kids.featured || []
+        featured: externalData.kids.featured || [],
       });
     }
   }
@@ -237,4 +242,4 @@ function getFallbackData() {
       },
     ],
   };
-} 
+}

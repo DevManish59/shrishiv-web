@@ -1,8 +1,8 @@
-import { NextResponse } from 'next/server';
-import { UnifiedPageData } from '@/lib/types';
+import { NextResponse } from "next/server";
+import { UnifiedPageData } from "@/lib/types";
 
 // Force dynamic rendering - disable static generation
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 // Mock home page data - replace with your actual database query
@@ -13,10 +13,12 @@ const mockHomeData: UnifiedPageData = {
       id: "main-banner",
       title: "Exclusive Sale",
       subtitle: "Up to 70% off on selected items. Don't miss out!",
-      description: "Discover our premium collection of jewelry with lab-grown diamonds",
-      image: "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
+      description:
+        "Discover our premium collection of jewelry with lab-grown diamonds",
+      image:
+        "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
       buttonText: "Shop Sale",
-      slug: "sale"
+      slug: "sale",
     },
     // Remaining items are used for grid (have href, size, category)
     {
@@ -27,53 +29,58 @@ const mockHomeData: UnifiedPageData = {
       href: "/men/shirts",
       size: "half",
       category: "men",
-      priority: true
+      priority: true,
     },
     {
       id: "trousers",
       title: "TROUSERS",
       subtitle: "Spring/Summer 2024",
-      image: "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg",
+      image:
+        "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg",
       href: "/men/trousers",
       size: "half",
-      category: "men"
+      category: "men",
     },
     {
       id: "dresses",
       title: "DRESSES",
       subtitle: "Elegant Collection",
-      image: "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
+      image:
+        "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
       href: "/women/dresses",
       size: "half",
       category: "women",
-      priority: true
+      priority: true,
     },
     {
       id: "kids",
       title: "KIDS",
       subtitle: "New Collection",
-      image: "https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
+      image:
+        "https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
       href: "/kids/shirts",
       size: "half",
-      category: "kids"
+      category: "kids",
     },
     {
       id: "trousers-kids",
       title: "TROUSERS",
       subtitle: "Spring/Summer 2024",
-      image: "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
+      image:
+        "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
       href: "/kids/trousers",
       size: "half",
-      category: "kids"
+      category: "kids",
     },
     {
       id: "dresses-kids",
       title: "DRESSES",
       subtitle: "Elegant Collection",
-      image: "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
+      image:
+        "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
       href: "/kids/dresses",
       size: "half",
-      category: "kids"
+      category: "kids",
     },
     // Jewelry category links
     {
@@ -84,27 +91,29 @@ const mockHomeData: UnifiedPageData = {
       href: "/rings/ring",
       size: "half",
       category: "rings",
-      priority: true
+      priority: true,
     },
     {
       id: "necklaces-collection",
       title: "NECKLACES",
       subtitle: "Elegant Designs",
-      image: "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
+      image:
+        "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
       href: "/necklaces/necklace",
       size: "half",
-      category: "necklaces"
+      category: "necklaces",
     },
     {
       id: "earrings-collection",
       title: "EARRINGS",
       subtitle: "Beautiful Accessories",
-      image: "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
+      image:
+        "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
       href: "/earrings/earring",
       size: "half",
-      category: "earrings"
-    }
-  ]
+      category: "earrings",
+    },
+  ],
 };
 
 export async function GET() {
@@ -118,7 +127,7 @@ export async function GET() {
 
     const url = `${externalApiUrl}/product-category/featured`;
     console.log("🚀 Home API: Calling external API:", url);
-    
+
     const response = await fetch(url, {
       next: { revalidate: 3600 }, // Revalidate every hour
     });
@@ -128,12 +137,12 @@ export async function GET() {
     }
 
     const data = await response.json();
-    console.log("✅ Home API: External API response received");
-    
+    console.log("✅ Home API: External API response received++++++");
+
     return NextResponse.json(data);
   } catch (error) {
-    console.error('❌ Home API: Error fetching external data:', error);
-    
+    console.error("❌ Home API: Error fetching external data:", error);
+
     // Return mock data as fallback
     console.log("🔄 Home API: Using mock data as fallback");
     return NextResponse.json(mockHomeData);

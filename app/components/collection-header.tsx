@@ -14,14 +14,14 @@ export default function CollectionHeader({
 }) {
   return (
     <div className="relative h-[300px] overflow-hidden">
-      <Image
+      {/* <Image
         src={collection.image}
         alt={collection.name}
         fill
         className="object-cover"
         priority
         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 100vw"
-      />
+      /> */}
       <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="text-center text-white max-w-4xl px-4">

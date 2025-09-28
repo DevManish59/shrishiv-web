@@ -145,7 +145,7 @@ export default function CheckoutForm({ initialSubtotal }: CheckoutFormProps) {
                       value: total.toFixed(2),
                       currency_code: "INR",
                     },
-                    description: "Shrishiv Jewelry Purchase",
+                    description: "Shrishiv Jewellery Purchase",
                   },
                 ],
               });

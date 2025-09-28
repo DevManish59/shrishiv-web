@@ -27,6 +27,8 @@ export default function ReviewSection({
     [key: number]: number;
   }>({});
 
+  // console.log("productId+++", productId, productName);
+
   useEffect(() => {
     fetchReviews();
   }, [productId, currentFilter]);

@@ -278,3 +278,32 @@ export interface HelpCategory {
   updatedAt: string; // ISO timestamp
   helpItems: HelpItem[];
 }
+
+export interface DynamicPageItem {
+  id: number;
+  name: string;
+  title: string;
+  description: string;
+  longDesc: any;
+  pageUrl: string;
+  displayOrder: number;
+  images: string | null; // depends on your API, could also be File[] if uploading
+  imageUrls: string[];
+  deleted: boolean | null;
+  createdAt: string | null; // if backend sends ISO date strings
+  updatedAt: string | null;
+}
+
+export interface StoreSocial {
+  socialTwitter: string;
+  socialInstagram: string;
+  socialPinterest: string;
+  socialFacebook: string;
+  socialYoutube: string;
+  socialTumblr: string;
+  socialLinkedin: string;
+  socialTelegram: string;
+  socialSkype: string;
+  socialSnapchat: string;
+  socialTiktok: string;
+}

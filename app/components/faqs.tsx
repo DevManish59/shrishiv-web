@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { HelpCategory, HelpItem } from "@/lib/types";
 
 const faqs = [
@@ -64,6 +64,7 @@ export default function FAQSection() {
       setIsLoading(true);
       const response = await fetch(`/api/faq`);
       const faqListdata = await response.json();
+      console.log("faqListdata", faqListdata);
       setFaqListdata(faqListdata);
       // set the first published category active by default
       if (faqListdata.length > 0) {
@@ -96,69 +97,118 @@ export default function FAQSection() {
         </motion.div>
 
         {isLoading ? (
-          <p className="text-gray-500 text-xl font-medium py-10">Loading...</p>
+          <div className="flex items-center space-x-2 justify-center p-4">
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span className="text-lg text-gray-500">Loading...</span>
+          </div>
         ) : (
           <>
             <div className="flex flex-wrap items-center justify-center mb-6 pb-2">
-              {faqListdata?.map((cat: HelpCategory) => (
-                <button
-                  key={cat?.id}
-                  onClick={() => {
-                    setActiveCategory(cat?.displayOrder);
-                    setOpenItems([]);
-                  }}
-                  className={`px-5 py-2.5 rounded-md font-medium cursor-pointer transition-colors ${
-                    activeCategory === cat?.displayOrder
-                      ? "bg-gray-100 text-black"
-                      : "text-gray-600"
-                  }`}
-                >
-                  {cat?.name}
-                </button>
-              ))}
+              {faqListdata.length > 0
+                ? faqListdata?.map((cat: HelpCategory) => (
+                    <button
+                      key={cat?.id}
+                      onClick={() => {
+                        setActiveCategory(cat?.displayOrder);
+                        setOpenItems([]);
+                      }}
+                      className={`px-5 py-2.5 rounded-md font-medium cursor-pointer transition-colors ${
+                        activeCategory === cat?.displayOrder
+                          ? "bg-gray-100 text-black"
+                          : "text-gray-600"
+                      }`}
+                    >
+                      {cat?.name}
+                    </button>
+                  ))
+                : ""}
             </div>
             <div className="space-y-4">
-              {activeFaqs.map((faq: any, index: number) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="bg-gray-100 text-black border border-gray-200 rounded-lg overflow-hidden"
-                >
-                  <button
-                    className="w-full px-6 py-4 text-left flex items-center justify-between transition-colors cursor-pointer"
-                    onClick={() => toggleItem(faq.displayOrder)}
-                  >
-                    <span className="font-semibold">{faq.question}</span>
+              {activeFaqs.length > 0
+                ? activeFaqs.map((faq: HelpItem, index: number) => (
                     <motion.div
-                      animate={{
-                        rotate: openItems.includes(faq.displayOrder) ? 180 : 0,
-                      }}
-                      transition={{ duration: 0.2 }}
+                      key={index}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="bg-gray-100 text-black border border-gray-200 rounded-lg overflow-hidden"
                     >
-                      <ChevronDown size={20} className="text-black" />
-                    </motion.div>
-                  </button>
-                  <motion.div
-                    initial={{ height: 0 }}
-                    animate={{
-                      height: openItems.includes(faq.displayOrder) ? "auto" : 0,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    {/* <div className="px-6 pb-4">
+                      <button
+                        className="w-full px-6 py-4 text-left flex items-center justify-between transition-colors cursor-pointer"
+                        onClick={() => toggleItem(faq.displayOrder)}
+                      >
+                        <span className="font-semibold">{faq.question}</span>
+                        <motion.div
+                          animate={{
+                            rotate: openItems.includes(faq.displayOrder)
+                              ? 180
+                              : 0,
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ChevronDown size={20} className="text-black" />
+                        </motion.div>
+                      </button>
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{
+                          height: openItems.includes(faq.displayOrder)
+                            ? "auto"
+                            : 0,
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        {/* <div className="px-6 pb-4">
                   <p className="text-black leading-relaxed">{faq.answer}</p>
                 </div> */}
-                    <div
-                      className="px-6 pb-4 text-black leading-relaxed"
-                      dangerouslySetInnerHTML={{ __html: faq.answer }}
-                    />
-                  </motion.div>
-                </motion.div>
-              ))}
+                        <div
+                          className="px-6 pb-4 text-black leading-relaxed"
+                          dangerouslySetInnerHTML={{ __html: faq.answer }}
+                        />
+                      </motion.div>
+                    </motion.div>
+                  ))
+                : faqs.map((faq, index) => (
+                    <motion.div
+                      key={faq.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: index * 0.1 }}
+                      viewport={{ once: true }}
+                      className="bg-gray-200 text-black border border-gray-200 rounded-lg overflow-hidden"
+                    >
+                      <button
+                        className="w-full px-6 py-4 text-left flex items-center justify-between transition-colors cursor-pointer"
+                        onClick={() => toggleItem(faq.id)}
+                      >
+                        <span className="font-semibold">{faq.question}</span>
+                        <motion.div
+                          animate={{
+                            rotate: openItems.includes(faq.id) ? 180 : 0,
+                          }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <ChevronDown size={20} className="text-black" />
+                        </motion.div>
+                      </button>
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{
+                          height: openItems.includes(faq.id) ? "auto" : 0,
+                        }}
+                        transition={{ duration: 0.3 }}
+                        className="overflow-hidden"
+                      >
+                        <div className="px-6 pb-4">
+                          <p className="text-black leading-relaxed">
+                            {faq.answer}
+                          </p>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  ))}
             </div>
           </>
         )}

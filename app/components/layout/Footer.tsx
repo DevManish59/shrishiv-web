@@ -1,12 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import CountrySelectorModal from "../ui/country-selector-modal";
-import { Facebook, Instagram, Pin, Twitter, Youtube } from "lucide-react";
+import {
+  Facebook,
+  Instagram,
+  Loader2,
+  Pin,
+  Twitter,
+  Youtube,
+} from "lucide-react";
+import { DynamicPageItem, StoreSocial } from "@/lib/types";
 
 export default function Footer() {
-  const [showCountrySelector, setShowCountrySelector] = useState(false);
+  const [showCountrySelector, setShowCountrySelector] =
+    useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [pageListdata, setPageListdata] = useState([]);
+  const [storeSocialLinks, setStoreSocialLinks] = useState<StoreSocial>();
+
+  const fetchPagesData = async () => {
+    try {
+      setIsLoading(true);
+      const response = await fetch(`/api/page`);
+      const pagesData = await response.json();
+      setPageListdata(pagesData?.pageListData);
+      setStoreSocialLinks(pagesData?.storeSocialData);
+    } catch (error) {
+      console.error("Error fetching header data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPagesData();
+  }, []);
 
   const footerLinks = {
     help: [
@@ -33,27 +63,27 @@ export default function Footer() {
   const socialLinks = [
     {
       label: "Facebook",
-      href: "#",
+      href: storeSocialLinks?.socialFacebook || "#",
       icon: Facebook,
     },
     {
       label: "Instagram",
-      href: "#",
+      href: storeSocialLinks?.socialInstagram || "#",
       icon: Instagram,
     },
     {
       label: "Pinterest",
-      href: "#",
+      href: storeSocialLinks?.socialPinterest || "#",
       icon: Pin,
     },
     {
       label: "Twitter",
-      href: "#",
+      href: storeSocialLinks?.socialTwitter || "#",
       icon: Twitter,
     },
     {
       label: "YouTube",
-      href: "#",
+      href: storeSocialLinks?.socialYoutube || "#",
       icon: Youtube,
     },
   ];
@@ -95,6 +125,7 @@ export default function Footer() {
                   href={link.href}
                   className="text-gray-600 hover:text-black transition-colors"
                   aria-label={link.label}
+                  target="_blank"
                 >
                   <Icon className="w-6 h-6" />
                 </Link>
@@ -116,6 +147,26 @@ export default function Footer() {
               </div>
             ))}
           </div>
+          {isLoading ? (
+            <div className="flex items-center space-x-2 justify-center p-4">
+              <Loader2 className="w-4 h-4 animate-spin" />
+              <span className="text-base text-gray-500">Loading...</span>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-4 mt-4 text-sm">
+              {pageListdata.length > 0 &&
+                pageListdata.map((pageItem: DynamicPageItem, idx) => (
+                  <div key={idx} className="space-y-4">
+                    <Link
+                      href={`/p/${pageItem?.pageUrl}?id=${pageItem?.id}`}
+                      className="hover:opacity-70 text-sm uppercase"
+                    >
+                      {pageItem?.name}
+                    </Link>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       </div>
 
