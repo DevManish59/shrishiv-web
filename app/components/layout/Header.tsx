@@ -215,6 +215,7 @@ export default function Header() {
                   className="relative h-full flex items-center cursor-pointer uppercase text-sm font-semibold hover:text-gray-600 transition-colors"
                   onMouseEnter={() => handleMenuEnter(category.slug)}
                   onMouseLeave={handleMenuLeave}
+                  // onClick={Router.push}
                 >
                   {category.name}
                 </div>

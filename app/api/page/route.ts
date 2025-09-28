@@ -4,17 +4,17 @@ const CACHE_DURATION = 3600; // 1 hour
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
     const slug = searchParams.get("slug");
     // Fetch from external API
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "http://44.198.188.164:8080";
 
     const pageUrl = `${externalApiUrl}/pages`;
+    const webPageUrl = `${externalApiUrl}/web/pages`;
     const storeDataUrl = `${externalApiUrl}/store-detail`;
 
-    if (id && slug) {
-      const specificPageRes = await fetch(`${pageUrl}/${id}`, {
+    if (slug) {
+      const specificPageRes = await fetch(`${webPageUrl}/${slug}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

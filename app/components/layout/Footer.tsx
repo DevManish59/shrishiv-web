@@ -4,12 +4,17 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import CountrySelectorModal from "../ui/country-selector-modal";
 import {
+  Loader2,
   Facebook,
   Instagram,
-  Loader2,
   Pin,
   Twitter,
   Youtube,
+  Linkedin,
+  Send, // for Telegram (lucide-react "Send")
+  Phone, // for Skype (or use a custom icon)
+  MessageCircle, // for Snapchat
+  Music, // for TikTok
 } from "lucide-react";
 import { DynamicPageItem, StoreSocial } from "@/lib/types";
 
@@ -38,53 +43,122 @@ export default function Footer() {
     fetchPagesData();
   }, []);
 
-  const footerLinks = {
-    help: [
-      { label: "HELP", href: "#" },
-      { label: "MY PURCHASES", href: "#" },
-      { label: "RETURNS", href: "#" },
-    ],
-    company: [
-      { label: "COMPANY", href: "#" },
-      { label: "WORK FOR MANGO", href: "#" },
-      { label: "PRESS", href: "#" },
-    ],
-    legal: [
-      { label: "PRIVACY POLICY AND COOKIES", href: "#" },
-      { label: "TERMS AND CONDITIONS", href: "#" },
-      { label: "ETHICS CHANNEL", href: "#" },
-    ],
-    responsibility: [
-      { label: "RESPONSIBILITY", href: "#" },
-      { label: "STORES", href: "#" },
-    ],
-  };
+  // const footerLinks = {
+  //   help: [
+  //     { label: "HELP", href: "#" },
+  //     { label: "MY PURCHASES", href: "#" },
+  //     { label: "RETURNS", href: "#" },
+  //   ],
+  //   company: [
+  //     { label: "COMPANY", href: "#" },
+  //     { label: "WORK FOR MANGO", href: "#" },
+  //     { label: "PRESS", href: "#" },
+  //   ],
+  //   legal: [
+  //     { label: "PRIVACY POLICY AND COOKIES", href: "#" },
+  //     { label: "TERMS AND CONDITIONS", href: "#" },
+  //     { label: "ETHICS CHANNEL", href: "#" },
+  //   ],
+  //   responsibility: [
+  //     { label: "RESPONSIBILITY", href: "#" },
+  //     { label: "STORES", href: "#" },
+  //   ],
+  // };
+
+  // const socialLinks = [
+  //   {
+  //     label: "Facebook",
+  //     href: storeSocialLinks?.socialFacebook || "#",
+  //     icon: Facebook,
+  //   },
+  //   {
+  //     label: "Instagram",
+  //     href: storeSocialLinks?.socialInstagram || "#",
+  //     icon: Instagram,
+  //   },
+  //   {
+  //     label: "Pinterest",
+  //     href: storeSocialLinks?.socialPinterest || "#",
+  //     icon: Pin,
+  //   },
+  //   {
+  //     label: "Twitter",
+  //     href: storeSocialLinks?.socialTwitter || "#",
+  //     icon: Twitter,
+  //   },
+  //   {
+  //     label: "YouTube",
+  //     href: storeSocialLinks?.socialYoutube || "#",
+  //     icon: Youtube,
+  //   },
+  // ];
 
   const socialLinks = [
     {
       label: "Facebook",
       href: storeSocialLinks?.socialFacebook || "#",
       icon: Facebook,
+      isHidden: !storeSocialLinks?.socialFacebook,
     },
     {
       label: "Instagram",
       href: storeSocialLinks?.socialInstagram || "#",
       icon: Instagram,
+      isHidden: !storeSocialLinks?.socialInstagram,
     },
     {
       label: "Pinterest",
       href: storeSocialLinks?.socialPinterest || "#",
       icon: Pin,
+      isHidden: !storeSocialLinks?.socialPinterest,
     },
     {
       label: "Twitter",
       href: storeSocialLinks?.socialTwitter || "#",
       icon: Twitter,
+      isHidden: !storeSocialLinks?.socialTwitter,
     },
     {
       label: "YouTube",
       href: storeSocialLinks?.socialYoutube || "#",
       icon: Youtube,
+      isHidden: !storeSocialLinks?.socialYoutube,
+    },
+    // {
+    //   label: "Tumblr",
+    //   href: storeSocialLinks?.socialTumblr || "#",
+    //   icon: Tumblr,
+    //   isHidden: !storeSocialLinks?.socialTumblr,
+    // },
+    {
+      label: "LinkedIn",
+      href: storeSocialLinks?.socialLinkedin || "#",
+      icon: Linkedin,
+      isHidden: !storeSocialLinks?.socialLinkedin,
+    },
+    {
+      label: "Telegram",
+      href: storeSocialLinks?.socialTelegram || "#",
+      icon: Send,
+      isHidden: !storeSocialLinks?.socialTelegram,
+    },
+    {
+      label: "Skype",
+      href: storeSocialLinks?.socialSkype || "#",
+      icon: Phone,
+      isHidden: !storeSocialLinks?.socialSkype,
+    },
+    {
+      label: "Snapchat",
+      href: storeSocialLinks?.socialSnapchat || "#",
+      icon: MessageCircle,
+      isHidden: !storeSocialLinks?.socialSnapchat,
+    },
+    {
+      label: "TikTok",
+      href: storeSocialLinks?.socialTiktok || "#",
+      icon: Music,
+      isHidden: !storeSocialLinks?.socialTiktok,
     },
   ];
 
@@ -117,7 +191,23 @@ export default function Footer() {
 
           {/* Social Links */}
           <div className="flex justify-center space-x-6 mb-8">
-            {socialLinks.map((link) => {
+            {socialLinks
+              .filter((link) => !link.isHidden)
+              .map((link) => {
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.label}
+                    href={link.href}
+                    className="text-gray-600 hover:text-black transition-colors"
+                    aria-label={link.label}
+                    target="_blank"
+                  >
+                    <Icon className="w-6 h-6" />
+                  </Link>
+                );
+              })}
+            {/* {socialLinks.map((link) => {
               const Icon = link.icon;
               return (
                 <Link
@@ -130,11 +220,11 @@ export default function Footer() {
                   <Icon className="w-6 h-6" />
                 </Link>
               );
-            })}
+            })} */}
           </div>
 
           {/* Footer Links Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
             {Object.entries(footerLinks).map(([key, links]) => (
               <div key={key} className="space-y-4">
                 {links.map((link) => (
@@ -146,7 +236,7 @@ export default function Footer() {
                 ))}
               </div>
             ))}
-          </div>
+          </div> */}
           {isLoading ? (
             <div className="flex items-center space-x-2 justify-center p-4">
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -158,7 +248,7 @@ export default function Footer() {
                 pageListdata.map((pageItem: DynamicPageItem, idx) => (
                   <div key={idx} className="space-y-4">
                     <Link
-                      href={`/p/${pageItem?.pageUrl}?id=${pageItem?.id}`}
+                      href={`/p/${pageItem?.pageUrl}`}
                       className="hover:opacity-70 text-sm uppercase"
                     >
                       {pageItem?.name}

@@ -4,12 +4,11 @@ import DynamicPageContent from "@/components/DynamicPageContent";
 
 interface PageProps {
   params: { slug: string };
-  searchParams: { id: number };
 }
 
-async function getDynamicPages(slug: string, id: number) {
+async function getDynamicPages(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const res = await fetch(`${baseUrl}/api/page?id=${id}&slug=${slug}`, {
+  const res = await fetch(`${baseUrl}/api/page?slug=${slug}`, {
     cache: "no-store", // ensures fresh data on every request
   });
   if (!res.ok) {
@@ -20,11 +19,10 @@ async function getDynamicPages(slug: string, id: number) {
   return pageData;
 }
 
-export async function generateMetadata({ params, searchParams }: PageProps) {
+export async function generateMetadata({ params }: PageProps) {
   try {
     const parameter = await params;
-    const id = searchParams.id;
-    const currentPageData = await getDynamicPages(parameter.slug, id);
+    const currentPageData = await getDynamicPages(parameter.slug);
     const { name, description, title } = currentPageData;
     return {
       title: title || name,
@@ -49,11 +47,10 @@ export async function generateMetadata({ params, searchParams }: PageProps) {
   }
 }
 
-export default async function Page({ params, searchParams }: PageProps) {
+export default async function Page({ params }: PageProps) {
   const parameter = await params;
-  const id = searchParams.id;
 
-  const pageData = await getDynamicPages(parameter.slug, id);
+  const pageData = await getDynamicPages(parameter.slug);
 
   return (
     <Suspense
