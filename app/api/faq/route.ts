@@ -32,21 +32,29 @@ export async function GET() {
     const filteredCategories =
       faqListdata?.length > 0
         ? faqListdata
-            .filter((cat: HelpCategory) => cat.published) // category must be published
+            // only published categories
+            .filter((cat: HelpCategory) => cat.published)
+            // map through and filter + sort helpItems
             .map((cat: HelpCategory) => ({
               ...cat,
-              helpItems: cat.helpItems?.filter((item) => item.published) ?? [], // only published items
+              helpItems:
+                cat.helpItems
+                  ?.filter((item) => item.published) // only published
+                  .sort((a, b) => a.displayOrder - b.displayOrder) ?? [],
             }))
-            .filter((cat: HelpCategory) => cat.helpItems.length > 0) // only keep categories with published items
+            // only categories that still have published items
+            .filter((cat: HelpCategory) => cat.helpItems.length > 0)
+            // finally sort categories
+            .sort((a: any, b: any) => a.displayOrder - b.displayOrder) // only keep categories with published items
         : [];
 
     return NextResponse.json(
-      filteredCategories.length > 0 ? filteredCategories : [],
-      {
-        headers: {
-          "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
-        },
-      }
+      filteredCategories.length > 0 ? filteredCategories : []
+      // {
+      //   headers: {
+      //     "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
+      //   },
+      // }
     );
   } catch (error) {
     console.error("Header data fetch error:", error);

@@ -10,13 +10,12 @@ interface FullHeightGridProps {
 }
 
 export default function FullHeightGrid({ items }: FullHeightGridProps) {
-  console.log(items);
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
       {items.map((item) => (
         <Link
           key={item.id}
-          href={item.href || item.slug || ""}
+          href={`${item.href || item.slug || "#"}`}
           className={`relative group overflow-hidden h-svh ${
             item.size === "full" ? "md:col-span-2" : ""
           }`}
@@ -29,7 +28,7 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
           >
             <Image
               src={item.image || item?.imageUrls?.[0] || ""}
-              alt={item.title}
+              alt={item.title || "img-title"}
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -43,7 +42,7 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
                   transition={{ duration: 0.5 }}
                   className="text-3xl md:text-4xl font-bold text-white mb-2"
                 >
-                  {item.title}
+                  {item.title || item.name}
                 </motion.h2>
                 {item.subtitle && (
                   <motion.p

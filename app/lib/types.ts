@@ -307,3 +307,19 @@ export interface StoreSocial {
   socialSnapchat: string;
   socialTiktok: string;
 }
+export interface ReviewType {
+  id: string;
+  review: string;
+  productId?: number;
+  productName?: string;
+  rating?: number;
+  reviewTitle?: string;
+  email?: string;
+  name?: string;
+  url?: string;
+  date?: string;
+  isApproved?: boolean;
+  imageUrls?: string[];
+  createdAt?: string;
+  updatedAt?: string;
+}

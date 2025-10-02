@@ -18,7 +18,7 @@ export default function SimilarProducts({
   return (
     <section className="py-16">
       <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="md:text-4xl text-3xl font-bold text-gray-900 mb-4">
           Similar Products
         </h2>
       </div>

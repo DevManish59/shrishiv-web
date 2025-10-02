@@ -165,8 +165,8 @@ export default function Footer() {
   return (
     <footer className="bg-white">
       {/* Main Footer Links */}
-      <div className="py-12">
-        <div className="max-w-screen-2xl mx-auto px-4">
+      <div className="py-8 md:py-12">
+        <div className="max-w-screen-xl mx-auto px-4">
           <div className="flex justify-center mb-8">
             <button
               onClick={() => setShowCountrySelector(true)}
@@ -190,7 +190,7 @@ export default function Footer() {
           </div>
 
           {/* Social Links */}
-          <div className="flex justify-center space-x-6 mb-8">
+          <div className="flex flex-wrap justify-center sm:gap-x-6 gap-x-4 sm:gap-y-4 gap-y-4 mb-8">
             {socialLinks
               .filter((link) => !link.isHidden)
               .map((link) => {
@@ -243,17 +243,16 @@ export default function Footer() {
               <span className="text-base text-gray-500">Loading...</span>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 gap-y-4 mt-4 text-sm">
+            <div className="grid grid-cols-2 lg:grid-cols-4 md:gap-8 gap-1 md:gap-y-4">
               {pageListdata.length > 0 &&
                 pageListdata.map((pageItem: DynamicPageItem, idx) => (
-                  <div key={idx} className="space-y-4">
-                    <Link
-                      href={`/p/${pageItem?.pageUrl}`}
-                      className="hover:opacity-70 text-sm uppercase"
-                    >
-                      {pageItem?.name}
-                    </Link>
-                  </div>
+                  <Link
+                    key={idx}
+                    href={`/p/${pageItem?.pageUrl}`}
+                    className="hover:opacity-70 sm:text-sm text-[13px] uppercase"
+                  >
+                    {pageItem?.name}
+                  </Link>
                 ))}
             </div>
           )}

@@ -46,9 +46,7 @@ export default function FAQSection() {
   const [openItems, setOpenItems] = useState<number[]>([]);
 
   const activeFaqs = useMemo(() => {
-    const category = faqListdata.find(
-      (cat) => cat?.displayOrder === activeCategory
-    );
+    const category = faqListdata.find((cat) => cat?.id === activeCategory);
     // ✅ filter helpItems by published
     return category?.helpItems?.filter((faq: HelpItem) => faq.published) || [];
   }, [faqListdata, activeCategory]);
@@ -64,11 +62,10 @@ export default function FAQSection() {
       setIsLoading(true);
       const response = await fetch(`/api/faq`);
       const faqListdata = await response.json();
-      console.log("faqListdata", faqListdata);
       setFaqListdata(faqListdata);
       // set the first published category active by default
       if (faqListdata.length > 0) {
-        setActiveCategory(faqListdata?.[0].displayOrder);
+        setActiveCategory(faqListdata?.[0].id);
       }
     } catch (error) {
       console.error("Error fetching header data:", error);
@@ -82,7 +79,7 @@ export default function FAQSection() {
   }, []);
 
   return (
-    <section className="py-16">
+    <section className="sm:py-16 py-10">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -91,7 +88,7 @@ export default function FAQSection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="md:text-4xl text-3xl font-bold text-gray-900 mb-4">
             Frequently Asked Questions
           </h2>
         </motion.div>
@@ -109,11 +106,11 @@ export default function FAQSection() {
                     <button
                       key={cat?.id}
                       onClick={() => {
-                        setActiveCategory(cat?.displayOrder);
+                        setActiveCategory(cat?.id);
                         setOpenItems([]);
                       }}
-                      className={`px-5 py-2.5 rounded-md font-medium cursor-pointer transition-colors ${
-                        activeCategory === cat?.displayOrder
+                      className={`md:px-5 px-4 md:py-2.5 py-2 md:text-base text-sm rounded-md font-medium cursor-pointer transition-colors ${
+                        activeCategory === cat?.id
                           ? "bg-gray-100 text-black"
                           : "text-gray-600"
                       }`}
@@ -135,15 +132,15 @@ export default function FAQSection() {
                       className="bg-gray-100 text-black border border-gray-200 rounded-lg overflow-hidden"
                     >
                       <button
-                        className="w-full px-6 py-4 text-left flex items-center justify-between transition-colors cursor-pointer"
-                        onClick={() => toggleItem(faq.displayOrder)}
+                        className="w-full md:px-6 px-4 md:py-4 py-3 text-left flex items-center justify-between transition-colors cursor-pointer"
+                        onClick={() => toggleItem(faq.id)}
                       >
-                        <span className="font-semibold">{faq.question}</span>
+                        <span className="font-semibold md:text-base text-sm">
+                          {faq.question}
+                        </span>
                         <motion.div
                           animate={{
-                            rotate: openItems.includes(faq.displayOrder)
-                              ? 180
-                              : 0,
+                            rotate: openItems.includes(faq.id) ? 180 : 0,
                           }}
                           transition={{ duration: 0.2 }}
                         >
@@ -153,18 +150,13 @@ export default function FAQSection() {
                       <motion.div
                         initial={{ height: 0 }}
                         animate={{
-                          height: openItems.includes(faq.displayOrder)
-                            ? "auto"
-                            : 0,
+                          height: openItems.includes(faq.id) ? "auto" : 0,
                         }}
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        {/* <div className="px-6 pb-4">
-                  <p className="text-black leading-relaxed">{faq.answer}</p>
-                </div> */}
                         <div
-                          className="px-6 pb-4 text-black leading-relaxed"
+                          className="md:px-6 px-4 md:pb-4 pb-3 text-black leading-relaxed md:text-base text-sm"
                           dangerouslySetInnerHTML={{ __html: faq.answer }}
                         />
                       </motion.div>

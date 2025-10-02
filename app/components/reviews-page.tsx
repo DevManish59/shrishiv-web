@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Star from "@/components/ui/star";
-import { Review } from "@/lib/types";
+import { Review, ReviewType } from "@/lib/types";
 import ReviewFilter, { ReviewFilterType } from "./product/review-filter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Masonry from "react-masonry-css";
@@ -11,6 +11,7 @@ import ReviewSkeleton from "./product/review-skeleton";
 import WriteReview from "./product/write-review";
 import { mockReviews, mockReviewSummary } from "@/lib/mock-data";
 import Image from "next/image";
+import { formatDate } from "@/lib/utils";
 
 export default function ReviewsPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -19,6 +20,7 @@ export default function ReviewsPage() {
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsList, setReviewsList] = useState<ReviewType[]>([]);
   const [totalRating, setTotalRating] = useState(0);
   const [ratingDistribution, setRatingDistribution] = useState<{
     [key: number]: number;
@@ -32,19 +34,16 @@ export default function ReviewsPage() {
     setIsLoading(true);
     try {
       // TODO: Implement actual API calls
-      /* 
       const response = await fetch(`/api/reviews?filter=${currentFilter}`);
       if (!response.ok) {
-        throw new Error('Failed to fetch reviews');
+        throw new Error("Failed to fetch reviews");
       }
       const data = await response.json();
-      setReviews(data.reviews);
-      setTotalRating(data.summary.totalRating);
-      setRatingDistribution(data.summary.ratingDistribution);
-      */
+      setReviewsList(data);
+      // setReviews(data.reviews);
+      // setTotalRating(data.summary.totalRating);
+      // setRatingDistribution(data.summary.ratingDistribution);
 
-      // Using mock data for now
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
       setReviews(mockReviews);
       setTotalRating(mockReviewSummary.totalRating);
       setRatingDistribution(mockReviewSummary.ratingDistribution);
@@ -107,18 +106,23 @@ export default function ReviewsPage() {
     show: { opacity: 1, y: 0 },
   };
 
-  const handleSubmitReview = async (review: {
-    rating: number;
-    title: string;
-    comment: string;
-    name: string;
-    email: string;
-    media?: File[];
-    youtubeUrl?: string;
-  }) => {
+  const handleSubmitReview = async (formData: any) => {
     try {
-      // TODO: Implement actual API call
-      /* 
+      const res = await fetch("/api/reviews", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) throw new Error("Upload failed");
+
+      const result = await res.json();
+      console.log("✅ Uploaded successfully:", result);
+    } catch (err) {
+      console.error("❌ Error:", err);
+    }
+    // try {
+    // TODO: Implement actual API call
+    /* 
       // First upload media files if any
       let mediaUrls: string[] = [];
       if (review.media && review.media.length > 0) {
@@ -157,145 +161,158 @@ export default function ReviewsPage() {
       // Refresh reviews after successful submission
       await fetchReviews();
       */
-
-      // Using mock data for now
-      console.log("Submitting review:", review);
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
-
-      // Add the new review to the existing list
-      const newReview: Review = {
-        id: String(Date.now()),
-        rating: review.rating,
-        title: review.title,
-        comment: review.comment,
-        author: review.name,
-        date: new Date().toISOString().split("T")[0],
-        isVerified: true,
-        helpfulCount: 0,
-        media: review.media
-          ? review.media.map((file) => URL.createObjectURL(file))
-          : undefined,
-        youtubeUrl: review.youtubeUrl,
-      };
-
-      setReviews([newReview, ...reviews]);
-
-      // Update rating distribution
-      const newDist = { ...ratingDistribution };
-      newDist[review.rating] = (newDist[review.rating] || 0) + 1;
-      setRatingDistribution(newDist);
-
-      // Update total rating
-      const totalReviews = reviews.length + 1;
-      const newTotalRating =
-        (totalRating * reviews.length + review.rating) / totalReviews;
-      setTotalRating(newTotalRating);
-
-      setShowWriteReview(false);
-    } catch (error) {
-      console.error("Error submitting review:", error);
-      // TODO: Implement error handling UI
-      // setError('Failed to submit review. Please try again.');
-    }
+    // Using mock data for now
+    // console.log("Submitting review:", review);
+    // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
+    // // Add the new review to the existing list
+    // const newReview: Review = {
+    //   id: String(Date.now()),
+    //   rating: review.rating,
+    //   title: review.title,
+    //   comment: review.comment,
+    //   author: review.name,
+    //   date: new Date().toISOString().split("T")[0],
+    //   isVerified: true,
+    //   helpfulCount: 0,
+    //   media: review.media
+    //     ? review.media.map((file) => URL.createObjectURL(file))
+    //     : undefined,
+    //   youtubeUrl: review.youtubeUrl,
+    // };
+    // setReviews([newReview, ...reviews]);
+    // // Update rating distribution
+    // const newDist = { ...ratingDistribution };
+    // newDist[review.rating] = (newDist[review.rating] || 0) + 1;
+    // setRatingDistribution(newDist);
+    // // Update total rating
+    // const totalReviews = reviews.length + 1;
+    // const newTotalRating =
+    //   (totalRating * reviews.length + review.rating) / totalReviews;
+    // setTotalRating(newTotalRating);
+    // setShowWriteReview(false);
+    // } catch (error) {
+    //   console.error("Error submitting review:", error);
+    //   // TODO: Implement error handling UI
+    //   // setError('Failed to submit review. Please try again.');
+    // }
   };
 
-  if (showWriteReview) {
-    return (
-      <div className="container mx-auto px-4 py-8">
-        <WriteReview
-          onCancel={() => setShowWriteReview(false)}
-          onSubmit={handleSubmitReview}
-        />
-      </div>
-    );
-  }
+  // if (showWriteReview) {
+  //   return (
+  //     <div className="container mx-auto px-4 py-8">
+  //       <WriteReview
+  //         onCancel={() => setShowWriteReview(false)}
+  //         onSubmit={handleSubmitReview}
+  //       />
+  //     </div>
+  //   );
+  // }
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="space-y-8">
-        {/* Review Summary */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col gap-6 justify-between items-start shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 py-9 px-6 rounded-lg"
-        >
-          <h1 className="text-3xl font-bold text-center w-full mb-4">
-            Customer Reviews
-          </h1>
-          <div className="w-full flex flex-col lg:flex-row gap-8">
-            <div className="flex-1 flex flex-col justify-center items-center">
-              <div className="flex items-center gap-4 mb-2">
-                <div className="flex">
-                  {[1, 2, 3, 4, 5].map((value) => (
+  const reviewOverviewOrWrite = () => {
+    return (
+      <>
+        <h1 className="text-3xl font-bold text-center w-full mb-4">
+          Customer Reviews
+        </h1>
+        <div className="w-full flex flex-col lg:flex-row gap-8">
+          <div className="flex-1 flex flex-col justify-center items-center">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="flex">
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <Star
+                    key={value}
+                    className={`w-6 h-6 ${
+                      value <= totalRating
+                        ? "text-yellow-400 fill-yellow-400"
+                        : "text-gray-300"
+                    }`}
+                  />
+                ))}
+              </div>
+              <span className="text-lg font-medium">
+                {(totalRating || 0).toFixed(1)} out of 5
+              </span>
+            </div>
+            <p className="text-gray-600 mb-6">
+              Based on {reviews?.length || 0} reviews
+            </p>
+          </div>
+
+          {/* Rating Distribution */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="space-y-2 flex-1"
+          >
+            {[5, 4, 3, 2, 1].map((rating) => (
+              <div key={rating} className="flex items-center gap-4">
+                <div className="flex items-center gap-1 w-28">
+                  {Array.from({ length: 5 }).map((_, i) => (
                     <Star
-                      key={value}
-                      className={`w-6 h-6 ${
-                        value <= totalRating
+                      key={i}
+                      className={`w-4 h-4 ${
+                        i < rating
                           ? "text-yellow-400 fill-yellow-400"
                           : "text-gray-300"
                       }`}
                     />
                   ))}
                 </div>
-                <span className="text-lg font-medium">
-                  {(totalRating || 0).toFixed(1)} out of 5
+                <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{
+                      width: `${
+                        ((ratingDistribution?.[rating] || 0) /
+                          (reviews?.length || 1)) *
+                        100
+                      }%`,
+                    }}
+                    transition={{ duration: 1, delay: 0.3 + rating * 0.1 }}
+                    className="h-full bg-yellow-400 rounded-full"
+                  />
+                </div>
+                <span className="text-sm text-gray-500 w-8">
+                  {ratingDistribution?.[rating] || 0}
                 </span>
               </div>
-              <p className="text-gray-600 mb-6">
-                Based on {reviews?.length || 0} reviews
-              </p>
-            </div>
-
-            {/* Rating Distribution */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="space-y-2 flex-1"
+            ))}
+          </motion.div>
+          <div className="flex-1 flex justify-center items-center">
+            <button
+              onClick={() => setShowWriteReview(!showWriteReview)}
+              className="px-6 py-3 bg-black text-white rounded hover:bg-black/90 transition-colors cursor-pointer"
             >
-              {[5, 4, 3, 2, 1].map((rating) => (
-                <div key={rating} className="flex items-center gap-4">
-                  <div className="flex items-center gap-1 w-28">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <Star
-                        key={i}
-                        className={`w-4 h-4 ${
-                          i < rating
-                            ? "text-yellow-400 fill-yellow-400"
-                            : "text-gray-300"
-                        }`}
-                      />
-                    ))}
-                  </div>
-                  <div className="flex-1 h-2 bg-gray-200 rounded-full overflow-hidden">
-                    <motion.div
-                      initial={{ width: 0 }}
-                      animate={{
-                        width: `${
-                          ((ratingDistribution?.[rating] || 0) /
-                            (reviews?.length || 1)) *
-                          100
-                        }%`,
-                      }}
-                      transition={{ duration: 1, delay: 0.3 + rating * 0.1 }}
-                      className="h-full bg-yellow-400 rounded-full"
-                    />
-                  </div>
-                  <span className="text-sm text-gray-500 w-8">
-                    {ratingDistribution?.[rating] || 0}
-                  </span>
-                </div>
-              ))}
-            </motion.div>
-            <div className="flex-1 flex justify-center items-center">
-              <button
-                onClick={() => setShowWriteReview(true)}
-                className="px-6 py-3 bg-black text-white rounded hover:bg-black/90 transition-colors cursor-pointer"
-              >
-                Write a Review
-              </button>
-            </div>
+              {showWriteReview ? "Cancel Review" : "Write a Review"}
+            </button>
           </div>
+        </div>
+
+        {showWriteReview && (
+          <>
+            <hr className="w-full !border-b !border-b-gray-50 my-5" />
+            <WriteReview
+              onCancel={() => setShowWriteReview(false)}
+              onSubmit={handleSubmitReview}
+            />
+          </>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="space-y-8">
+        {/* Review Summary */}
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col gap-6 justify-between items-start shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300 py-9 px-6 rounded-lg"
+        >
+          {reviewOverviewOrWrite()}
         </motion.div>
 
         {/* Filter */}
@@ -335,7 +352,71 @@ export default function ReviewsPage() {
                   className="flex -ml-4 md:-ml-6"
                   columnClassName="pl-4 md:pl-6"
                 >
-                  {currentReviews.map((review) => (
+                  {reviewsList.map((review: ReviewType) => (
+                    <motion.div
+                      key={review.id}
+                      variants={itemVariants}
+                      className="mb-4 md:mb-6"
+                    >
+                      <div className="rounded-lg p-6 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.08)] hover:shadow-[0_4px_16px_rgba(0,0,0,0.12)] transition-shadow duration-300">
+                        <div className="flex items-center gap-2 mb-4">
+                          <span className="font-medium">{review.name}</span>
+                          {review.isApproved && (
+                            <span className="text-white bg-blue-500 text-xs px-2 py-0.5 rounded">
+                              Verified
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex items-center gap-2 mb-4">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`w-4 h-4 ${
+                                i < (review?.rating as number)
+                                  ? "text-yellow-400 fill-yellow-400"
+                                  : "text-gray-300"
+                              }`}
+                            />
+                          ))}
+                        </div>
+
+                        {review.imageUrls && review.imageUrls.length > 0 && (
+                          <div className="grid grid-cols-2 gap-2 mb-4">
+                            {review.imageUrls.map((url, index) => (
+                              <Image
+                                key={index}
+                                src={`https://mabji-india-artifacts.s3.amazonaws.com${url}`}
+                                alt={`Review media ${index + 1}`}
+                                className="w-full h-40 object-cover rounded"
+                                width={100}
+                                height={100}
+                              />
+                            ))}
+                          </div>
+                        )}
+
+                        <p className="text-gray-600 mb-3">{review.comment}</p>
+                        <div className="flex items-center justify-between text-sm text-gray-500">
+                          <span>Posted on {formatDate(review?.createdAt)}</span>
+                          {/* <span>{review.helpfulCount} found this helpful</span> */}
+                        </div>
+
+                        {review.storeResponse && (
+                          <div className="mt-4 pl-4 border-l-2 border-gray-200">
+                            <p className="text-sm text-gray-600 mb-2">
+                              {review.storeResponse.response}
+                            </p>
+                            <div className="text-xs text-gray-500">
+                              Response from Shrishiv on{" "}
+                              {review.storeResponse.date}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </motion.div>
+                  ))}
+                  {/* {currentReviews.map((review) => (
                     <motion.div
                       key={review.id}
                       variants={itemVariants}
@@ -398,7 +479,7 @@ export default function ReviewsPage() {
                         )}
                       </div>
                     </motion.div>
-                  ))}
+                  ))} */}
                 </Masonry>
               </motion.div>
             </AnimatePresence>

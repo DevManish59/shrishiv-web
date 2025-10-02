@@ -30,7 +30,7 @@ export default function CommitmentSection() {
     },
   ];
   return (
-    <section className="py-10 bg-gradient-to-r ">
+    <section className="sm:py-16 py-10 bg-gradient-to-r">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -39,7 +39,7 @@ export default function CommitmentSection() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-6 mb-16">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={index}

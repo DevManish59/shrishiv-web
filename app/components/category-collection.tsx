@@ -59,7 +59,7 @@ export default function CategoryCollection() {
           viewport={{ once: true }}
           className="text-center mb-12"
         >
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="md:text-4xl text-3xl font-bold text-gray-900 mb-4">
             Shop by Category
           </h2>
           <p className="text-xl text-gray-600">

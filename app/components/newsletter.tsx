@@ -20,7 +20,7 @@ export default function Newsletter() {
   };
 
   return (
-    <div className="w-full bg-white py-16">
+    <div className="w-full bg-white py-10 md:py-16">
       <div className="max-w-[1600px] mx-auto px-4">
         <div className="text-center">
           <h2 className="text-sm font-normal tracking-wider mb-6">

@@ -89,8 +89,6 @@ async function getHomePageData(): Promise<UnifiedItem[]> {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/home`;
 
-    console.log("🚀 Home Page: Calling API route:", apiUrl);
-
     // Use Next.js built-in fetch with revalidation for better caching
     const response = await fetch(apiUrl, {
       cache: "no-store", // Disable caching for dynamic data
@@ -134,7 +132,13 @@ export default async function Home() {
 
   return (
     <div>
-      <SingleBanner data={bannerData} />
+      {/* <SingleBanner data={bannerData} /> */}
+      <SingleBanner
+        data={{
+          ...bannerData,
+          slug: `${bannerData.slug}/${bannerData.subCategories?.[0]?.slug}`,
+        }}
+      />
       <div className="min-h-screen">
         <FullHeightGrid items={gridItems} />
       </div>
@@ -144,7 +148,7 @@ export default async function Home() {
 
 // Add metadata for SEO
 export const metadata = {
-  title: "Home | Shrishiv Jewellery",
+  title: "Home | Shrishiv Jewelry",
   description:
     "Discover our premium collection of lab-grown diamond jewelry with exceptional craftsmanship and ethical sourcing. Exclusive sales and new collections available.",
   keywords: [
@@ -157,13 +161,13 @@ export const metadata = {
     "ethical jewelry",
   ],
   openGraph: {
-    title: "Home | Shrishiv Jewellery",
+    title: "Home | Shrishiv Jewelry",
     description: "Discover our premium collection of lab-grown diamond jewelry",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Home | Shrishiv Jewellery",
+    title: "Home | Shrishiv Jewelry",
     description: "Discover our premium collection of lab-grown diamond jewelry",
   },
 };

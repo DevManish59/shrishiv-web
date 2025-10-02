@@ -1,7 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { ApiProduct, TransformedProduct, AttributeValue } from './types';
+import { ApiProduct, TransformedProduct, AttributeValue } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -10,33 +10,43 @@ export function cn(...inputs: ClassValue[]) {
 /**
  * Transform API product response to UI-compatible format
  */
-export function transformApiProduct(apiProduct: ApiProduct): TransformedProduct {
+export function transformApiProduct(
+  apiProduct: ApiProduct
+): TransformedProduct {
   // Base price from the product (salesPrice or mrpPrice)
   const basePrice = apiProduct.salesPrice || apiProduct.mrpPrice || 0;
   const originalPrice = apiProduct.mrpPrice || basePrice;
-  
+
   // Use imageFiles if available, otherwise fallback to images
-  const images = apiProduct.imageFiles?.length > 0 
-    ? apiProduct.imageFiles 
-    : apiProduct.images || [];
+  const images =
+    apiProduct.imageFiles?.length > 0
+      ? apiProduct.imageFiles
+      : apiProduct.images || [];
 
   // Create description from points if available
-  const description = [
-    apiProduct.pointOne,
-    apiProduct.pointTwo,
-    apiProduct.pointThree,
-    apiProduct.pointFour,
-    apiProduct.pointFive
-  ].filter(Boolean).join('\n\n') || apiProduct.shortDescription;
+  const description =
+    [
+      apiProduct.pointOne,
+      apiProduct.pointTwo,
+      apiProduct.pointThree,
+      apiProduct.pointFour,
+      apiProduct.pointFive,
+    ]
+      .filter(Boolean)
+      .join("\n\n") || apiProduct.shortDescription;
 
   // Group attributes by attributeId to create different categories
   const attributeGroups = groupAttributesByType(apiProduct.attributeValues);
-  
+
   // Generate metal types from attributeValues if available
-  const metalTypes = generateMetalTypesFromAttributes(attributeGroups.metalTypes || []);
-  
+  const metalTypes = generateMetalTypesFromAttributes(
+    attributeGroups.metalTypes || []
+  );
+
   // Generate diamond sizes from attributeValues if available
-  const diamondSizes = generateDiamondSizesFromAttributes(attributeGroups.diamondSizes || []);
+  const diamondSizes = generateDiamondSizesFromAttributes(
+    attributeGroups.diamondSizes || []
+  );
 
   return {
     id: apiProduct.id.toString(),
@@ -72,14 +82,18 @@ function groupAttributesByType(attributeValues: AttributeValue[]) {
   } = {
     metalTypes: [],
     diamondSizes: [],
-    other: []
+    other: [],
   };
 
-  attributeValues.forEach(attr => {
+  attributeValues.forEach((attr) => {
     // Group by attributeId - you can customize this logic based on your data structure
     if (attr.attributeId === 1 || attr.attributeId === 2) {
       groups.metalTypes.push(attr);
-    } else if (attr.attributeId === 3 || attr.attributeId === 4 || attr.attributeId === 5) {
+    } else if (
+      attr.attributeId === 3 ||
+      attr.attributeId === 4 ||
+      attr.attributeId === 5
+    ) {
       groups.diamondSizes.push(attr);
     } else {
       groups.other.push(attr);
@@ -92,22 +106,27 @@ function groupAttributesByType(attributeValues: AttributeValue[]) {
 /**
  * Get images for a specific attribute
  */
-export function getAttributeImages(attributeId: number, attributeValues: AttributeValue[]): string[] {
-  const attribute = attributeValues.find(attr => attr.id === attributeId);
+export function getAttributeImages(
+  attributeId: number,
+  attributeValues: AttributeValue[]
+): string[] {
+  const attribute = attributeValues.find((attr) => attr.id === attributeId);
   return attribute?.imageFiles || [];
 }
 
 /**
  * Get all available images for selected attributes
  */
-export function getCombinedAttributeImages(selectedAttributeIds: number[], attributeValues: AttributeValue[]): string[] {
+export function getCombinedAttributeImages(
+  selectedAttributeIds: number[],
+  attributeValues: AttributeValue[]
+): string[] {
   const allImages: string[] = [];
-  
-  selectedAttributeIds.forEach(attributeId => {
+
+  selectedAttributeIds.forEach((attributeId) => {
     const images = getAttributeImages(attributeId, attributeValues);
     allImages.push(...images);
   });
-  
   return allImages;
 }
 
@@ -119,20 +138,21 @@ export function calculateProductPrice(
   selectedAttributes: { [key: string]: number } = {}
 ): number {
   let totalPrice = basePrice;
-  
   // Add prices from selected attributes
-  Object.values(selectedAttributes).forEach(attributePrice => {
+  Object.values(selectedAttributes).forEach((attributePrice) => {
     totalPrice += attributePrice;
   });
-  
   return totalPrice;
 }
 
 /**
  * Get attribute price by ID
  */
-export function getAttributePrice(attributeId: number, attributeValues: AttributeValue[]): number {
-  const attribute = attributeValues.find(attr => attr.id === attributeId);
+export function getAttributePrice(
+  attributeId: number,
+  attributeValues: AttributeValue[]
+): number {
+  const attribute = attributeValues.find((attr) => attr.id === attributeId);
   return attribute?.price || 0;
 }
 
@@ -211,3 +231,11 @@ function generateDiamondSizesFromAttributes(attributeValues: AttributeValue[]) {
     price: attr.price, // Use the actual price from attribute
   }));
 }
+
+export const formatDate = (date: string) => {
+  return new Date(date).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  });
+};

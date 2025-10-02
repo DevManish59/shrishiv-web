@@ -75,7 +75,7 @@ const reviews: Review[] = [
 
 export default function ReviewSection() {
   return (
-    <div className={`h-screen bg-white py-16`}>
+    <div className={`h-full bg-white sm:py-16 py-10`}>
       <div className="h-full flex flex-col justify-evenly mx-auto px-4 xl:px-2">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-medium mb-4">Customer Reviews</h2>

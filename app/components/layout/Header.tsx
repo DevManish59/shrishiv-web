@@ -189,7 +189,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full bg-white shadow-sm text-black">
       {/* Main Header */}
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="relative flex h-16 items-center justify-between">
           {/* Mobile Menu Button */}
           <button
@@ -200,7 +200,7 @@ export default function Header() {
           </button>
 
           {/* Left: Categories for Desktop */}
-          <nav className="hidden md:flex items-center space-x-6 h-full">
+          <nav className="hidden md:flex items-center absolute left-0 space-x-6 h-full">
             {menuLoading ? (
               <div className="flex items-center space-x-2">
                 <Loader2 className="w-4 h-4 animate-spin" />
@@ -224,24 +224,26 @@ export default function Header() {
           </nav>
 
           {/* Center: Logo */}
-          <Link
-            href="/"
-            // className="absolute left-1/2 transform -translate-x-1/2"
-          >
-            <Image
-              src="/logo.png"
-              alt="SHRISHIV"
-              width={150}
-              height={30}
-              className="h-[60px] w-[150px] object-cover"
-              priority
-            />
-          </Link>
+          <div className="sm:mx-auto mr-[30%] text-center">
+            <Link
+              href="/"
+              // className="absolute left-1/2 transform -translate-x-1/2"
+            >
+              <Image
+                src="/logo.png"
+                alt="SHRISHIV"
+                width={150}
+                height={30}
+                className="h-[60px] w-[150px] object-cover"
+                priority
+              />
+            </Link>
+          </div>
 
           {/* Right: Search + Auth */}
-          <div className="flex items-center space-x-4">
+          <div className="absolute right-0 flex items-center sm:space-x-4 space-x-2">
             {/* Search Input */}
-            <div ref={searchRef} className="relative">
+            <div ref={searchRef} className="relative flex items-center">
               <AnimatePresence>
                 {showSearch ? (
                   <motion.div
@@ -276,7 +278,7 @@ export default function Header() {
             </div>
 
             {/* Mobile Auth Icons */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center sm:space-x-4 space-x-2">
               <button
                 onClick={() => setShowLoginModal(true)}
                 className="hover:text-gray-600 transition-colors cursor-pointer"
@@ -385,11 +387,11 @@ export default function Header() {
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed top-0 left-0 w-full h-full bg-white z-50 md:hidden overflow-y-auto"
           >
-            <div className="p-4">
+            <div className="p-4 relative">
               {/* Close Button */}
               <div className="flex justify-between items-center mb-6">
                 {/* Main Categories */}
-                <div className="flex space-x-6">
+                <div className="flex flex-col items-start space-x-6">
                   {menuLoading ? (
                     <div className="flex items-center space-x-2">
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -415,13 +417,13 @@ export default function Header() {
                     ))
                   )}
                 </div>
-                <button
-                  onClick={() => handleMobileMenu(false)}
-                  className="p-2 hover:bg-gray-100 rounded-full cursor-pointer"
-                >
-                  <X className="w-6 h-6" />
-                </button>
               </div>
+              <button
+                onClick={() => handleMobileMenu(false)}
+                className="p-2 hover:bg-gray-100 rounded-full cursor-pointer absolute top-4 right-4"
+              >
+                <X className="w-6 h-6" />
+              </button>
 
               {/* Navigation Links */}
               <nav className="space-y-6">
