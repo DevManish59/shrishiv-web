@@ -1,3 +1,4 @@
+import { ReviewType } from "@/lib/types";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
@@ -44,7 +45,11 @@ export async function GET() {
     }
 
     const result = await response.json();
-    return NextResponse.json(result);
+    const approvedReview = result?.filter(
+      (item: ReviewType) => item.isApproved === true
+    );
+
+    return NextResponse.json(approvedReview);
   } catch (error) {
     console.error("Review GET error:", error);
     return NextResponse.json(

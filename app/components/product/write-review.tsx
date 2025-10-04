@@ -119,7 +119,6 @@ export default function WriteReview({ onCancel, onSubmit }: WriteReviewProps) {
             maxLength={100}
             placeholder="Give your review a title"
             className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-black/5"
-            required
           />
         </div>
 

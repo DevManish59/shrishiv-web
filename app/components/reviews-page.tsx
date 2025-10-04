@@ -12,6 +12,7 @@ import WriteReview from "./product/write-review";
 import { mockReviews, mockReviewSummary } from "@/lib/mock-data";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
+import { toast } from "sonner";
 
 export default function ReviewsPage() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,97 +117,15 @@ export default function ReviewsPage() {
       if (!res.ok) throw new Error("Upload failed");
 
       const result = await res.json();
-      console.log("✅ Uploaded successfully:", result);
+      if (result) {
+        setShowWriteReview(false);
+        toast.success("Review Submitted Successfully");
+        fetchReviews();
+      }
     } catch (err) {
       console.error("❌ Error:", err);
     }
-    // try {
-    // TODO: Implement actual API call
-    /* 
-      // First upload media files if any
-      let mediaUrls: string[] = [];
-      if (review.media && review.media.length > 0) {
-        const formData = new FormData();
-        review.media.forEach(file => formData.append('media', file));
-        
-        const uploadResponse = await fetch('/api/upload', {
-          method: 'POST',
-          body: formData
-        });
-        
-        if (!uploadResponse.ok) {
-          throw new Error('Failed to upload media');
-        }
-        
-        const uploadData = await uploadResponse.json();
-        mediaUrls = uploadData.urls;
-      }
-
-      // Submit review with media URLs
-      const response = await fetch(`/api/reviews`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...review,
-          media: mediaUrls,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit review');
-      }
-
-      // Refresh reviews after successful submission
-      await fetchReviews();
-      */
-    // Using mock data for now
-    // console.log("Submitting review:", review);
-    // await new Promise((resolve) => setTimeout(resolve, 1000)); // Simulate API delay
-    // // Add the new review to the existing list
-    // const newReview: Review = {
-    //   id: String(Date.now()),
-    //   rating: review.rating,
-    //   title: review.title,
-    //   comment: review.comment,
-    //   author: review.name,
-    //   date: new Date().toISOString().split("T")[0],
-    //   isVerified: true,
-    //   helpfulCount: 0,
-    //   media: review.media
-    //     ? review.media.map((file) => URL.createObjectURL(file))
-    //     : undefined,
-    //   youtubeUrl: review.youtubeUrl,
-    // };
-    // setReviews([newReview, ...reviews]);
-    // // Update rating distribution
-    // const newDist = { ...ratingDistribution };
-    // newDist[review.rating] = (newDist[review.rating] || 0) + 1;
-    // setRatingDistribution(newDist);
-    // // Update total rating
-    // const totalReviews = reviews.length + 1;
-    // const newTotalRating =
-    //   (totalRating * reviews.length + review.rating) / totalReviews;
-    // setTotalRating(newTotalRating);
-    // setShowWriteReview(false);
-    // } catch (error) {
-    //   console.error("Error submitting review:", error);
-    //   // TODO: Implement error handling UI
-    //   // setError('Failed to submit review. Please try again.');
-    // }
   };
-
-  // if (showWriteReview) {
-  //   return (
-  //     <div className="container mx-auto px-4 py-8">
-  //       <WriteReview
-  //         onCancel={() => setShowWriteReview(false)}
-  //         onSubmit={handleSubmitReview}
-  //       />
-  //     </div>
-  //   );
-  // }
 
   const reviewOverviewOrWrite = () => {
     return (
@@ -291,7 +210,7 @@ export default function ReviewsPage() {
 
         {showWriteReview && (
           <>
-            <hr className="w-full !border-b !border-b-gray-50 my-5" />
+            <div className="w-full !border-b !border-b-gray-300 my-5" />
             <WriteReview
               onCancel={() => setShowWriteReview(false)}
               onSubmit={handleSubmitReview}
@@ -402,7 +321,7 @@ export default function ReviewsPage() {
                           {/* <span>{review.helpfulCount} found this helpful</span> */}
                         </div>
 
-                        {review.storeResponse && (
+                        {/* {review.storeResponse && (
                           <div className="mt-4 pl-4 border-l-2 border-gray-200">
                             <p className="text-sm text-gray-600 mb-2">
                               {review.storeResponse.response}
@@ -412,7 +331,7 @@ export default function ReviewsPage() {
                               {review.storeResponse.date}
                             </div>
                           </div>
-                        )}
+                        )} */}
                       </div>
                     </motion.div>
                   ))}

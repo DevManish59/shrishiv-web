@@ -72,8 +72,8 @@ const fallbackBannerData: UnifiedItem = {
   slug: "sale",
 };
 
-// Server-side data fetching function
-async function getHomePageData(): Promise<UnifiedItem[]> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getHomePageData(): Promise<any> {
   try {
     // Check if we're in build mode
     if (
@@ -127,16 +127,25 @@ export default async function Home() {
   );
 
   // Extract banner and grid items from the unified array
-  const bannerData = homeData[0];
-  const gridItems = homeData?.slice(1);
+  const storeData = homeData?.storeData;
+  const categoryItems = homeData?.featuredData;
+  const gridItems = categoryItems.flatMap((category: any) =>
+    category.subCategories.map((sub: any) => ({
+      ...sub,
+      slug: `${category.slug}/${sub.slug}`, // ✅ combined slug
+    }))
+  );
 
   return (
     <div>
       {/* <SingleBanner data={bannerData} /> */}
       <SingleBanner
         data={{
-          ...bannerData,
-          slug: `${bannerData.slug}/${bannerData.subCategories?.[0]?.slug}`,
+          ...storeData,
+          mobileBanner: storeData?.mobileBannerUrl || "/logo.png",
+          desktopBanner: storeData?.desktopBannerUrl || "/logo.png",
+          buttonText: "Shop Now",
+          slug: `${categoryItems?.[0]?.slug}/${categoryItems?.[0]?.subCategories?.[0]?.slug}`,
         }}
       />
       <div className="min-h-screen">

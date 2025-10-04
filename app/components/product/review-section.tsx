@@ -157,15 +157,6 @@ export default function ReviewSection({
     }
   };
 
-  // if (showWriteReview) {
-  //   return (
-  //     <WriteReview
-  //       onCancel={() => setShowWriteReview(false)}
-  //       onSubmit={handleSubmitReview}
-  //     />
-  //   );
-  // }
-
   return (
     <div className="mx-auto px-4 py-8">
       <div className="space-y-8">

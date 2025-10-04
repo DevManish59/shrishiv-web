@@ -118,32 +118,42 @@ const mockHomeData: UnifiedPageData = {
 
 export async function GET() {
   try {
-    // Check if external API is configured
     const externalApiUrl = process.env.EXTERNAL_API_URL;
     if (!externalApiUrl) {
       console.warn("⚠️ EXTERNAL_API_URL not set, using mock data");
       return NextResponse.json(mockHomeData);
     }
 
-    const url = `${externalApiUrl}/product-category/featured`;
-    console.log("🚀 Home API: Calling external API:", url);
+    const endpoints = {
+      featured: `${externalApiUrl}/product-category/featured`,
+      store: `${externalApiUrl}/store-detail`,
+    };
 
-    const response = await fetch(url, {
-      next: { revalidate: 3600 }, // Revalidate every hour
-    });
+    console.log("🚀 Home API: Fetching data from:", endpoints);
 
-    if (!response.ok) {
-      throw new Error(`External API failed: ${response.statusText}`);
+    // Fetch both in parallel
+    const [featuredRes, storeRes] = await Promise.all([
+      fetch(endpoints.featured, { next: { revalidate: 3600 } }),
+      fetch(endpoints.store, { next: { revalidate: 3600 } }),
+    ]);
+
+    // Check for failed responses
+    if (!featuredRes.ok || !storeRes.ok) {
+      throw new Error(
+        `External API failed: featured=${featuredRes.status} store=${storeRes.status}`
+      );
     }
 
-    const data = await response.json();
-    console.log("✅ Home API: External API response received++++++");
+    const [featuredData, storeData] = await Promise.all([
+      featuredRes.json(),
+      storeRes.json(),
+    ]);
 
-    return NextResponse.json(data);
+    console.log("✅ Home API: External API response received");
+
+    return NextResponse.json({ storeData: storeData?.[0], featuredData });
   } catch (error) {
     console.error("❌ Home API: Error fetching external data:", error);
-
-    // Return mock data as fallback
     console.log("🔄 Home API: Using mock data as fallback");
     return NextResponse.json(mockHomeData);
   }

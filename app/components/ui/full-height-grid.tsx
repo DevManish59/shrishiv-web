@@ -44,14 +44,14 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
                 >
                   {item.title || item.name}
                 </motion.h2>
-                {item.subtitle && (
+                {item.shortDescription && (
                   <motion.p
                     initial={{ y: 20, opacity: 0 }}
                     whileInView={{ y: 0, opacity: 1 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
                     className="text-lg text-white/90"
                   >
-                    {item.subtitle}
+                    {item.shortDescription}
                   </motion.p>
                 )}
               </div>

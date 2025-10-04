@@ -2,19 +2,34 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { UnifiedItem } from "@/lib/types";
+import { useMediaQuery } from "react-responsive";
 
 interface SingleBannerProps {
-  data?: UnifiedItem;
+  data?: {
+    id: string;
+    title: string;
+    name: string;
+    slug: string;
+    subtitle: string;
+    storeName: string;
+    description: string;
+    shortDescription: string;
+    mobileBanner?: string;
+    desktopBanner?: string;
+    buttonText?: string;
+  };
 }
 
 export default function SingleBanner({ data }: SingleBannerProps) {
+  const isMobile = useMediaQuery({ maxWidth: 767 });
   // Default data if no data is provided
   const bannerData = data || {
     id: "main-banner",
     title: "Exclusive Sale",
     subtitle: "Up to 70% off on selected items. Don't miss out!",
-    image:
+    mobileBanner:
+      "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
+    desktopBanner:
       "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
     buttonText: "Shop Sale",
     slug: "sale",
@@ -31,7 +46,7 @@ export default function SingleBanner({ data }: SingleBannerProps) {
         className="h-svh bg-cover bg-center relative overflow-hidden"
         style={{
           backgroundImage: `url('${
-            bannerData.image || bannerData.imageUrls?.[0]
+            isMobile ? bannerData.mobileBanner : bannerData.desktopBanner
           }')`,
         }}
       >
@@ -46,16 +61,17 @@ export default function SingleBanner({ data }: SingleBannerProps) {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="text-4xl md:text-6xl font-bold mb-4"
             >
-              {bannerData.title || bannerData.name}
+              {bannerData.title || bannerData?.storeName}
             </motion.h2>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-xl mb-8"
-            >
-              {bannerData.subtitle || bannerData.shortDescription}
-            </motion.p>
+              dangerouslySetInnerHTML={{
+                __html: bannerData?.description ?? "",
+              }}
+            ></motion.p>
             {bannerData.slug && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
