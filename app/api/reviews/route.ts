@@ -45,11 +45,11 @@ export async function GET() {
     }
 
     const result = await response.json();
-    const approvedReview = result?.filter(
-      (item: ReviewType) => item.isApproved === true
-    );
+    // const approvedReview = result?.filter(
+    //   (item: ReviewType) => item.isApproved === true
+    // );
 
-    return NextResponse.json(approvedReview);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Review GET error:", error);
     return NextResponse.json(

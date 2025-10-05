@@ -1,14 +1,15 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 // Force dynamic rendering - disable static generation
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 // Mock product data as fallback
 const mockProductData = {
   id: 1,
   productName: "Sample Chain Necklace",
-  shortDescription: "Beautiful chain necklace design with premium quality material",
+  shortDescription:
+    "Beautiful chain necklace design with premium quality material",
   pointOne: "Premium quality material",
   pointTwo: "Elegant design",
   pointThree: "Perfect for any occasion",
@@ -28,7 +29,9 @@ const mockProductData = {
   discount: 20,
   salesPrice: 4000,
   isFeatured: true,
-  images: ["https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg"],
+  images: [
+    "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
+  ],
   imageFiles: [],
   attributeValues: [
     {
@@ -39,13 +42,15 @@ const mockProductData = {
       attributeColor: "#FFD700",
       price: 4000,
       isDefault: true,
-      images: ["https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg"],
+      images: [
+        "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
+      ],
       existingImages: null,
-      imageFiles: []
-    }
+      imageFiles: [],
+    },
   ],
   createdAt: "2025-01-01T00:00:00.000Z",
-  updatedAt: "2025-01-01T00:00:00.000Z"
+  updatedAt: "2025-01-01T00:00:00.000Z",
 };
 
 export async function GET(
@@ -62,9 +67,9 @@ export async function GET(
 
     const { slug } = params;
     const url = `${externalApiUrl}/product/by-slug/${slug}`;
-    
+
     console.log("🚀 Product API: Calling external API:", url);
-    
+
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -73,11 +78,11 @@ export async function GET(
 
     const data = await response.json();
     console.log("✅ Product API: External API response received", data);
-    
+
     return NextResponse.json(data);
   } catch (error) {
-    console.error('❌ Product API: Error fetching external data:', error);
-    
+    console.error("❌ Product API: Error fetching external data:", error);
+
     // Return mock data as fallback
     console.log("🔄 Product API: Using mock data as fallback");
     return NextResponse.json(mockProductData);

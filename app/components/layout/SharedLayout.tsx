@@ -7,7 +7,7 @@ import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import TopHeader from "@/components/layout/TopHeader";
-import ReviewsSection from "@/components/review-section";
+import ReviewSection from "@/components/review-section";
 import CommitmentSection from "@/components/commitment-section";
 import FAQSection from "@/components/faqs";
 import Newsletter from "@/components/newsletter";
@@ -30,7 +30,7 @@ export default function SharedLayout({
           <TopHeader />
           <Header />
           <main className="flex-1">{children}</main>
-          {includeReviews && <ReviewsSection />}
+          {includeReviews && <ReviewSection />}
           <CommitmentSection />
           <FAQSection />
           <Newsletter />

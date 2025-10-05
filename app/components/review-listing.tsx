@@ -10,7 +10,7 @@ import ViewMoreCard from "./view-more-card";
 interface Review {
   id: number;
   image: string;
-  comment: string;
+  review: string;
   customerName: string;
   purchaseDate: string;
   fullComment?: string;

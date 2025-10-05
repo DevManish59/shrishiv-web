@@ -1,11 +1,11 @@
 import ProductPageWrapper from "./product-page-wrapper";
 import SimilarProducts from "@/components/similar-products";
-import ReviewSection from "@/components/product/review-section";
 import CartModal from "@/components/ui/cart-modal";
 import { mockFeaturedProducts } from "@/lib/mock-data";
 // import { generateProductSchema, generateBreadcrumbSchema } from "lib/seo";
 // import { Schema } from "components/ui/schema";
 import { Metadata } from "next";
+import ReviewsPage from "@/components/reviews-page";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
@@ -360,7 +360,7 @@ export default async function ProductPage({
       />
 
       {/* Reviews Section */}
-      <ReviewSection productId={product.id} productName={product.name} />
+      <ReviewsPage productId={product.id} productName={product.name} />
 
       {/* Cart Modal */}
       <CartModal />

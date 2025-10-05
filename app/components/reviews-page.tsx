@@ -315,9 +315,16 @@ export default function ReviewsPage() {
                           </div>
                         )}
 
-                        <p className="text-gray-600 mb-3">{review.comment}</p>
+                        <p className="text-gray-600 mb-3">
+                          {review.review || "No review message found"}
+                        </p>
                         <div className="flex items-center justify-between text-sm text-gray-500">
-                          <span>Posted on {formatDate(review?.createdAt)}</span>
+                          <span>
+                            Posted on{" "}
+                            {formatDate(
+                              review?.createdAt || (Date.now() as string)
+                            )}
+                          </span>
                           {/* <span>{review.helpfulCount} found this helpful</span> */}
                         </div>
 

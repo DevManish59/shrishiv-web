@@ -6,9 +6,11 @@ import { useState } from "react";
 
 interface Review {
   id: number;
-  image: string;
-  comment: string;
-  customerName: string;
+  imageUrls: string[];
+  review: string;
+  rating: number;
+  name: string;
+  isApproved: boolean;
   purchaseDate: string;
   fullComment?: string;
   countryName: string;
@@ -37,10 +39,10 @@ export default function ReviewCard({
             : "bg-gray-100"
         }`}
       >
-        {!imageError && review.image && review.image.trim() !== "" && (
+        {!imageError && review.imageUrls && review.imageUrls.length > 0 && (
           <Image
-            src={review.image}
-            alt={`Review by ${review.customerName}`}
+            src={review.imageUrls?.[0]}
+            alt={`Review by ${review.name}`}
             fill
             className={`object-cover aspect-square transition-all duration-300 ${
               imageLoaded ? "opacity-100" : "opacity-0"
@@ -51,6 +53,33 @@ export default function ReviewCard({
         )}
       </div>
       <div className="p-6 text-center flex-1 flex flex-col justify-between">
+        <div>
+          <div className="w-full flex items-start justify-start gap-1 mb-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <Star
+                key={i}
+                className={`w-4 h-4 ${
+                  i < review.rating
+                    ? "text-yellow-400 fill-yellow-400"
+                    : "text-gray-300"
+                }`}
+              />
+            ))}
+          </div>
+          <div>
+            <p className="text-gray-700 text-left mb-4">{review.review}</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="font-medium">{review.name}</span>
+          {review.isApproved && (
+            <span className="text-white bg-blue-500 text-xs px-2 py-0.5 rounded">
+              Verified
+            </span>
+          )}
+        </div>
+      </div>
+      {/* <div className="p-6 text-center flex-1 flex flex-col justify-between">
         <div className="w-full flex items-center justify-center gap-1 mb-4">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
@@ -68,7 +97,7 @@ export default function ReviewCard({
             {review.customerName} - {review.countryName}
           </p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }
