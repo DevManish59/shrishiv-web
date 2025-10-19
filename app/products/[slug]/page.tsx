@@ -65,7 +65,7 @@ const mockApiProduct: ApiProduct = {
   pointThree: "Perfect for any occasion",
   pointFour: "Adjustable length",
   pointFive: "Includes gift box",
-  url: "mabji-india.vercel.app/product/sample-chain-necklace",
+  url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-chain-necklace`,
   stock: 10,
   shipDay: 3,
   categoryIds: [1],
@@ -151,7 +151,7 @@ const transformApiProduct = (apiProduct: ApiProduct) => {
   if (apiProduct.slug) {
     slug = `product/${apiProduct.slug}`;
   } else if (apiProduct.url) {
-    // Extract slug from URL like "mabji-india.vercel.app/product/sample-testing-product"
+    // Extract slug from URL like "${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-testing-product"
     const urlParts = apiProduct.url.split("/");
     slug = urlParts[urlParts.length - 1];
   } else {

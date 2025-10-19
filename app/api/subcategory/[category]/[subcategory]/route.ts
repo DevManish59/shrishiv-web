@@ -23,7 +23,7 @@ const mockSubcategoryData = {
       pointThree: "Perfect for any occasion",
       pointFour: "Adjustable length",
       pointFive: "Includes gift box",
-      url: "mabji-india.vercel.app/product/sample-chain-necklace",
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-chain-necklace`,
       stock: 10,
       shipDay: 3,
       categoryIds: [1],

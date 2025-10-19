@@ -5,7 +5,7 @@ export const SEO_CONFIG = {
   siteName: "Shrishiv",
   siteDescription:
     "Lab Grown Diamond Jewelry - Premium quality diamonds, ethical sourcing, and stunning designs for every occasion.",
-  siteUrl: process.env.NEXT_PUBLIC_BASE_URL || "https://mabji-india.vercel.app",
+  siteUrl: process.env.NEXT_PUBLIC_BASE_URL,
   siteImage: "/logo.png",
   twitterHandle: "@shrishiv",
   facebookPage: "https://facebook.com/shrishiv",
@@ -110,7 +110,7 @@ export function generateProductMetadata(product: {
   rating?: number;
   reviewCount?: number;
 }): Metadata {
-  const productUrl = `${SEO_CONFIG.siteUrl}/products/${product.slug}`;
+  const productUrl = `${SEO_CONFIG.siteUrl}/product/${product.slug}`;
   const productImage = product.images[0] || SEO_CONFIG.siteImage;
 
   return {

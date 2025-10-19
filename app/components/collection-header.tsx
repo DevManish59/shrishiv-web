@@ -1,5 +1,3 @@
-import Image from "next/image";
-
 interface Collection {
   slug: string;
   name: string;
@@ -12,6 +10,7 @@ export default function CollectionHeader({
 }: {
   collection: Collection;
 }) {
+  console.log("app/components/collection-header::", collection.name);
   return (
     <div className="relative h-[300px] overflow-hidden">
       {/* <Image

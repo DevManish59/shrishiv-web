@@ -3,6 +3,7 @@ import ProductGrid from "@/components/product-grid";
 import CollectionHeader from "@/components/collection-header";
 import ActiveFilters from "@/components/active-filter";
 import StickyFilterBar from "@/components/sticky-filter-bar";
+import Image from "next/image";
 
 interface PageProps {
   params: {
@@ -11,6 +12,30 @@ interface PageProps {
   };
   searchParams: { [key: string]: string | string[] | undefined };
 }
+
+const initialValueOfCategory = {
+  id: 0,
+  name: "",
+  slug: "",
+  parentCategoryName: "",
+  displayOrder: "",
+  shortDescription: "",
+  longDescription: "",
+  images: "",
+  imageUrls: "",
+  metaTitle: "",
+  metaKeyword: [],
+  metaTag: [],
+  metaDescription: "",
+  url: "",
+  published: false,
+  featured: false,
+  existingImages: undefined,
+  deleted: null,
+  createdAt: "",
+  updatedAt: null,
+  subCategories: [],
+};
 
 // Define the product interface based on your API response
 interface ApiProduct {
@@ -68,29 +93,45 @@ interface TransformedProduct {
 interface Collection {
   slug: string;
   name: string;
-  description: string;
+  shortDescription: string;
   image: string;
   productCount: number;
 }
 
 // Define the category data interface
 interface CategoryData {
-  id?: number;
-  name?: string;
-  slug?: string;
-  description?: string;
-  image?: string;
-  attributeValues?: Array<{
-    id: number;
-    attributeId: number;
-    parentAttributeId: number | null;
-    attributeName: string | null;
-    attributeColor: string;
-    price: number;
-    isDefault: boolean;
-    images: string[] | null;
-    imageFiles: string[];
-  }>;
+  id: number;
+  name: string;
+  slug: string;
+  parentCategoryName: string;
+  displayOrder: string;
+  shortDescription: string;
+  longDescription: string;
+  images: string;
+  imageUrls: string;
+  metaTitle: string;
+  metaKeyword: string[];
+  metaTag: string[];
+  metaDescription: string;
+  url: string;
+  published: boolean;
+  featured: boolean;
+  existingImages?: any;
+  deleted: string | null;
+  createdAt: string;
+  updatedAt: string | null;
+  subCategories: [];
+  // attributeValues?: Array<{
+  //   id: number;
+  //   attributeId: number;
+  //   parentAttributeId: number | null;
+  //   attributeName: string | null;
+  //   attributeColor: string;
+  //   price: number;
+  //   isDefault: boolean;
+  //   images: string[] | null;
+  //   imageFiles: string[];
+  // }>;
 }
 
 const getFilterOptions = () => {
@@ -144,7 +185,7 @@ const generateDummyData = (
       pointThree: "Perfect fit",
       pointFour: "Durable construction",
       pointFive: "Trendy style",
-      url: `mabji-india.vercel.app/product/${subcategory}-sample-1`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/${subcategory}-sample-1`,
       stock: 50,
       shipDay: 3,
       categoryIds: [1],
@@ -186,7 +227,7 @@ const generateDummyData = (
       pointThree: "Comfortable wear",
       pointFour: "Long lasting",
       pointFive: "Versatile style",
-      url: `mabji-india.vercel.app/product/${subcategory}-sample-2`,
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/${subcategory}-sample-2`,
       stock: 30,
       shipDay: 2,
       categoryIds: [1],
@@ -228,7 +269,7 @@ const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
     // Extract slug from URL or generate from ID
     let slug: string;
     if (product.url) {
-      // Extract slug from URL like "mabji-india.vercel.app/product/sample-testing-product"
+      // Extract slug from URL like "${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-testing-product"
       const urlParts = product.url.split("/");
       slug = urlParts[urlParts.length - 1];
     } else {
@@ -265,8 +306,9 @@ export async function generateMetadata({
 
   try {
     // Fetch data from our API route (following home page pattern)
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const apiUrl = `${baseUrl}/api/subcategory/${category}/${subcategory}`;
+    const baseUrl = process.env.EXTERNAL_API_URL;
+    // const apiUrl = `${baseUrl}/api/subcategory/${category}/${subcategory}`;
+    const apiUrl = `${baseUrl}/web/category/by-slug?slug=${subcategory}`;
 
     const response = await fetch(apiUrl, {
       cache: "no-store", // Disable caching for dynamic data
@@ -279,16 +321,17 @@ export async function generateMetadata({
       };
     }
 
-    const data = await response.json();
-    const categoryData = data.category || {};
+    const categoryData = await response.json();
 
-    const title = categoryData.name || subcategory;
+    const title = categoryData.metaTitle || categoryData.name || subcategory;
     const description =
-      categoryData.description || `Browse our collection of ${subcategory}`;
-    const image = categoryData.image || "";
+      categoryData.metaDescription ||
+      categoryData.shortDescription ||
+      `Browse our collection of ${categoryData.name}`;
+    const image = categoryData.imageUrls?.[0] || "";
 
     return {
-      title: `${title} | Our Store`,
+      title: `${title} | Shrishiv`,
       description: description,
       openGraph: {
         title: title,
@@ -309,79 +352,86 @@ export default async function SubcategoryPage({
   params,
   searchParams,
 }: PageProps) {
-  const { category, subcategory } = await params;
+  const resolvedSearchParams = await searchParams;
+  const { category, subcategory } = params ?? {};
+  const externalApiUrl =
+    process.env.EXTERNAL_API_URL ?? "http://localhost:3000";
 
-  // Check if external API is configured
-  const externalApiUrl = process.env.EXTERNAL_API_URL;
-  console.log("🏠 Subcategory Page: EXTERNAL_API_URL =", externalApiUrl);
-
-  if (!externalApiUrl) {
+  if (!externalApiUrl)
     console.warn(
       "⚠️ Subcategory Page: EXTERNAL_API_URL not set, using fallback data"
     );
-  }
 
-  let productsData: ApiProduct[];
-  let categoryData: CategoryData = {};
+  const categoryApiUrl = `${externalApiUrl}/web/category/by-slug?slug=${subcategory}`;
+  const productApiUrl = `${externalApiUrl}/product/by-category?slug=${subcategory}`;
+
+  let categoryData: CategoryData = {
+    id: 0,
+    name: "",
+    slug: "",
+    parentCategoryName: "",
+    displayOrder: "",
+    shortDescription: "",
+    longDescription: "",
+    images: "",
+    imageUrls: "",
+    metaTitle: "",
+    metaKeyword: [],
+    metaTag: [],
+    metaDescription: "",
+    url: "",
+    published: false,
+    featured: false,
+    existingImages: undefined,
+    deleted: null,
+    createdAt: "",
+    updatedAt: null,
+    subCategories: [],
+  };
+  let allProductsData: any[] = [];
 
   try {
-    // Fetch data from our API route (following home page pattern)
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const apiUrl = `${baseUrl}/api/subcategory/${category}/${subcategory}`;
+    // Fetch category & products concurrently
+    const [categoryResponse, productResponse] = await Promise.all([
+      fetch(categoryApiUrl, { cache: "no-store" }),
+      fetch(productApiUrl, { cache: "no-store" }),
+    ]);
 
-    console.log("🚀 Subcategory Page: Calling API route:", apiUrl);
-
-    const response = await fetch(apiUrl, {
-      cache: "no-store", // Disable caching for dynamic data
-    });
-
-    if (!response.ok) {
+    // Validate responses
+    if (!categoryResponse.ok || !productResponse.ok) {
       throw new Error(
-        `Failed to fetch subcategory data: ${response.statusText}`
+        `Failed to fetch data: category=${categoryResponse.status}, product=${productResponse.status}`
       );
     }
 
-    const data = await response.json();
-    console.log("🔍 Subcategory Page: API response data:", data);
-    // Extract products and category data from the response
-    productsData = data || [];
-    categoryData = data?.[0] || {};
+    [categoryData, allProductsData] = await Promise.all([
+      categoryResponse.json(),
+      productResponse.json(),
+    ]);
 
-    // If no products from API, use fallback data
-    if (!productsData || productsData.length === 0) {
-      console.log(
-        "🔄 Subcategory Page: No products from API, using fallback data"
-      );
-      productsData = generateDummyData(category, subcategory);
-    }
+    console.log("✅ Subcategory data:", categoryData);
+    console.log("✅ Products data:", allProductsData);
   } catch (error) {
     console.error(
-      "❌ Subcategory Page: Failed to fetch data, using fallback:",
+      "❌ Subcategory Page: Fetch failed, using fallback data:",
       error
     );
-
-    // Use fallback data if API fails
-    productsData = generateDummyData(category, subcategory);
-    categoryData = {};
+    allProductsData = generateDummyData(category, subcategory);
   }
-  // console.log("++++++++++++productsData++++++++++++", productsData);
-  // console.log(
-  //   "+++++++++++++++++++categoryData+++++++++++++++++++",
-  //   categoryData
-  // );
 
   // Create collection object for CollectionHeader
   const collection: Collection = {
     slug: `${category}/${subcategory}`,
     name: categoryData.name || subcategory,
-    description:
-      categoryData.description || `Browse our collection of ${subcategory}`,
-    image: categoryData.attributeValues?.[0]?.imageFiles?.[0] || "",
-    productCount: productsData.length,
+    shortDescription:
+      categoryData.shortDescription ||
+      `Browse our collection of ${categoryData.name}`,
+    image: categoryData.imageUrls?.[0] || "",
+    productCount: allProductsData.length,
   };
 
   // Transform products for ProductGrid component
-  const products = transformProducts(productsData);
+  const products = transformProducts(allProductsData);
 
   // Ensure we always have products
   if (!products || products.length === 0) {
@@ -390,17 +440,36 @@ export default async function SubcategoryPage({
     );
     return (
       <div className="mx-auto">
-        <CollectionHeader collection={collection} />
+        {/* <CollectionHeader collection={collection} /> */}
+        <div className="relative h-[300px] overflow-hidden">
+          {/* Background image (optional) */}
+          <Image
+            src={collection.image}
+            alt={collection.name}
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center text-white max-w-4xl px-4">
+              <h1 className="text-3xl font-bold mb-4">{collection.name}</h1>
+              <p className="text-lg leading-relaxed">
+                {collection.shortDescription}
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="relative min-h-[80vh]">
           <StickyFilterBar
             filterOptions={getFilterOptions()}
             activeFilters={{ price: [], category: [], size: [], color: [] }}
-            searchParams={searchParams}
+            searchParams={resolvedSearchParams}
           />
           <ActiveFilters
             activeFilters={{ price: [], category: [], size: [], color: [] }}
             filterOptions={getFilterOptions()}
-            searchParams={searchParams}
+            searchParams={resolvedSearchParams}
           />
           <ProductGrid products={dummyProducts} basePath="/products" />
         </div>
@@ -412,43 +481,62 @@ export default async function SubcategoryPage({
 
   // Extract filter params from URL
   const activeFilters = {
-    price: searchParams.price
+    price: resolvedSearchParams.price
       ? Array.isArray(searchParams.price)
-        ? searchParams.price
-        : searchParams.price.split(",")
+        ? resolvedSearchParams.price
+        : resolvedSearchParams.price?.split(",")
       : [],
-    category: searchParams.category
-      ? Array.isArray(searchParams.category)
-        ? searchParams.category
-        : searchParams.category.split(",")
+    category: resolvedSearchParams.category
+      ? Array.isArray(resolvedSearchParams.category)
+        ? resolvedSearchParams.category
+        : resolvedSearchParams.category.split(",")
       : [],
-    size: searchParams.size
-      ? Array.isArray(searchParams.size)
-        ? searchParams.size
-        : searchParams.size.split(",")
+    size: resolvedSearchParams.size
+      ? Array.isArray(resolvedSearchParams.size)
+        ? resolvedSearchParams.size
+        : resolvedSearchParams.size.split(",")
       : [],
-    color: searchParams.color
-      ? Array.isArray(searchParams.color)
-        ? searchParams.color
-        : searchParams.color.split(",")
+    color: resolvedSearchParams.color
+      ? Array.isArray(resolvedSearchParams.color)
+        ? resolvedSearchParams.color
+        : resolvedSearchParams.color.split(",")
       : [],
   };
 
   return (
     <div className="mx-auto">
-      <CollectionHeader collection={collection} />
+      {/* <CollectionHeader collection={collection} /> */}
+      <div className="relative h-[300px] overflow-hidden">
+        {/* Background image (optional) */}
+        <Image
+          src={collection.image}
+          alt={"banner-image"}
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white max-w-4xl px-4">
+            <h1 className="text-3xl font-bold mb-4">{collection.name}</h1>
+            <p className="text-lg leading-relaxed">
+              {collection.shortDescription}
+            </p>
+          </div>
+        </div>
+      </div>
 
       {/* Container for sticky behavior */}
       <div className="relative min-h-[80vh]">
         <StickyFilterBar
           filterOptions={filterOptions}
           activeFilters={activeFilters}
-          searchParams={searchParams}
+          searchParams={resolvedSearchParams}
         />
         <ActiveFilters
           activeFilters={activeFilters}
           filterOptions={filterOptions}
-          searchParams={searchParams}
+          searchParams={resolvedSearchParams}
         />
         <ProductGrid products={products} basePath="/products" />
       </div>

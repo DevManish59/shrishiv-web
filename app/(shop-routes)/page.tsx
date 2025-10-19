@@ -110,11 +110,7 @@ async function getHomePageData(): Promise<any> {
 }
 
 export default async function Home() {
-  // Check if external API is configured
-  const externalApiUrl = process.env.EXTERNAL_API_URL;
-  console.log("🏠 Home Page: EXTERNAL_API_URL =", externalApiUrl);
-
-  if (!externalApiUrl) {
+  if (!process.env.EXTERNAL_API_URL) {
     console.warn("⚠️ Home Page: EXTERNAL_API_URL not set, using fallback data");
   }
 

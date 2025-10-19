@@ -12,6 +12,7 @@ export default function CollectionHeader({
 }: {
   collection: Collection;
 }) {
+  console.log("collection.name[slug]::", collection.name);
   return (
     <div className="relative h-[300px] overflow-hidden">
       <Image

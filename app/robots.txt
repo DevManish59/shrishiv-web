@@ -33,4 +33,4 @@ Disallow: /login/
 Disallow: /register/
 
 # Allow sitemap
-Sitemap: https://mabji-india.vercel.app/sitemap.xml
+Sitemap: https://shrishiv.com/sitemap.xml
