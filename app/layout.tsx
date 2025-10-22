@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import "./styles/page-style.scss";
-import { CartProvider } from "@/contexts/CartContext";
+// import { CartProvider } from "@/contexts/CartContext";
+import { LocalStorageCartProvider } from "@/contexts/LocalStorageCartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ModelViewerProvider from "@/components/ui/model-viewer-provider";
 import { generateDefaultMetadata } from "./lib/seo-config";
@@ -25,9 +26,11 @@ export default function RootLayout({
       <head>{/* <Schema schema={organizationSchema} /> */}</head>
       <body className={inter.className}>
         <AuthProvider>
-          <CartProvider>
+          {/* <CartProvider> */}
+          <LocalStorageCartProvider>
             <ModelViewerProvider preload={true}>{children}</ModelViewerProvider>
-          </CartProvider>
+          </LocalStorageCartProvider>
+          {/* </CartProvider> */}
         </AuthProvider>
       </body>
     </html>

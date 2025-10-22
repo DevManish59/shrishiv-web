@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { useCart } from "@/contexts/CartContext";
+// import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/LocalStorageCartContext";
 import { useRouter } from "next/navigation";
 import SizeGuideModal from "@/components/ui/size-guide-modal";
 import { calculateProductPrice, getCombinedAttributeImages } from "@/lib/utils";

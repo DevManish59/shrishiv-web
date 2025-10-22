@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { useCart } from "@/contexts/CartContext";
+// import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/LocalStorageCartContext";
 
 // PayPal types
 declare global {

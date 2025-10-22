@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
-import { useCart } from "@/contexts/CartContext";
+// import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/LocalStorageCartContext";
 import { useRouter } from "next/navigation";
 import { calculateProductPrice } from "@/lib/utils";
 

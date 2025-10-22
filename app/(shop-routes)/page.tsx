@@ -108,7 +108,6 @@ async function getHomePageData(): Promise<any> {
       featuredRes.json(),
       storeRes.json(),
     ]);
-    console.log("featuredData++", featuredData);
 
     return { storeData: storeData?.[0], featuredData };
   } catch (error) {
