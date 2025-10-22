@@ -48,6 +48,7 @@ interface ApiProduct {
   pointFour: string;
   pointFive: string;
   url: string;
+  slug?: string;
   stock: number | null;
   shipDay: number;
   categoryIds: number[];
@@ -186,6 +187,7 @@ const generateDummyData = (
       pointFour: "Durable construction",
       pointFive: "Trendy style",
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/${subcategory}-sample-1`,
+      slug: `${subcategory}-sample-1`,
       stock: 50,
       shipDay: 3,
       categoryIds: [1],
@@ -228,6 +230,7 @@ const generateDummyData = (
       pointFour: "Long lasting",
       pointFive: "Versatile style",
       url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/${subcategory}-sample-2`,
+      slug: `${subcategory}-sample-2`,
       stock: 30,
       shipDay: 2,
       categoryIds: [1],
@@ -267,14 +270,15 @@ const generateDummyData = (
 const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
   return products.map((product) => {
     // Extract slug from URL or generate from ID
-    let slug: string;
-    if (product.url) {
-      // Extract slug from URL like "${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-testing-product"
-      const urlParts = product.url.split("/");
-      slug = urlParts[urlParts.length - 1];
-    } else {
-      slug = `product-${product.id}`;
-    }
+    const slug = product.slug ? product.slug : `product-${product.id}`;
+    //  let slug: string;
+    //   if (product.url) {
+    //     // Extract slug from URL like "${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-testing-product"
+    //     const urlParts = product.url.split("/");
+    //     slug = urlParts[urlParts.length - 1];
+    //   } else {
+    //     slug = `product-${product.id}`;
+    //   }
 
     // Get price from attributeValues if available, otherwise use salesPrice/mrpPrice
     let price = product.salesPrice || product.mrpPrice || 0;
@@ -353,7 +357,7 @@ export default async function SubcategoryPage({
   searchParams,
 }: PageProps) {
   const resolvedSearchParams = await searchParams;
-  const { category, subcategory } = params ?? {};
+  const { category, subcategory } = await params;
   const externalApiUrl =
     process.env.EXTERNAL_API_URL ?? "http://localhost:3000";
 
@@ -389,7 +393,6 @@ export default async function SubcategoryPage({
     subCategories: [],
   };
   let allProductsData: any[] = [];
-
   try {
     // Fetch category & products concurrently
     const [categoryResponse, productResponse] = await Promise.all([
@@ -408,9 +411,6 @@ export default async function SubcategoryPage({
       categoryResponse.json(),
       productResponse.json(),
     ]);
-
-    console.log("✅ Subcategory data:", categoryData);
-    console.log("✅ Products data:", allProductsData);
   } catch (error) {
     console.error(
       "❌ Subcategory Page: Fetch failed, using fallback data:",

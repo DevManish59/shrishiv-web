@@ -86,21 +86,31 @@ async function getHomePageData(): Promise<any> {
       return [fallbackBannerData, ...fallbackGridItems];
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const apiUrl = `${baseUrl}/api/home`;
+    const endpoints = {
+      featured: `${process.env.EXTERNAL_API_URL}/product-category`,
+      store: `${process.env.EXTERNAL_API_URL}/store-detail`,
+    };
 
-    // Use Next.js built-in fetch with revalidation for better caching
-    const response = await fetch(apiUrl, {
-      cache: "no-store", // Disable caching for dynamic data
-    });
+    // Fetch both in parallel
+    const [featuredRes, storeRes] = await Promise.all([
+      fetch(endpoints.featured, { next: { revalidate: 3600 } }),
+      fetch(endpoints.store, { next: { revalidate: 3600 } }),
+    ]);
 
-    if (!response.ok) {
-      throw new Error(`Failed to fetch home page data: ${response.statusText}`);
+    // Check for failed responses
+    if (!featuredRes.ok || !storeRes.ok) {
+      throw new Error(
+        `External API failed: featured=${featuredRes.status} store=${storeRes.status}`
+      );
     }
 
-    const data = await response.json();
-    console.log("✅ Home Page: API response received");
-    return data;
+    const [featuredData, storeData] = await Promise.all([
+      featuredRes.json(),
+      storeRes.json(),
+    ]);
+    console.log("featuredData++", featuredData);
+
+    return { storeData: storeData?.[0], featuredData };
   } catch (error) {
     console.warn("❌ Home Page: Failed to fetch data, using fallback:", error);
 
@@ -113,18 +123,12 @@ export default async function Home() {
   if (!process.env.EXTERNAL_API_URL) {
     console.warn("⚠️ Home Page: EXTERNAL_API_URL not set, using fallback data");
   }
-
-  // Fetch data on server side
-  console.log("🚀 Home Page: Starting to fetch data...");
   const homeData = await getHomePageData();
-  console.log(
-    "✅ Home Page: Data fetched successfully, items count:",
-    homeData.length
-  );
 
   // Extract banner and grid items from the unified array
   const storeData = homeData?.storeData;
   const categoryItems = homeData?.featuredData;
+
   const gridItems = categoryItems.flatMap((category: any) =>
     category.subCategories.map((sub: any) => ({
       ...sub,

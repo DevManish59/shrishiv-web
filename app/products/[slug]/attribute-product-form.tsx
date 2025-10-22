@@ -143,7 +143,7 @@ export default function AttributeProductForm({
     });
 
     // Navigate to checkout page
-    router.push("/checkout");
+    // router.push("/checkout");
   };
 
   return (

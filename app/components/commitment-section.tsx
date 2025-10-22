@@ -39,7 +39,7 @@ export default function CommitmentSection() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6">
             {features.map((feature, index) => (
               <motion.div
                 key={index}

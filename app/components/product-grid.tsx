@@ -29,16 +29,18 @@ export default function ProductGrid({
 
   return (
     <div
-      className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-1`}
+      className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-y-6 gap-1 py-10 px-5`}
     >
-      {displayProducts.map((product, index) => (
-        <ProductCard
-          key={`${product.id}-${index}`}
-          product={product}
-          basePath={basePath}
-          index={index}
-        />
-      ))}
+      {displayProducts.map((product, index) => {
+        return (
+          <ProductCard
+            key={`${product.id}-${index}`}
+            product={product}
+            basePath={basePath}
+            index={index}
+          />
+        );
+      })}
     </div>
   );
 }

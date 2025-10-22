@@ -23,14 +23,14 @@ export async function generateMetadata({ params }: PageProps) {
   try {
     const parameter = await params;
     const currentPageData = await getDynamicPages(parameter.slug);
-    const { name, description, title } = currentPageData;
+    const { name, description, title, pageUrl } = currentPageData;
     return {
       title: title || name,
       description: description,
       openGraph: {
         title: title || name,
         description: description,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/p/parameter.slug`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/p/${pageUrl}`,
         locale: "en-US",
         type: "website",
       },
