@@ -3,7 +3,8 @@
 import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { CartProvider } from "@/contexts/CartContext";
+// import { CartProvider } from "@/contexts/CartContext";
+// import { LocalStorageCartProvider } from "@/contexts/LocalStorageCartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import TopHeader from "@/components/layout/TopHeader";
@@ -24,20 +25,26 @@ export default function SharedLayout({
   includeReviews = false,
 }: SharedLayoutProps) {
   return (
-    <AuthProvider>
-      <CartProvider>
-        <div className={inter.className}>
-          <TopHeader />
-          <Header />
-          <main className="flex-1">{children}</main>
-          {includeReviews && <ReviewSection />}
-          <CommitmentSection />
-          <FAQSection />
-          <Newsletter />
-          <Footer />
-          <Toaster />
-        </div>
-      </CartProvider>
-    </AuthProvider>
+    <div className={inter.className}>
+      <TopHeader />
+      <Header />
+      <main className="flex-1">{children}</main>
+      {includeReviews && <ReviewSection />}
+      <CommitmentSection />
+      <FAQSection />
+      <Newsletter />
+      <Footer />
+      <Toaster />
+    </div>
   );
+}
+
+{
+  /* <AuthProvider>
+      <CartProvider> 
+       <LocalStorageCartProvider> 
+       </LocalStorageCartProvider>
+      </CartProvider> 
+    </AuthProvider> 
+*/
 }

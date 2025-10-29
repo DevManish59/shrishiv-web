@@ -2,7 +2,8 @@
 
 import { X, RotateCcw, BadgeCheck, Wallet, ShoppingCart } from "lucide-react";
 import Image from "next/image";
-import { useCart } from "@/contexts/CartContext";
+// import { useCart } from "@/contexts/CartContext";
+import { useCart } from "@/contexts/LocalStorageCartContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 
