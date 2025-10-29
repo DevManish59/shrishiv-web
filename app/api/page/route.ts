@@ -7,7 +7,7 @@ export async function GET(req: Request) {
     const slug = searchParams.get("slug");
     // Fetch from external API
     const externalApiUrl =
-      process.env.EXTERNAL_API_URL || "http://44.198.188.164:8080";
+      process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
     const pageUrl = `${externalApiUrl}/pages`;
     const webPageUrl = `${externalApiUrl}/web/pages`;

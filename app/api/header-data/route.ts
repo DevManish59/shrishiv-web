@@ -71,7 +71,7 @@ export async function GET() {
 
     // Fetch from external API
     const externalApiUrl =
-      process.env.EXTERNAL_API_URL || "http://44.198.188.164:8080";
+      process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
     const url = `${externalApiUrl}/product-category/headers`;
 

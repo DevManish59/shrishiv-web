@@ -6,7 +6,7 @@ export async function POST(req: Request) {
     const formData = await req.formData();
 
     const externalApiUrl =
-      process.env.EXTERNAL_API_URL || "http://44.198.188.164:8080";
+      process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
     const url = `${externalApiUrl}/product-review`;
 
@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 export async function GET() {
   try {
     const externalApiUrl =
-      process.env.EXTERNAL_API_URL || "http://44.198.188.164:8080";
+      process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
     const url = `${externalApiUrl}/product-review`;
 
