@@ -7,6 +7,7 @@ import { LocalStorageCartProvider } from "@/contexts/LocalStorageCartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import ModelViewerProvider from "@/components/ui/model-viewer-provider";
 import { generateDefaultMetadata } from "./lib/seo-config";
+import LoadScripts from "./ScriptLoader";
 // import { Schema } from "components/ui/schema";
 // import { generateOrganizationSchema } from "lib/seo";
 
@@ -32,6 +33,7 @@ export default function RootLayout({
           </LocalStorageCartProvider>
           {/* </CartProvider> */}
         </AuthProvider>
+        <LoadScripts />
       </body>
     </html>
   );

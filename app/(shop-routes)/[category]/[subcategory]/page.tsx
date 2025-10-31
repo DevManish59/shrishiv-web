@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import ProductGrid from "@/components/product-grid";
-import CollectionHeader from "@/components/collection-header";
+// import CollectionHeader from "@/components/collection-header";
 import ActiveFilters from "@/components/active-filter";
 import StickyFilterBar from "@/components/sticky-filter-bar";
 import Image from "next/image";

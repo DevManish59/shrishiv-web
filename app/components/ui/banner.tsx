@@ -27,12 +27,14 @@ export default function SingleBanner({ data }: SingleBannerProps) {
     id: "main-banner",
     title: "Exclusive Sale",
     subtitle: "Up to 70% off on selected items. Don't miss out!",
+    storeName: "Shrishiv Jewelry",
+    description: "Diamond Jewelry for Both Fall & Spooky Sparkle",
     mobileBanner:
       "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
     desktopBanner:
       "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
     buttonText: "Shop Sale",
-    slug: "sale",
+    slug: "",
   };
 
   return (
@@ -71,7 +73,7 @@ export default function SingleBanner({ data }: SingleBannerProps) {
               dangerouslySetInnerHTML={{
                 __html: bannerData?.description ?? "",
               }}
-            ></motion.p>
+            />
             {bannerData.slug && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}

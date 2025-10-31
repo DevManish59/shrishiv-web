@@ -108,7 +108,6 @@ async function getHomePageData(): Promise<any> {
       featuredRes.json(),
       storeRes.json(),
     ]);
-
     return { storeData: storeData?.[0], featuredData };
   } catch (error) {
     console.warn("❌ Home Page: Failed to fetch data, using fallback:", error);
@@ -141,10 +140,17 @@ export default async function Home() {
       <SingleBanner
         data={{
           ...storeData,
-          mobileBanner: storeData?.mobileBannerUrl || "/logo.png",
+          mobileBanner:
+            storeData?.mobileBannerUrl ||
+            storeData?.desktopBannerUrl ||
+            "/logo.png",
           desktopBanner: storeData?.desktopBannerUrl || "/logo.png",
           buttonText: "Shop Now",
-          slug: `${categoryItems?.[0]?.slug}/${categoryItems?.[0]?.subCategories?.[0]?.slug}`,
+          slug:
+            categoryItems?.[0]?.slug &&
+            categoryItems?.[0]?.subCategories?.[0]?.slug
+              ? `${categoryItems?.[0]?.slug}/${categoryItems?.[0]?.subCategories?.[0]?.slug}`
+              : "",
         }}
       />
       <div className="min-h-screen">
