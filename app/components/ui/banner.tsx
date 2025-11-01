@@ -1,7 +1,10 @@
 "use client";
 
+import { useSharedCookie } from "@/hooks/useSharedCookie";
+import { fallbackBannerData } from "@/lib/constant";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 
 interface SingleBannerProps {
@@ -14,6 +17,7 @@ interface SingleBannerProps {
     storeName: string;
     description: string;
     shortDescription: string;
+    notificationDetail: string;
     mobileBanner?: string;
     desktopBanner?: string;
     buttonText?: string;
@@ -22,20 +26,17 @@ interface SingleBannerProps {
 
 export default function SingleBanner({ data }: SingleBannerProps) {
   const isMobile = useMediaQuery({ maxWidth: 767 });
+  const { cookieData, updateCookie } = useSharedCookie();
+
+  useEffect(() => {
+    const message = data?.notificationDetail;
+    if (message && message !== cookieData?.message) {
+      updateCookie({ message });
+    }
+  }, [data?.notificationDetail]);
+
   // Default data if no data is provided
-  const bannerData = data || {
-    id: "main-banner",
-    title: "Exclusive Sale",
-    subtitle: "Up to 70% off on selected items. Don't miss out!",
-    storeName: "Shrishiv Jewelry",
-    description: "Diamond Jewelry for Both Fall & Spooky Sparkle",
-    mobileBanner:
-      "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
-    desktopBanner:
-      "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1600&h=800&fit=crop",
-    buttonText: "Shop Sale",
-    slug: "",
-  };
+  const bannerData = data || fallbackBannerData;
 
   return (
     <motion.div
@@ -45,7 +46,7 @@ export default function SingleBanner({ data }: SingleBannerProps) {
       viewport={{ once: true }}
     >
       <div
-        className="h-svh bg-cover bg-center relative overflow-hidden"
+        className="h-svh md:bg-cover md:bg-center md:bg-no-repeat bg-repeat-round relative overflow-hidden"
         style={{
           backgroundImage: `url('${
             isMobile ? bannerData.mobileBanner : bannerData.desktopBanner

@@ -1,76 +1,14 @@
 import SingleBanner from "@/components/ui/banner";
 import FullHeightGrid from "@/components/ui/full-height-grid";
-import { UnifiedItem } from "@/lib/types";
+import {
+  fallbackBannerData,
+  fallbackGridItems,
+  homepgeMetadata,
+} from "@/lib/constant";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
-
-// Fallback data for when API fails
-const fallbackGridItems: UnifiedItem[] = [
-  {
-    id: "shirts",
-    title: "SHIRTS",
-    subtitle: "New Collection",
-    image: "https://images.pexels.com/photos/297933/pexels-photo-297933.jpeg",
-    href: "/men/shirts",
-    size: "half",
-  },
-  {
-    id: "trousers",
-    title: "TROUSERS",
-    subtitle: "Spring/Summer 2024",
-    image: "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg",
-    href: "/men/trousers",
-    size: "half",
-  },
-  {
-    id: "dresses",
-    title: "DRESSES",
-    subtitle: "Elegant Collection",
-    image:
-      "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
-    href: "/women/dresses",
-    size: "half",
-  },
-  {
-    id: "kids",
-    title: "KIDS",
-    subtitle: "New Collection",
-    image:
-      "https://images.pexels.com/photos/8532616/pexels-photo-8532616.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
-    href: "/kids/shirts",
-    size: "half",
-  },
-  {
-    id: "trousers-kids",
-    title: "TROUSERS",
-    subtitle: "Spring/Summer 2024",
-    image:
-      "https://images.pexels.com/photos/1598507/pexels-photo-1598507.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
-    href: "/kids/trousers",
-    size: "half",
-  },
-  {
-    id: "dresses-kids",
-    title: "DRESSES",
-    subtitle: "Elegant Collection",
-    image:
-      "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
-    href: "/kids/dresses",
-    size: "half",
-  },
-];
-
-const fallbackBannerData: UnifiedItem = {
-  id: "main-banner",
-  title: "Exclusive Sale",
-  subtitle: "Up to 70% off on selected items. Don't miss out!",
-  image:
-    "https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=800&h=1000&fit=crop",
-  buttonText: "Shop Sale",
-  slug: "sale",
-};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getHomePageData(): Promise<any> {
@@ -136,7 +74,6 @@ export default async function Home() {
 
   return (
     <div>
-      {/* <SingleBanner data={bannerData} /> */}
       <SingleBanner
         data={{
           ...storeData,
@@ -160,28 +97,59 @@ export default async function Home() {
   );
 }
 
-// Add metadata for SEO
-export const metadata = {
-  title: "Home | Shrishiv Jewelry",
-  description:
-    "Discover our premium collection of lab-grown diamond jewelry with exceptional craftsmanship and ethical sourcing. Exclusive sales and new collections available.",
-  keywords: [
-    "jewelry",
-    "diamond jewelry",
-    "lab grown diamonds",
-    "engagement rings",
-    "wedding jewelry",
-    "fine jewelry",
-    "ethical jewelry",
-  ],
-  openGraph: {
-    title: "Home | Shrishiv Jewelry",
-    description: "Discover our premium collection of lab-grown diamond jewelry",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Home | Shrishiv Jewelry",
-    description: "Discover our premium collection of lab-grown diamond jewelry",
-  },
-};
+export async function generateMetadata() {
+  try {
+    if (!process.env.EXTERNAL_API_URL) {
+      console.warn(
+        "⚠️ Home Page: EXTERNAL_API_URL not set, using fallback data"
+      );
+    }
+    const homeData = await getHomePageData();
+    const storeData = homeData?.storeData;
+    const {
+      storeName,
+      description = "Discover our premium collection of lab-grown diamond jewelry with exceptional craftsmanship and ethical sourcing. Exclusive sales and new collections available.",
+      metaTitle,
+      metaDescription,
+      desktopBannerUrl,
+    } = storeData;
+    return {
+      title: metaTitle || storeName,
+      description: metaDescription || description,
+      keywords: [
+        "jewelry",
+        "diamond jewelry",
+        "lab grown diamonds",
+        "engagement rings",
+        "wedding jewelry",
+        "fine jewelry",
+        "ethical jewelry",
+      ],
+      openGraph: {
+        title: metaTitle || storeName,
+        description: metaDescription || description,
+        url: process.env.NEXT_PUBLIC_BASE_URL,
+        siteName: "Shrishiv Diamonds",
+        images: [
+          {
+            url: desktopBannerUrl || "/logo.png",
+          },
+        ],
+        locale: "en-US",
+        type: "website",
+      },
+
+      twitter: {
+        title: metaTitle || storeName,
+        description: metaDescription || description,
+        card: "summary_large_image",
+      },
+      alternates: {
+        canonical: process.env.NEXT_PUBLIC_BASE_URL,
+      },
+    };
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+    return homepgeMetadata;
+  }
+}

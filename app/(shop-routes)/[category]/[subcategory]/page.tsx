@@ -429,7 +429,6 @@ export default async function SubcategoryPage({
     image: categoryData.imageUrls?.[0] || "",
     productCount: allProductsData.length,
   };
-  console.log("allProductsData++", allProductsData);
 
   // Transform products for ProductGrid component
   const products = transformProducts(allProductsData);
