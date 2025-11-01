@@ -1,22 +1,31 @@
 import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
+import { notFound } from "next/navigation";
 import DynamicPageContent from "@/components/DynamicPageContent";
 
 interface PageProps {
   params: { slug: string };
 }
 
-async function getDynamicPages(slug: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-  const res = await fetch(`${baseUrl}/api/page?slug=${slug}`, {
-    cache: "no-store", // ensures fresh data on every request
-  });
-  if (!res.ok) {
-    throw new Error("Failed to fetch page data");
+async function fetchWithErrorHandling(url: string, options: any) {
+  try {
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+    return res.json();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    return notFound();
   }
+}
 
-  const pageData = await res.json();
-  return pageData;
+async function getDynamicPages(slug: string) {
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/page?slug=${slug}`;
+  const options = {
+    cache: "no-store", // ensures fresh data on every request
+  };
+  return fetchWithErrorHandling(url, options);
 }
 
 export async function generateMetadata({ params }: PageProps) {

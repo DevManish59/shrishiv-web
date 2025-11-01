@@ -16,7 +16,7 @@ export function useLocation() {
   useEffect(() => {
     const fetchWithIP = async () => {
       try {
-        const ipRes = await fetch("https://api.ipify.org?format=json");
+        const ipRes = await fetch("/api/ip");
         const { ip } = await ipRes.json();
 
         const cached = JSON.parse(

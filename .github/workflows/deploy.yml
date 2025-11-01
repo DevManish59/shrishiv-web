@@ -138,7 +138,7 @@ jobs:
             echo ":tada: Deployment completed successfully!"
           else
             echo ":boom: Deployment failed!"
-          fi# name: Deploy to EC2
+          fi
 
 # on:
 #   push:

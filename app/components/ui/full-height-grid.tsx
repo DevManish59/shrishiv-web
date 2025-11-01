@@ -26,13 +26,17 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
             transition={{ duration: 0.6 }}
             className="relative h-full w-full"
           >
-            <Image
-              src={item.image || item?.imageUrls?.[0] || ""}
-              alt={item.title || "img-title"}
-              fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            />
+            {item?.imageUrls?.[0] ? (
+              <Image
+                src={item?.imageUrls?.[0] || ""}
+                alt={item.name || "img-title"}
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
+            ) : (
+              ""
+            )}
             <div className="absolute inset-0 bg-black/30 transition-opacity duration-300 group-hover:bg-black/40" />
             <div className="absolute inset-0 flex items-center justify-center text-center p-6">
               <div>

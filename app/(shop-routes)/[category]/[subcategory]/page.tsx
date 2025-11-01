@@ -269,7 +269,6 @@ const generateDummyData = (
 // Transform external API products to match ProductCard component format
 const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
   return products.map((product) => {
-    console.log("product+a", product.attributeValues);
     // Extract slug from URL or generate from ID
     const slug = product.slug ? product.slug : `product-${product.id}`;
     //  let slug: string;

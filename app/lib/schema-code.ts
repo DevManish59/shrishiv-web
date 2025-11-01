@@ -2,9 +2,9 @@ export const website = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@id": "https://www.shrishiv.com#website",
+      "@id": "https://shrishiv.com#website",
       "@type": "WebSite",
-      url: "https://www.shrishiv.com/",
+      url: "https://shrishiv.com/",
       name: "Shrishiv Jewelry",
       description:
         "Shop lab grown diamond and engagement rings and fine jewelry at Shrishiv. Ethical, handcrafted pieces for your forever moments.",
@@ -35,7 +35,7 @@ export const organization = {
   "@context": "https://schema.org",
   "@type": "Organization",
   name: "Shrishiv Jewelry",
-  url: "https://www.shrishiv.com",
+  url: "https://shrishiv.com",
   logo: "/logo.png",
   sameAs: [
     "https://www.facebook.com/shrishiv",
@@ -70,7 +70,7 @@ export function generateBreadcrumb(
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://www.shrishiv.com/",
+        item: "https://shrishiv.com/",
       },
       ...(secondPositionName
         ? [
