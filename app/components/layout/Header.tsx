@@ -10,25 +10,7 @@ import { useCart } from "@/contexts/LocalStorageCartContext";
 import LoginModal from "../ui/login-modal";
 import CartModal from "../ui/cart-modal";
 import { Menu, Search, User, ShoppingBag, X, Loader2 } from "lucide-react";
-
-interface MenuItem {
-  label: string;
-  href: string;
-  className?: string;
-}
-
-interface Category {
-  label: string;
-  slug: string;
-}
-
-interface DynamicCategory {
-  id: number;
-  name: string;
-  slug: string;
-  categories: Category[];
-  featured: MenuItem[];
-}
+import { DynamicCategory } from "@/types/header";
 
 interface ApiMenuData {
   categories: DynamicCategory[];
@@ -109,8 +91,8 @@ export default function Header() {
               { label: "Platinum Rings", slug: "platinum-rings" },
             ],
             featured: [
-              { label: "ENGAGEMENT RINGS", href: "/rings/engagement" },
-              { label: "WEDDING BANDS", href: "/rings/wedding-bands" },
+              { label: "ENGAGEMENT RINGS", slug: "engagement" },
+              { label: "WEDDING BANDS", slug: "wedding-bands" },
             ],
           },
           {
@@ -123,8 +105,8 @@ export default function Header() {
               { label: "Pearl Necklaces", slug: "pearl-necklaces" },
             ],
             featured: [
-              { label: "PENDANTS", href: "/necklaces/pendants" },
-              { label: "CHAINS", href: "/necklaces/chains" },
+              { label: "PENDANTS", slug: "pendants" },
+              { label: "CHAINS", slug: "chains" },
             ],
           },
           {
@@ -137,8 +119,8 @@ export default function Header() {
               { label: "Silver Earrings", slug: "silver-earrings" },
             ],
             featured: [
-              { label: "STUD EARRINGS", href: "/earrings/studs" },
-              { label: "HOOP EARRINGS", href: "/earrings/hoops" },
+              { label: "STUD EARRINGS", slug: "studs" },
+              { label: "HOOP EARRINGS", slug: "hoops" },
             ],
           },
           {
@@ -151,8 +133,8 @@ export default function Header() {
               { label: "Silver Bracelets", slug: "silver-bracelets" },
             ],
             featured: [
-              { label: "BANGLES", href: "/bracelets/bangles" },
-              { label: "CHAIN BRACELETS", href: "/bracelets/chains" },
+              { label: "BANGLES", slug: "bangles" },
+              { label: "CHAIN BRACELETS", slug: "chains" },
             ],
           },
         ];
@@ -312,52 +294,58 @@ export default function Header() {
             onMouseLeave={handleMenuLeave}
             {...menuAnimation}
           >
-            <div className="container mx-auto px-4 py-6">
+            <div className="container mx-auto px-8 py-6">
               <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <h3 className="font-semibold mb-4">Categories</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(() => {
-                      const hoveredCategory = menuData.find(
-                        (cat) => cat.slug === hoveredMenu
-                      );
-                      return hoveredCategory
-                        ? hoveredCategory.categories.map((item) => (
-                            <Link
-                              key={item.label}
-                              href={`/${hoveredMenu}/${item.slug}`}
-                              className="hover:text-gray-600 transition-colors"
-                            >
-                              {item.label}
-                            </Link>
-                          ))
-                        : null;
-                    })()}
-                  </div>
-                </div>
-                <div>
-                  <h3 className="font-semibold mb-4">Featured</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                    {(() => {
-                      const hoveredCategory = menuData.find(
-                        (cat) => cat.slug === hoveredMenu
-                      );
-                      return hoveredCategory
-                        ? hoveredCategory.featured.map((item) => (
-                            <Link
-                              key={item.label}
-                              href={item.href}
-                              className={`hover:text-gray-600 transition-colors ${
-                                item.className || ""
-                              }`}
-                            >
-                              {item.label}
-                            </Link>
-                          ))
-                        : null;
-                    })()}
-                  </div>
-                </div>
+                {(() => {
+                  // Find hovered category once, not twice
+                  const hoveredCategory = menuData.find(
+                    (cat) => cat.slug === hoveredMenu
+                  );
+
+                  if (!hoveredCategory) return null;
+
+                  const { categories = [], featured = [] } = hoveredCategory;
+
+                  return (
+                    <>
+                      {/* Categories Section */}
+                      <div>
+                        <h3 className="font-semibold mb-4">Categories</h3>
+                        {categories.length ? (
+                          <div className="grid grid-cols-2 gap-2">
+                            {categories.map((item) => (
+                              <Link
+                                key={item.slug}
+                                href={`/${hoveredMenu}/${item.slug}`}
+                                className="hover:text-gray-600 transition-colors"
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+
+                      {/* Featured Section */}
+                      <div>
+                        <h3 className="font-semibold mb-4">Featured</h3>
+                        {featured.length ? (
+                          <div className="grid grid-cols-2 gap-2">
+                            {featured.map((item) => (
+                              <Link
+                                key={item.slug}
+                                href={`/${hoveredMenu}/${item.slug}`}
+                                className="hover:text-gray-600 transition-colors"
+                              >
+                                {item.label}
+                              </Link>
+                            ))}
+                          </div>
+                        ) : null}
+                      </div>
+                    </>
+                  );
+                })()}
               </div>
             </div>
           </motion.div>

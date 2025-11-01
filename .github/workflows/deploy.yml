@@ -1,0 +1,229 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch: # still allow manual trigger, no inputs needed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 44.198.188.164
+          username: ec2-user
+          key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpAIBAAKCAQEA+oNja3Zw1uD46RXCpQNGE+JDdWrFFl3cMmZaMs6lCyMdJHxQ
+            /sVezO40p43p3OO3Eo2x1qKTqk4swLoj45oIZQrmDIxFFoHQL13Pb/WwcW9sHlJh
+            NseZSUSCnYrW6wqYu9HRhiIFRLMsWSjED1oKCz/JqC0kXPRGTerLLqX0lZ1jjdIF
+            PJezH1GrO3KU4/KLBTXvgSNNlhxEtU6lV93Zhf18y5/UVVBaCSlDudbEFloT3AlR
+            sVNchoTi+d7FOL2UKqoAAUSyDhC8qo7rQXVtwI+9aefW34LuUvLWw1IGpApblqgM
+            YYsPpdH7egq2aFHei3Z7Y0uQq6O9K2694gPb7QIDAQABAoIBAQDdj9Ufl1qHgeRD
+            6l4DqdiR/30gXTVA6fS1krbV1tQ7/Gtq+JR+MDv/TfK9+pLLLY+eVjnillm5t3h3
+            YGobhAFGtJPwpyL3nApvyi2MXSUXvq9GRh/63h/hoDlRcxlQOkgJXbJNSsuUDk/7
+            70UwOrdFab5GAt71Y4rGoRHhCSBALXqJW4XxnsLuuhW0rqmAIqJ9bAWNBHeNzgEo
+            fRlrm3J9HM3JalIZNFAbrf7XsZgqM+eZNKDGg3InwCJ8x0pRRQB+Wf7ke0aEO5Ig
+            2StLbd8w4SewqI7K/JD8icVpKCy48tU9CC6K/LWwByHQycP4BPPHSVGqNkrViVqh
+            Y4D1LRtVAoGBAP1SpbZVkwsMdFDwCXa5At+Rnjlv2C2N/e2sO7cWqCvr8Nt/qMSM
+            w11uoq/kGo1Iydfeg79HWfTxeiJhK0WPwCjhPeG0lEAg8/mFFnEY93HZOUuXC7Y9
+            WQi3uF6qFJn2q5gligUvwp1OEfqc0WUeXaHhEerDQaV0DiCywx7LMDCLAoGBAP0p
+            I8mIjFY37uXjEivwiggscXRjUZRmPQo93VOhZ29sF9yo0KTJ56HCJYrQKfesP6Uz
+            y+bxXm5/a+GiFB/2g2Xkfwd6EbUnU8qqf2N3p5uZvsDtDb8AepIhyBDelbMpT6Gd
+            mp0dlbAfnHxV1IOOJrqC7hOKO+/NZR/7Q7pc93xnAoGAF5wITcIT/kee35w/hY0g
+            s22C7Z966mP9cpVGy32VFuLag9qWBBuKab7R8sqzns9V4ISgisc/nxCSbXnY6pbH
+            NggoGE0YNBHeKzc4LDpDdZzlNiJRuR5mmeVljY0UdnUC8R8uieU1oiuQiWbsLRxz
+            ZY7weIzSJXV3i5yditUtHJkCgYEAjFh+Sn+0rSec/T0BGfLj0twwmYFl/IshU8gw
+            JujX2uFl6SJ9aJ22F+r1vRrh6ThIoGEyrPkqjL9/IzsjRQT4m0gtVAvMPU1sGnKi
+            5JW1CYIWSgYhFL5DNTgdHZ0ICKbiSoqA6JE6JsWfjx5WDgiEV+m16oc76xlG8o/t
+            YCeh3AkCgYA9Cg1V2pP1UUHzmoYMGsReLyVPA/RTRDxTLMN48+WqUHYOZujG3XRH
+            v4yJq8HFMbvXQKSSqjYI8VWxDml/4XznqMAeq+raA74u+cGiDj0TVNLAIv+9qpKZ
+            auePkHNt07jDrZNFDjjyng6/T0SIuvZWDzJhKDIfeKrCR/+mcuEg9w==
+            -----END RSA PRIVATE KEY-----
+          port: 22
+          script: |
+            # Navigate to the project directory
+            cd ~/shrishiv-web
+
+            # Pull latest changes
+            git pull origin main
+
+            # Install/update dependencies
+            npm install --force
+
+            # build dependencies
+            npm run build
+
+            # Stop the PM2 process
+            pm2 delete shrishiv-web || true
+
+            # Start the service
+            pm2 start npm --name shrishiv-web -- run start
+
+            # Save PM2 process list
+            pm2 save
+
+            # Show PM2 status
+            pm2 status
+
+      - name: Verify deployment
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 44.198.188.164
+          username: ec2-user
+          key: |
+            -----BEGIN RSA PRIVATE KEY-----
+            MIIEpAIBAAKCAQEA+oNja3Zw1uD46RXCpQNGE+JDdWrFFl3cMmZaMs6lCyMdJHxQ
+            /sVezO40p43p3OO3Eo2x1qKTqk4swLoj45oIZQrmDIxFFoHQL13Pb/WwcW9sHlJh
+            NseZSUSCnYrW6wqYu9HRhiIFRLMsWSjED1oKCz/JqC0kXPRGTerLLqX0lZ1jjdIF
+            PJezH1GrO3KU4/KLBTXvgSNNlhxEtU6lV93Zhf18y5/UVVBaCSlDudbEFloT3AlR
+            sVNchoTi+d7FOL2UKqoAAUSyDhC8qo7rQXVtwI+9aefW34LuUvLWw1IGpApblqgM
+            YYsPpdH7egq2aFHei3Z7Y0uQq6O9K2694gPb7QIDAQABAoIBAQDdj9Ufl1qHgeRD
+            6l4DqdiR/30gXTVA6fS1krbV1tQ7/Gtq+JR+MDv/TfK9+pLLLY+eVjnillm5t3h3
+            YGobhAFGtJPwpyL3nApvyi2MXSUXvq9GRh/63h/hoDlRcxlQOkgJXbJNSsuUDk/7
+            70UwOrdFab5GAt71Y4rGoRHhCSBALXqJW4XxnsLuuhW0rqmAIqJ9bAWNBHeNzgEo
+            fRlrm3J9HM3JalIZNFAbrf7XsZgqM+eZNKDGg3InwCJ8x0pRRQB+Wf7ke0aEO5Ig
+            2StLbd8w4SewqI7K/JD8icVpKCy48tU9CC6K/LWwByHQycP4BPPHSVGqNkrViVqh
+            Y4D1LRtVAoGBAP1SpbZVkwsMdFDwCXa5At+Rnjlv2C2N/e2sO7cWqCvr8Nt/qMSM
+            w11uoq/kGo1Iydfeg79HWfTxeiJhK0WPwCjhPeG0lEAg8/mFFnEY93HZOUuXC7Y9
+            WQi3uF6qFJn2q5gligUvwp1OEfqc0WUeXaHhEerDQaV0DiCywx7LMDCLAoGBAP0p
+            I8mIjFY37uXjEivwiggscXRjUZRmPQo93VOhZ29sF9yo0KTJ56HCJYrQKfesP6Uz
+            y+bxXm5/a+GiFB/2g2Xkfwd6EbUnU8qqf2N3p5uZvsDtDb8AepIhyBDelbMpT6Gd
+            mp0dlbAfnHxV1IOOJrqC7hOKO+/NZR/7Q7pc93xnAoGAF5wITcIT/kee35w/hY0g
+            s22C7Z966mP9cpVGy32VFuLag9qWBBuKab7R8sqzns9V4ISgisc/nxCSbXnY6pbH
+            NggoGE0YNBHeKzc4LDpDdZzlNiJRuR5mmeVljY0UdnUC8R8uieU1oiuQiWbsLRxz
+            ZY7weIzSJXV3i5yditUtHJkCgYEAjFh+Sn+0rSec/T0BGfLj0twwmYFl/IshU8gw
+            JujX2uFl6SJ9aJ22F+r1vRrh6ThIoGEyrPkqjL9/IzsjRQT4m0gtVAvMPU1sGnKi
+            5JW1CYIWSgYhFL5DNTgdHZ0ICKbiSoqA6JE6JsWfjx5WDgiEV+m16oc76xlG8o/t
+            YCeh3AkCgYA9Cg1V2pP1UUHzmoYMGsReLyVPA/RTRDxTLMN48+WqUHYOZujG3XRH
+            v4yJq8HFMbvXQKSSqjYI8VWxDml/4XznqMAeq+raA74u+cGiDj0TVNLAIv+9qpKZ
+            auePkHNt07jDrZNFDjjyng6/T0SIuvZWDzJhKDIfeKrCR/+mcuEg9w==
+            -----END RSA PRIVATE KEY-----
+          port: 22
+          script: |
+            # Wait a moment for the service to start
+            sleep 10
+
+            # Check if the service is running
+            if pm2 list | grep -q "shrishiv-web.*online"; then
+              echo ":white_check_mark: Deployment successful! Service shrishiv-web is running."
+              pm2 show shrishiv-web
+            else
+              echo ":x: Deployment failed! Service shrishiv-web is not running."
+              pm2 logs shrishiv-web --lines 50
+              exit 1
+            fi
+
+      - name: Notify deployment status
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo ":tada: Deployment completed successfully!"
+          else
+            echo ":boom: Deployment failed!"
+          fi# name: Deploy to EC2
+
+# on:
+#   push:
+#     branches:
+#       - main
+#       - master
+#   workflow_dispatch: # still allow manual trigger, no inputs needed
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v4
+
+#     - name: Setup Node.js
+#       uses: actions/setup-node@v4
+#       with:
+#         node-version: '18'
+#         cache: 'npm'
+
+#     - name: Install dependencies
+#       run: npm ci --legacy-peer-deps
+
+#     - name: Deploy to EC2
+#       uses: appleboy/ssh-action@v1.0.3
+#       with:
+#         host: 44.198.188.164
+#         username: ec2-user
+#       #  key: |
+#        # MIIEpAIBAAKCAQEA+oNja3Zw1uD46RXCpQNGE+JDdWrFFl3cMmZaMs6lCyMdJHxQ/sVezO40p43p3OO3Eo2x1qKTqk4swLoj45oIZQrmDIxFFoHQL13Pb/WwcW9sHlJhNseZSUSCnYrW6wqYu9HRhiIFRLMsWSjED1oKCz/JqC0kXPRGTerLLqX0lZ1jjdIFPJezH1GrO3KU4/KLBTXvgSNNlhxEtU6lV93Zhf18y5/UVVBaCSlDudbEFloT3AlRsVNchoTi+d7FOL2UKqoAAUSyDhC8qo7rQXVtwI+9aefW34LuUvLWw1IGpApblqgMYYsPpdH7egq2aFHei3Z7Y0uQq6O9K2694gPb7QIDAQABAoIBAQDdj9Ufl1qHgeRD6l4DqdiR/30gXTVA6fS1krbV1tQ7/Gtq+JR+MDv/TfK9+pLLLY+eVjnillm5t3h3YGobhAFGtJPwpyL3nApvyi2MXSUXvq9GRh/63h/hoDlRcxlQOkgJXbJNSsuUDk/770UwOrdFab5GAt71Y4rGoRHhCSBALXqJW4XxnsLuuhW0rqmAIqJ9bAWNBHeNzgEofRlrm3J9HM3JalIZNFAbrf7XsZgqM+eZNKDGg3InwCJ8x0pRRQB+Wf7ke0aEO5Ig2StLbd8w4SewqI7K/JD8icVpKCy48tU9CC6K/LWwByHQycP4BPPHSVGqNkrViVqhY4D1LRtVAoGBAP1SpbZVkwsMdFDwCXa5At+Rnjlv2C2N/e2sO7cWqCvr8Nt/qMSMw11uoq/kGo1Iydfeg79HWfTxeiJhK0WPwCjhPeG0lEAg8/mFFnEY93HZOUuXC7Y9WQi3uF6qFJn2q5gligUvwp1OEfqc0WUeXaHhEerDQaV0DiCywx7LMDCLAoGBAP0pI8mIjFY37uXjEivwiggscXRjUZRmPQo93VOhZ29sF9yo0KTJ56HCJYrQKfesP6Uzy+bxXm5/a+GiFB/2g2Xkfwd6EbUnU8qqf2N3p5uZvsDtDb8AepIhyBDelbMpT6Gdmp0dlbAfnHxV1IOOJrqC7hOKO+/NZR/7Q7pc93xnAoGAF5wITcIT/kee35w/hY0gs22C7Z966mP9cpVGy32VFuLag9qWBBuKab7R8sqzns9V4ISgisc/nxCSbXnY6pbHNggoGE0YNBHeKzc4LDpDdZzlNiJRuR5mmeVljY0UdnUC8R8uieU1oiuQiWbsLRxzZY7weIzSJXV3i5yditUtHJkCgYEAjFh+Sn+0rSec/T0BGfLj0twwmYFl/IshU8gwJujX2uFl6SJ9aJ22F+r1vRrh6ThIoGEyrPkqjL9/IzsjRQT4m0gtVAvMPU1sGnKi5JW1CYIWSgYhFL5DNTgdHZ0ICKbiSoqA6JE6JsWfjx5WDgiEV+m16oc76xlG8o/tYCeh3AkCgYA9Cg1V2pP1UUHzmoYMGsReLyVPA/RTRDxTLMN48+WqUHYOZujG3XRHv4yJq8HFMbvXQKSSqjYI8VWxDml/4XznqMAeq+raA74u+cGiDj0TVNLAIv+9qpKZauePkHNt07jDrZNFDjjyng6/T0SIuvZWDzJhKDIfeKrCR/+mcuEg9w==
+
+#         port: 22
+#         script: |
+#           # Navigate to the project directory
+#           cd ~/utsav-fav
+
+#           # Pull latest changes
+#           git pull origin main
+
+#           # Install/update dependencies
+#           npm install --force
+
+#           # build dependencies
+#           npm run build
+
+#           # Stop the PM2 process
+#           pm2 delete shrishiv-admin || true
+
+#           # Start the service
+#           pm2 start npm --name shrishiv-admin -- run start
+
+#           # Save PM2 process list
+#           pm2 save
+
+#           # Show PM2 status
+#           pm2 status
+
+#     - name: Verify deployment
+#       uses: appleboy/ssh-action@v1.0.3
+#       with:
+#         host: 44.198.188.164
+#         username: ec2-user
+#         key: MIIEpAIBAAKCAQEA+oNja3Zw1uD46RXCpQNGE+JDdWrFFl3cMmZaMs6lCyMdJHxQ/sVezO40p43p3OO3Eo2x1qKTqk4swLoj45oIZQrmDIxFFoHQL13Pb/WwcW9sHlJhNseZSUSCnYrW6wqYu9HRhiIFRLMsWSjED1oKCz/JqC0kXPRGTerLLqX0lZ1jjdIFPJezH1GrO3KU4/KLBTXvgSNNlhxEtU6lV93Zhf18y5/UVVBaCSlDudbEFloT3AlRsVNchoTi+d7FOL2UKqoAAUSyDhC8qo7rQXVtwI+9aefW34LuUvLWw1IGpApblqgMYYsPpdH7egq2aFHei3Z7Y0uQq6O9K2694gPb7QIDAQABAoIBAQDdj9Ufl1qHgeRD6l4DqdiR/30gXTVA6fS1krbV1tQ7/Gtq+JR+MDv/TfK9+pLLLY+eVjnillm5t3h3s22C7Z966mP9cpVGy32VFuLag9qWBBuKab7R8sqzns9V4ISgisc/nxCSbXnY6pbHNggoGE0YNBHeKzc4LDpDdZzlNiJRuR5mmeVljY0UdnUC8R8uieU1oiuQiWbsLRxzZY7weIzSJXV3i5yditUtHJkCgYEAjFh+Sn+0rSec/T0BGfLj0twwmYFl/IshU8gwJujX2uFl6SJ9aJ22F+r1vRrh6ThIoGEyrPkqjL9/IzsjRQT4m0gtVAvMPU1sGnKi5JW1CYIWSgYhFL5DNTgdHZ0ICKbiSoqA6JE6JsWfjx5WDgiEV+m16oc76xlG8o/tYCeh3AkCgYA9Cg1V2pP1UUHzmoYMGsReLyVPA/RTRDxTLMN48+WqUHYOZujG3XRHv4yJq8HFMbvXQKSSqjYI8VWxDml/4XznqMAeq+raA74u+cGiDj0TVNLAIv+9qpKZauePkHNt07jDrZNFDjjyng6/T0SIuvZWDzJhKDIfeKrCR/+mcuEg9w==
+#         port: 22
+#         script: |
+#           # Wait a moment for the service to start
+#           sleep 10
+
+#           # Check if the service is running
+#           if pm2 list | grep -q "shrishiv-admin.*online"; then
+#             echo ":white_check_mark: Deployment successful! Service shrishiv-admin is running."
+#             pm2 show shrishiv-admin
+#           else
+#             echo ":x: Deployment failed! Service shrishiv-admin is not running."
+#             pm2 logs shrishiv-admin --lines 50
+#             exit 1
+#           fi
+
+#     - name: Notify deployment status
+#       if: always()
+#       run: |
+#         if [ "${{ job.status }}" == "success" ]; then
+#           echo ":tada: Deployment completed successfully!"
+#         else
+#           echo ":boom: Deployment failed!"
+#         fi

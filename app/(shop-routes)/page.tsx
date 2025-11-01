@@ -93,8 +93,8 @@ async function getHomePageData(): Promise<any> {
 
     // Fetch both in parallel
     const [featuredRes, storeRes] = await Promise.all([
-      fetch(endpoints.featured, { next: { revalidate: 3600 } }),
-      fetch(endpoints.store, { next: { revalidate: 3600 } }),
+      fetch(endpoints.featured, { cache: "no-store" }),
+      fetch(endpoints.store, { cache: "no-store" }),
     ]);
 
     // Check for failed responses

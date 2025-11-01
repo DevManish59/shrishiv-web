@@ -1,49 +1,16 @@
+import {
+  DynamicCategory,
+  HeaderCategory,
+  ParentCategory,
+  SubCategory,
+} from "@/types/header";
 import { NextResponse } from "next/server";
-
-// Types for new API response format
-interface SubCategory {
-  id: number;
-  name: string;
-  slug: string;
-}
-
-interface Category {
-  label: string;
-  slug: string;
-}
-
-interface MenuItem {
-  label: string;
-  href: string;
-  className?: string;
-}
-
-interface ParentCategory {
-  id: number;
-  name: string;
-  slug: string;
-  subCategories: SubCategory[];
-}
 
 type NewApiResponse = ParentCategory[];
 
-interface FeaturedItem {
-  label: string;
-  href: string;
-  className?: string;
-}
-
 interface MenuSection {
-  categories: { label: string; slug: string }[];
-  featured: FeaturedItem[];
-}
-
-interface DynamicCategory {
-  id: number;
-  name: string;
-  slug: string;
-  categories: Category[];
-  featured: MenuItem[];
+  categories: HeaderCategory[];
+  featured: HeaderCategory[];
 }
 
 // Removed unused MenuData interface
@@ -155,11 +122,21 @@ function transformExternalData(externalData: NewApiResponse | OldApiResponse) {
           parentCategory.name?.toLowerCase().replace(/\s+/g, "-") ||
           "unknown",
         categories:
-          parentCategory.subCategories?.map((sub: SubCategory) => ({
-            label: sub.name,
-            slug: sub.slug,
-          })) || [],
-        featured: [], // You can populate this from API or leave empty for now
+          parentCategory.subCategories
+            ?.filter((sub) => !sub?.featured)
+            ?.map((sub: SubCategory) => ({
+              id: sub.id,
+              label: sub.name,
+              slug: sub.slug,
+            })) || [],
+        featured:
+          parentCategory.subCategories
+            ?.filter((sub) => sub?.featured)
+            .map((sub) => ({
+              id: sub.id,
+              label: sub.name,
+              slug: sub.slug,
+            })) || [], // You can populate this from API or leave empty for now
       };
       dynamicCategories.push(dynamicCategory);
     });
@@ -210,8 +187,8 @@ function getFallbackData() {
           { label: "Choker", slug: "choker" },
         ],
         featured: [
-          { label: "ENGAGEMENT", href: "/rings/engagement" },
-          { label: "WEDDING", href: "/rings/wedding" },
+          { label: "ENGAGEMENT", slug: "engagement" },
+          { label: "WEDDING", slug: "wedding" },
         ],
       },
       {
@@ -223,8 +200,8 @@ function getFallbackData() {
           { label: "Chain", slug: "chain" },
         ],
         featured: [
-          { label: "PENDANTS", href: "/necklaces/pendants" },
-          { label: "CHAINS", href: "/necklaces/chains" },
+          { label: "PENDANTS", slug: "pendants" },
+          { label: "CHAINS", slug: "chains" },
         ],
       },
       {
@@ -236,8 +213,8 @@ function getFallbackData() {
           { label: "Stud", slug: "stud" },
         ],
         featured: [
-          { label: "DIAMOND", href: "/earrings/diamond" },
-          { label: "GOLD", href: "/earrings/gold" },
+          { label: "DIAMOND", slug: "diamond" },
+          { label: "GOLD", slug: "gold" },
         ],
       },
     ],

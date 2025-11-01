@@ -58,7 +58,7 @@ export default function CountrySelectorModal({
           <h2 className="text-lg">WHICH COUNTRY WOULD LIKE TO SHOP IN?</h2>
           <button
             onClick={onClose}
-            className="p-2 hover:opacity-70 cursor-pointer"
+            className="p-2 hover:bg-gray-100 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
