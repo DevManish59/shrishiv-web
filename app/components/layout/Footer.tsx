@@ -17,13 +17,21 @@ import {
   Music, // for TikTok
 } from "lucide-react";
 import { DynamicPageItem, StoreSocial } from "@/lib/types";
+import { useSharedCookie } from "@/hooks/useSharedCookie";
+import { SelectedCountry } from "@/types/common";
 
 export default function Footer() {
   const [showCountrySelector, setShowCountrySelector] =
     useState<boolean>(false);
+  const [selectedCountryData, setSelectedCountryData] =
+    useState<SelectedCountry>({
+      name: "India",
+      languages: { code: "en", name: "English" },
+    });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageListdata, setPageListdata] = useState([]);
   const [storeSocialLinks, setStoreSocialLinks] = useState<StoreSocial>();
+  const { cookieData, refetchCookie } = useSharedCookie();
 
   const fetchPagesData = async () => {
     try {
@@ -42,56 +50,16 @@ export default function Footer() {
   useEffect(() => {
     fetchPagesData();
   }, []);
+  console.log(cookieData);
 
-  // const footerLinks = {
-  //   help: [
-  //     { label: "HELP", href: "#" },
-  //     { label: "MY PURCHASES", href: "#" },
-  //     { label: "RETURNS", href: "#" },
-  //   ],
-  //   company: [
-  //     { label: "COMPANY", href: "#" },
-  //     { label: "WORK FOR MANGO", href: "#" },
-  //     { label: "PRESS", href: "#" },
-  //   ],
-  //   legal: [
-  //     { label: "PRIVACY POLICY AND COOKIES", href: "#" },
-  //     { label: "TERMS AND CONDITIONS", href: "#" },
-  //     { label: "ETHICS CHANNEL", href: "#" },
-  //   ],
-  //   responsibility: [
-  //     { label: "RESPONSIBILITY", href: "#" },
-  //     { label: "STORES", href: "#" },
-  //   ],
-  // };
-
-  // const socialLinks = [
-  //   {
-  //     label: "Facebook",
-  //     href: storeSocialLinks?.socialFacebook || "#",
-  //     icon: Facebook,
-  //   },
-  //   {
-  //     label: "Instagram",
-  //     href: storeSocialLinks?.socialInstagram || "#",
-  //     icon: Instagram,
-  //   },
-  //   {
-  //     label: "Pinterest",
-  //     href: storeSocialLinks?.socialPinterest || "#",
-  //     icon: Pin,
-  //   },
-  //   {
-  //     label: "Twitter",
-  //     href: storeSocialLinks?.socialTwitter || "#",
-  //     icon: Twitter,
-  //   },
-  //   {
-  //     label: "YouTube",
-  //     href: storeSocialLinks?.socialYoutube || "#",
-  //     icon: Youtube,
-  //   },
-  // ];
+  // Update selectedCountryData whenever cookieData changes
+  useEffect(() => {
+    if (
+      cookieData?.selectedCountryAndLang?.name !== selectedCountryData?.name
+    ) {
+      setSelectedCountryData(cookieData.selectedCountryAndLang);
+    }
+  }, [cookieData]);
 
   const socialLinks = [
     {
@@ -161,6 +129,7 @@ export default function Footer() {
       isHidden: !storeSocialLinks?.socialTiktok,
     },
   ];
+  console.log("cookieData", cookieData);
 
   return (
     <footer className="bg-white">
@@ -172,7 +141,7 @@ export default function Footer() {
               onClick={() => setShowCountrySelector(true)}
               className="text-sm hover:opacity-70 flex items-center gap-2 cursor-pointer"
             >
-              INDIA
+              {selectedCountryData?.name || "INDIA"}
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -261,7 +230,10 @@ export default function Footer() {
 
       <CountrySelectorModal
         isOpen={showCountrySelector}
-        onClose={() => setShowCountrySelector(false)}
+        onClose={() => {
+          refetchCookie();
+          setShowCountrySelector(false);
+        }}
       />
     </footer>
   );

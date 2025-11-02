@@ -46,7 +46,7 @@ export default function SingleBanner({ data }: SingleBannerProps) {
       viewport={{ once: true }}
     >
       <div
-        className="h-svh md:bg-cover md:bg-center md:bg-no-repeat bg-repeat-round relative overflow-hidden"
+        className="h-svh bg-cover bg-center relative overflow-hidden"
         style={{
           backgroundImage: `url('${
             isMobile ? bannerData.mobileBanner : bannerData.desktopBanner

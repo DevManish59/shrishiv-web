@@ -11,8 +11,9 @@ export async function GET() {
     if (!response.ok) {
       throw new Error(`External API error: ${response.status}`);
     }
+    const ip = await response.json();
 
-    return NextResponse.json({ ip: await response.json() });
+    return NextResponse.json(ip);
   } catch (error) {
     console.error("❌ Error fetching ip address from external data:", error);
     console.log("Error fetching data from ip address from external api");

@@ -38,7 +38,7 @@ export default function Newsletter() {
                     setError(false);
                   }}
                   placeholder="E-mail"
-                  className={`w-full px-4 py-2 border ${
+                  className={`w-full px-4 py-2 border text-sm ${
                     error ? "border-red-500" : "border-gray-300"
                   } focus:outline-none focus:border-gray-500`}
                 />
@@ -48,18 +48,21 @@ export default function Newsletter() {
                   </p>
                 )}
               </div>
-              <button
-                type="submit"
-                className="px-6 py-2 bg-black text-white hover:bg-gray-800 transition-colors text-sm cursor-pointer"
-              >
-                Sign up now
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  // className="px-6 py-2 bg-black text-white hover:bg-gray-800 transition-colors text-sm cursor-pointer"
+                  className="md:w-auto w-full px-6 py-[9px] bg-black text-white hover:bg-gray-800 transition-colors text-sm cursor-pointer self-start"
+                >
+                  Sign up now
+                </button>
+              </div>
             </div>
           </form>
 
           <p className="text-xs text-gray-500 mt-4">
             By subscribing you confirm that you have read the{" "}
-            <Link href="/privacy-policy" className="underline">
+            <Link href="/p/privacy-policy" className="underline">
               Privacy Policy
             </Link>
             .
