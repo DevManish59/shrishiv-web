@@ -78,7 +78,6 @@ export async function GET(
 
     const data = await response.json();
     console.log("✅ Product API: External API response received", data);
-
     return NextResponse.json(data);
   } catch (error) {
     console.error("❌ Product API: Error fetching external data:", error);

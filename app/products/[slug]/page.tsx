@@ -2,111 +2,16 @@ import ProductPageWrapper from "./product-page-wrapper";
 import SimilarProducts from "@/components/similar-products";
 import CartModal from "@/components/ui/cart-modal";
 import { mockFeaturedProducts } from "@/lib/mock-data";
-// import { generateProductSchema, generateBreadcrumbSchema } from "lib/seo";
-// import { Schema } from "components/ui/schema";
 import { Metadata } from "next";
 import ReviewsPage from "@/components/reviews-page";
+import { ApiProduct } from "@/types/product";
+import { mockApiProduct } from "@/lib/constant";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
 
-// Define the product interface based on your API response
-interface ApiProduct {
-  id: number;
-  productName: string;
-  shortDescription: string;
-  pointOne: string | null;
-  pointTwo: string | null;
-  pointThree: string | null;
-  pointFour: string | null;
-  pointFive: string | null;
-  url: string | null;
-  slug: string | null;
-  stock: number | null;
-  shipDay: number | null;
-  categoryIds: number[];
-  sizeChartId: number | null;
-  sku: string | null;
-  hsnCode: string | null;
-  ageGroup: string | null;
-  gender: string | null;
-  googleProductCategory: string | null;
-  mrpPrice: number | null;
-  discount: number | null;
-  salesPrice: number | null;
-  isFeatured: boolean | null;
-  images: string[] | null;
-  imageFiles: string[];
-  attributeValues: Array<{
-    id: number;
-    attributeId: number;
-    parentAttributeId: number | null;
-    attributeName: string | null;
-    attributeColor: string;
-    price: number;
-    isDefault: boolean;
-    images: string[] | null;
-    existingImages: string[] | null;
-    imageFiles: string[];
-  }>;
-  createdAt: string;
-  updatedAt: string;
-}
-
-// Mock API product for fallback
-const mockApiProduct: ApiProduct = {
-  id: 1,
-  slug: "sample-chain-necklace",
-  productName: "Sample Chain Necklace",
-  shortDescription:
-    "Beautiful chain necklace design with premium quality material",
-  pointOne: "Premium quality material",
-  pointTwo: "Elegant design",
-  pointThree: "Perfect for any occasion",
-  pointFour: "Adjustable length",
-  pointFive: "Includes gift box",
-  url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-chain-necklace`,
-  stock: 10,
-  shipDay: 3,
-  categoryIds: [1],
-  sizeChartId: 1,
-  sku: "NECK001",
-  hsnCode: "711319",
-  ageGroup: "Adult",
-  gender: "Female",
-  googleProductCategory: "Jewelry",
-  mrpPrice: 5000,
-  discount: 20,
-  salesPrice: 4000,
-  isFeatured: true,
-  images: [
-    "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
-  ],
-  imageFiles: [],
-  attributeValues: [
-    {
-      id: 1,
-      attributeId: 1,
-      parentAttributeId: null,
-      attributeName: "Gold Plated",
-      attributeColor: "#FFD700",
-      price: 4000,
-      isDefault: true,
-      images: [
-        "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
-      ],
-      existingImages: null,
-      imageFiles: [],
-    },
-  ],
-  createdAt: "2025-01-01T00:00:00.000Z",
-  updatedAt: "2025-01-01T00:00:00.000Z",
-};
-
 // Transform API product to match the expected format
 const transformApiProduct = (apiProduct: ApiProduct) => {
-  console.log("🚀 Product Page: API Product =", apiProduct);
-
   // Group attribute values by attributeId to create attribute options
   const attributeGroups =
     apiProduct.attributeValues?.reduce((groups, attr) => {
@@ -277,9 +182,7 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
 
-  // Check if external API is configured
   const externalApiUrl = process.env.EXTERNAL_API_URL;
-  console.log("🏠 Product Page: EXTERNAL_API_URL =", externalApiUrl);
 
   if (!externalApiUrl) {
     console.warn(
@@ -294,8 +197,6 @@ export default async function ProductPage({
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/products/${slug}`;
 
-    console.log("🚀 Product Page: Calling API route:", apiUrl);
-
     const response = await fetch(apiUrl, {
       cache: "no-store", // Disable caching for dynamic data
     });
@@ -305,7 +206,6 @@ export default async function ProductPage({
     }
 
     const data = await response.json();
-    console.log("✅ Product Page: API response received");
 
     const apiProduct: ApiProduct = data;
     product = transformApiProduct(apiProduct);
@@ -319,31 +219,6 @@ export default async function ProductPage({
     const apiProduct = mockApiProduct;
     product = transformApiProduct(apiProduct);
   }
-
-  // Generate initial images for gallery
-  // const initialImages = product.images || [];
-
-  // Generate SEO schemas
-  // const productSchema = generateProductSchema({
-  //   title: product.name,
-  //   description: product.description,
-  //   price: product.price,
-  //   currency: "USD",
-  //   availability: "InStock",
-  //   brand: "Shrishiv",
-  //   category: "Engagement Rings",
-  //   rating: product.rating,
-  //   reviewCount: product.reviewCount,
-  //   sku: product.sku,
-  //   image: initialImages[0],
-  //   url: `/products/${slug}`,
-  // });
-
-  // const breadcrumbSchema = generateBreadcrumbSchema([
-  //   { name: "Home", url: "/" },
-  //   { name: "Products", url: "/products" },
-  //   { name: product.name, url: `/products/${slug}` },
-  // ]);
 
   return (
     <div className="bg-white">

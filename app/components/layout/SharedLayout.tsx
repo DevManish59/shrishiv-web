@@ -1,17 +1,22 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
+
 // import { CartProvider } from "@/contexts/CartContext";
 // import { LocalStorageCartProvider } from "@/contexts/LocalStorageCartContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { Toaster } from "@/components/ui/sonner";
 import TopHeader from "@/components/layout/TopHeader";
-import ReviewSection from "@/components/review-section";
-import CommitmentSection from "@/components/commitment-section";
-import FAQSection from "@/components/faqs";
-import Newsletter from "@/components/newsletter";
+
+const ReviewSection = dynamic(() => import("@/components/review-section"));
+const CommitmentSection = dynamic(
+  () => import("@/components/commitment-section")
+);
+const FAQSection = dynamic(() => import("@/components/faqs"));
+const Newsletter = dynamic(() => import("@/components/newsletter"));
+const Footer = dynamic(() => import("@/components/layout/Footer"));
 
 const inter = Inter({ subsets: ["latin"] });
 

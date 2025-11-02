@@ -1,3 +1,4 @@
+import { ApiProduct } from "@/types/product";
 import { UnifiedItem } from "./types";
 
 // Fallback data for when API fails
@@ -93,4 +94,53 @@ export const homepgeMetadata = {
     title: "Home | Shrishiv Jewelry",
     description: "Discover our premium collection of lab-grown diamond jewelry",
   },
+};
+
+export const mockApiProduct: ApiProduct = {
+  id: 1,
+  slug: "sample-chain-necklace",
+  productName: "Sample Chain Necklace",
+  shortDescription:
+    "Beautiful chain necklace design with premium quality material",
+  pointOne: "Premium quality material",
+  pointTwo: "Elegant design",
+  pointThree: "Perfect for any occasion",
+  pointFour: "Adjustable length",
+  pointFive: "Includes gift box",
+  url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-chain-necklace`,
+  stock: 10,
+  shipDay: 3,
+  categoryIds: [1],
+  sizeChartId: 1,
+  sku: "NECK001",
+  hsnCode: "711319",
+  ageGroup: "Adult",
+  gender: "Female",
+  googleProductCategory: "Jewelry",
+  mrpPrice: 5000,
+  discount: 20,
+  salesPrice: 4000,
+  isFeatured: true,
+  images: [
+    "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
+  ],
+  imageFiles: [],
+  attributeValues: [
+    {
+      id: 1,
+      attributeId: 1,
+      parentAttributeId: null,
+      attributeName: "Gold Plated",
+      attributeColor: "#FFD700",
+      price: 4000,
+      isDefault: true,
+      images: [
+        "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
+      ],
+      existingImages: null,
+      imageFiles: [],
+    },
+  ],
+  createdAt: "2025-01-01T00:00:00.000Z",
+  updatedAt: "2025-01-01T00:00:00.000Z",
 };

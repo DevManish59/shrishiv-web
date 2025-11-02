@@ -1,6 +1,7 @@
 import Image from "next/image";
 import CheckoutForm from "./checkout-form";
 import CartModal from "@/components/ui/cart-modal";
+import Link from "next/link";
 // import { cookies } from "next/headers";
 
 // Mock data for server-side rendering
@@ -36,14 +37,16 @@ export default function CheckoutPage() {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-center mb-8">
-          <Image
-            src="/logo.png"
-            alt="SHRISHIV"
-            width={150}
-            height={30}
-            className="h-[30px] w-[150px] object-cover"
-            priority
-          />
+          <Link href="/">
+            <Image
+              src="/logo.png"
+              alt="SHRISHIV"
+              width={150}
+              height={30}
+              className="h-[30px] w-[150px] object-cover"
+              priority
+            />
+          </Link>
         </div>
 
         {/* Client component with all interactive elements */}

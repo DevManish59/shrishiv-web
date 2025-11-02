@@ -2,7 +2,9 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 // import { useCart } from "@/contexts/CartContext";
+import { Country } from "@/types/common";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 
 // PayPal types
@@ -86,10 +88,37 @@ export default function CheckoutForm({ initialSubtotal }: CheckoutFormProps) {
   const [tipAmount, setTipAmount] = useState<number | null>(null);
   const [customTip, setCustomTip] = useState("");
   const [showTipSupport, setShowTipSupport] = useState(false);
-
+  const [countriesList, setCountriesList] = useState<Country[]>([]);
   const subtotal = initialSubtotal;
   const estimatedTax = subtotal * 0.03; // 3% tax
   const total = subtotal + estimatedTax + (tipAmount || 0);
+
+  const fetchCountries = async () => {
+    try {
+      const countryRes = await fetch(
+        `${process.env.EXTERNAL_API_URL}/countries`,
+        { cache: "no-store" }
+      );
+
+      // Check for failed responses
+      if (!countryRes.ok) {
+        throw new Error(`External API failed: country=${countryRes.status}`);
+      }
+
+      const countryData = await countryRes.json();
+      const publishedCountry = countryData.filter(
+        (country: Country) => country.published
+      );
+
+      setCountriesList(publishedCountry);
+    } catch (error) {
+      console.error("Error fetching country and language:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -220,7 +249,11 @@ export default function CheckoutForm({ initialSubtotal }: CheckoutFormProps) {
               onChange={handleInputChange}
               className="w-full border p-3 rounded"
             >
-              <option value="India">India</option>
+              {countriesList.map((country) => (
+                <option key={country.id} value={country.name}>
+                  {country.name}
+                </option>
+              ))}
             </select>
 
             <div className="grid grid-cols-2 gap-4">
@@ -321,7 +354,12 @@ export default function CheckoutForm({ initialSubtotal }: CheckoutFormProps) {
                 onChange={handleInputChange}
                 className="w-full border p-3 rounded"
               >
-                <option value="India">India</option>
+                {countriesList.map((country) => (
+                  <option key={country.id} value={country.name}>
+                    {country.name}
+                  </option>
+                ))}
+                {/* <option value="India">India</option> */}
               </select>
 
               <div className="grid grid-cols-2 gap-4">

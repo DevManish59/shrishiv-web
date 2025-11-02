@@ -7,5 +7,5 @@ export default function ProductLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <SharedLayout includeReviews={false}>{children}</SharedLayout>;
+  return <SharedLayout>{children}</SharedLayout>;
 }

@@ -50,7 +50,6 @@ export default function Footer() {
   useEffect(() => {
     fetchPagesData();
   }, []);
-  console.log(cookieData);
 
   // Update selectedCountryData whenever cookieData changes
   useEffect(() => {
@@ -129,7 +128,6 @@ export default function Footer() {
       isHidden: !storeSocialLinks?.socialTiktok,
     },
   ];
-  console.log("cookieData", cookieData);
 
   return (
     <footer className="bg-white">

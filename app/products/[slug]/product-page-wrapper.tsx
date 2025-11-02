@@ -31,7 +31,7 @@ export default function ProductPageWrapper({
 
       {/* Right Column - Product Details */}
       <div className="lg:col-span-2 w-full lg:w-[90%] p-4">
-        <div className="relative lg:h-[calc(100vh-100px)]">
+        <div className="relative">
           <div className="h-full overflow-y-auto hide-scrollbar">
             <div className="space-y-6 pb-8">
               {/* Client-side interactive components with dynamic pricing */}
