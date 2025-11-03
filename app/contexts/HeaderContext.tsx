@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { fetchHeaderData } from "@/lib/api-functions";
+import { headerMenuStaticData } from "@/lib/constant";
 
 interface MenuItem {
   label: string;
@@ -82,69 +83,7 @@ export function HeaderProvider({ children }: { children: React.ReactNode }) {
         console.error("Error fetching header data:", error);
 
         // Fallback to static data if API fails
-        setHeaderData({
-          menuData: {
-            women: {
-              categories: [
-                {
-                  label: "Topwear",
-                  slug: "topwear",
-                },
-                {
-                  label: "Bottomwear",
-                  slug: "bottomwear",
-                },
-              ],
-              featured: [
-                {
-                  label: "SALE 50% OFF",
-                  href: "/women/sale",
-                  className: "text-red-600 font-bold",
-                },
-                { label: "NEW COLLECTION", href: "/women/new" },
-              ],
-            },
-            men: {
-              categories: [
-                {
-                  label: "Topwear",
-                  slug: "topwear",
-                },
-                {
-                  label: "Bottomwear",
-                  slug: "bottomwear",
-                },
-              ],
-              featured: [
-                {
-                  label: "SALE",
-                  href: "/men/sale",
-                  className: "text-red-600 font-bold",
-                },
-                { label: "NEW COLLECTION", href: "/men/new" },
-              ],
-            },
-            kids: {
-              categories: [
-                {
-                  label: "Boys Clothing",
-                  slug: "boys-clothing",
-                },
-                {
-                  label: "Girls Clothing",
-                  slug: "girls-clothing",
-                },
-              ],
-              featured: [
-                { label: "BABY", href: "/kids/baby" },
-                { label: "GIRLS", href: "/kids/girls" },
-                { label: "BOYS", href: "/kids/boys" },
-              ],
-            },
-          },
-          isLoading: false,
-          error: null,
-        });
+        setHeaderData(headerMenuStaticData);
       }
     };
 

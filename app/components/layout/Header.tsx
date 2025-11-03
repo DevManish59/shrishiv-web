@@ -9,9 +9,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 import LoginModal from "../ui/login-modal";
 import CartModal from "../ui/cart-modal";
-import { Menu, Search, User, ShoppingBag, X, Loader2 } from "lucide-react";
+import {
+  Menu,
+  Search,
+  User,
+  ShoppingBag,
+  X,
+  Loader2,
+  ChevronDown,
+} from "lucide-react";
 import { DynamicCategory } from "@/types/header";
-
+import { headerFallbackData } from "@/lib/constant";
 interface ApiMenuData {
   categories: DynamicCategory[];
 }
@@ -31,6 +39,7 @@ export default function Header() {
   const menuRef = useRef<HTMLDivElement>(null!);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [openItems, setOpenItems] = useState<string[]>([]);
 
   const { itemCount, openCart } = useCart();
 
@@ -43,6 +52,12 @@ export default function Header() {
       clearTimeout(menuTimeoutRef.current);
     }
     setHoveredMenu(menuSlug);
+  };
+
+  const toggleItem = (id: string) => {
+    setOpenItems((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   const handleMenuLeave = () => {
@@ -79,68 +94,10 @@ export default function Header() {
         console.error("Error fetching header data:", error);
         setMenuError("Failed to load menu data");
         // Fallback to static jewelry data
-        const fallbackData: DynamicCategory[] = [
-          {
-            id: 1,
-            name: "Rings",
-            slug: "rings",
-            categories: [
-              { label: "Diamond Rings", slug: "diamond-rings" },
-              { label: "Gold Rings", slug: "gold-rings" },
-              { label: "Silver Rings", slug: "silver-rings" },
-              { label: "Platinum Rings", slug: "platinum-rings" },
-            ],
-            featured: [
-              { label: "ENGAGEMENT RINGS", slug: "engagement" },
-              { label: "WEDDING BANDS", slug: "wedding-bands" },
-            ],
-          },
-          {
-            id: 2,
-            name: "Necklaces",
-            slug: "necklaces",
-            categories: [
-              { label: "Diamond Necklaces", slug: "diamond-necklaces" },
-              { label: "Gold Necklaces", slug: "gold-necklaces" },
-              { label: "Pearl Necklaces", slug: "pearl-necklaces" },
-            ],
-            featured: [
-              { label: "PENDANTS", slug: "pendants" },
-              { label: "CHAINS", slug: "chains" },
-            ],
-          },
-          {
-            id: 3,
-            name: "Earrings",
-            slug: "earrings",
-            categories: [
-              { label: "Diamond Earrings", slug: "diamond-earrings" },
-              { label: "Gold Earrings", slug: "gold-earrings" },
-              { label: "Silver Earrings", slug: "silver-earrings" },
-            ],
-            featured: [
-              { label: "STUD EARRINGS", slug: "studs" },
-              { label: "HOOP EARRINGS", slug: "hoops" },
-            ],
-          },
-          {
-            id: 4,
-            name: "Bracelets",
-            slug: "bracelets",
-            categories: [
-              { label: "Diamond Bracelets", slug: "diamond-bracelets" },
-              { label: "Gold Bracelets", slug: "gold-bracelets" },
-              { label: "Silver Bracelets", slug: "silver-bracelets" },
-            ],
-            featured: [
-              { label: "BANGLES", slug: "bangles" },
-              { label: "CHAIN BRACELETS", slug: "chains" },
-            ],
-          },
-        ];
-        setMenuData(fallbackData);
-        if (fallbackData.length > 0) {
-          setSelectedMobileCategory(fallbackData[0].slug);
+
+        setMenuData(headerFallbackData);
+        if (headerFallbackData.length > 0) {
+          setSelectedMobileCategory(headerFallbackData[0].slug);
         }
       } finally {
         setMenuLoading(false);
@@ -376,73 +333,107 @@ export default function Header() {
             transition={{ type: "tween", duration: 0.3 }}
             className="fixed top-0 left-0 w-full h-full bg-white z-50 md:hidden overflow-y-auto"
           >
-            <div className="p-4 relative">
-              {/* Close Button */}
-              <div className="flex justify-between items-center mb-6">
-                {/* Main Categories */}
-                <div className="flex flex-col items-start space-x-6">
-                  {menuLoading ? (
-                    <div className="flex items-center space-x-2">
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                      <span className="text-sm text-gray-500">Loading...</span>
-                    </div>
-                  ) : menuError ? (
-                    <span className="text-sm text-red-500">
-                      Error loading menu
-                    </span>
-                  ) : (
-                    menuData.map((category) => (
-                      <button
-                        key={category.slug}
-                        onClick={() => setSelectedMobileCategory(category.slug)}
-                        className={`uppercase cursor-pointer ${
-                          selectedMobileCategory === category.slug
-                            ? "font-bold border-b-2 border-black"
-                            : ""
-                        }`}
-                      >
-                        {category.name}
-                      </button>
-                    ))
-                  )}
-                </div>
-              </div>
+            <div className="sticky top-0 bg-white z-10 border-b border-gray-200 flex justify-between items-center px-2.5 py-1">
+              <Link href="/">
+                <Image
+                  src="/logo.png"
+                  alt="SHRISHIV"
+                  width={150}
+                  height={30}
+                  className="h-[50px] w-[150px] object-cover"
+                  priority
+                />
+              </Link>{" "}
               <button
                 onClick={() => handleMobileMenu(false)}
-                className="p-2 hover:bg-gray-100 rounded-full cursor-pointer absolute top-4 right-4"
+                className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
               >
                 <X className="w-6 h-6" />
-              </button>
+              </button>{" "}
+            </div>
+            <div className="p-3 h-auto">
+              {menuData.map((category, index) => (
+                <motion.div
+                  key={category.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white text-black border-b border-b-gray-200 overflow-hidden"
+                >
+                  <button
+                    className="w-full px-2 py-3 text-left flex items-center justify-between transition-colors cursor-pointer"
+                    onClick={() => toggleItem(category.slug)}
+                  >
+                    <span className="font-semibold text-sm uppercase">
+                      {category.name}
+                    </span>
+                    <motion.div
+                      animate={{
+                        rotate: openItems.includes(category.slug) ? 180 : 0,
+                      }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <ChevronDown size={20} className="text-black" />
+                    </motion.div>
+                  </button>
+                  <motion.div
+                    initial={{ height: 0 }}
+                    animate={{
+                      height: openItems.includes(category.slug) ? "auto" : 0,
+                    }}
+                    transition={{ duration: 0.3 }}
+                    className="overflow-hidden text-sm"
+                  >
+                    <div className="px-6 pb-4">
+                      {category?.categories.length > 0 && (
+                        <div>
+                          <h3 className="text-gray-500 font-semibold my-2">
+                            Categories
+                          </h3>
 
-              {/* Navigation Links */}
-              <nav className="space-y-6">
-                {/* Category Specific Items */}
-                {menuData &&
-                  (() => {
-                    const selectedCategory = menuData.find(
-                      (cat) => cat.slug === selectedMobileCategory
-                    );
-                    return selectedCategory ? (
-                      <div className="space-y-6">
-                        {selectedCategory.categories.map((category, idx) => (
-                          <div key={idx} className="space-y-3">
-                            <h3 className="font-bold text-sm uppercase">
-                              {category.label}
-                            </h3>
-                            <div className="space-y-2 pl-4">
+                          {category?.categories.map((item) => (
+                            <div
+                              className="flex flex-col gap-1.5"
+                              key={item.slug}
+                            >
                               <Link
-                                href={`/${selectedMobileCategory}/${category.slug}`}
-                                className="block text-sm text-gray-600 hover:text-black transition-colors"
+                                href={`/${category.slug}/${item.slug}`}
+                                className="hover:text-gray-600 transition-colors"
+                                onClick={() => setShowMobileMenu(false)}
                               >
-                                View All {category.label}
+                                {item.label}
                               </Link>
                             </div>
-                          </div>
-                        ))}
-                      </div>
-                    ) : null;
-                  })()}
-              </nav>
+                          ))}
+                        </div>
+                      )}
+                      {/* Featured Section */}
+                      {category?.featured.length > 0 && (
+                        <div>
+                          <h3 className="text-gray-500 font-semibold my-2">
+                            Featured
+                          </h3>
+                          {category?.featured.map((item) => (
+                            <div
+                              className="flex flex-col gap-1.5"
+                              key={item.slug}
+                            >
+                              <Link
+                                href={`/${category.slug}/${item.slug}`}
+                                className="hover:text-gray-600 transition-colors mb-2"
+                                onClick={() => setShowMobileMenu(false)}
+                              >
+                                {item.label}
+                              </Link>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  </motion.div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         )}
