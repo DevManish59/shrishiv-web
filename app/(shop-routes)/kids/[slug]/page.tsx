@@ -177,14 +177,14 @@ const getFilterOptions = () => {
       { value: "50-100", label: "$50 - $100" },
       { value: "100+", label: "$100+" },
     ],
-    category: [
-      { value: "tops", label: "Tops" },
-      { value: "bottoms", label: "Bottoms" },
-      { value: "dresses", label: "Dresses" },
-      { value: "outerwear", label: "Outerwear" },
-      { value: "accessories", label: "Accessories" },
-      { value: "footwear", label: "Footwear" },
-    ],
+    // category: [
+    //   { value: "tops", label: "Tops" },
+    //   { value: "bottoms", label: "Bottoms" },
+    //   { value: "dresses", label: "Dresses" },
+    //   { value: "outerwear", label: "Outerwear" },
+    //   { value: "accessories", label: "Accessories" },
+    //   { value: "footwear", label: "Footwear" },
+    // ],
     size: [
       { value: "xs", label: "XS" },
       { value: "s", label: "S" },
@@ -260,11 +260,11 @@ export default function CollectionPage({
         ? searchParams.price
         : searchParams.price.split(",")
       : [],
-    category: searchParams.category
-      ? Array.isArray(searchParams.category)
-        ? searchParams.category
-        : searchParams.category.split(",")
-      : [],
+    // category: searchParams.category
+    //   ? Array.isArray(searchParams.category)
+    //     ? searchParams.category
+    //     : searchParams.category.split(",")
+    //   : [],
     size: searchParams.size
       ? Array.isArray(searchParams.size)
         ? searchParams.size

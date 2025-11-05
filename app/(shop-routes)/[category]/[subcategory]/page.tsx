@@ -143,14 +143,14 @@ const getFilterOptions = () => {
       { value: "50-100", label: "$50 - $100" },
       { value: "100+", label: "$100+" },
     ],
-    category: [
-      { value: "tops", label: "Tops" },
-      { value: "bottoms", label: "Bottoms" },
-      { value: "dresses", label: "Dresses" },
-      { value: "outerwear", label: "Outerwear" },
-      { value: "accessories", label: "Accessories" },
-      { value: "footwear", label: "Footwear" },
-    ],
+    // category: [
+    //   { value: "tops", label: "Tops" },
+    //   { value: "bottoms", label: "Bottoms" },
+    //   { value: "dresses", label: "Dresses" },
+    //   { value: "outerwear", label: "Outerwear" },
+    //   { value: "accessories", label: "Accessories" },
+    //   { value: "footwear", label: "Footwear" },
+    // ],
     size: [
       { value: "xs", label: "XS" },
       { value: "s", label: "S" },
@@ -463,11 +463,11 @@ export default async function SubcategoryPage({
         <div className="relative min-h-[80vh]">
           <StickyFilterBar
             filterOptions={getFilterOptions()}
-            activeFilters={{ price: [], category: [], size: [], color: [] }}
+            activeFilters={{ price: [], size: [], color: [] }}
             searchParams={resolvedSearchParams}
           />
           <ActiveFilters
-            activeFilters={{ price: [], category: [], size: [], color: [] }}
+            activeFilters={{ price: [], size: [], color: [] }}
             filterOptions={getFilterOptions()}
             searchParams={resolvedSearchParams}
           />
@@ -486,11 +486,11 @@ export default async function SubcategoryPage({
         ? resolvedSearchParams.price
         : resolvedSearchParams.price?.split(",")
       : [],
-    category: resolvedSearchParams.category
-      ? Array.isArray(resolvedSearchParams.category)
-        ? resolvedSearchParams.category
-        : resolvedSearchParams.category.split(",")
-      : [],
+    // category: resolvedSearchParams.category
+    //   ? Array.isArray(resolvedSearchParams.category)
+    //     ? resolvedSearchParams.category
+    //     : resolvedSearchParams.category.split(",")
+    //   : [],
     size: resolvedSearchParams.size
       ? Array.isArray(resolvedSearchParams.size)
         ? resolvedSearchParams.size
