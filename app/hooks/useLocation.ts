@@ -7,6 +7,7 @@ export interface LocationData {
   city: string;
   country: string;
   flag: string;
+  language: string;
 }
 
 export function useLocation() {
@@ -16,9 +17,12 @@ export function useLocation() {
   useEffect(() => {
     const fetchWithIP = async () => {
       try {
-        const ipRes = await fetch("/api/ip");
+        // We are getting this in client side
+        const ipRes = await fetch("https://api.ipify.org?format=json");
         const { ip } = await ipRes.json();
 
+        // Get geolocation info from IP
+        const geoData = await fetchLocationData(ip);
         const cached = JSON.parse(
           localStorage.getItem("user-location") || "{}"
         );
@@ -29,26 +33,16 @@ export function useLocation() {
           return;
         }
 
-        const data = await fetchLocationData();
-        const freshLocation: LocationData = {
-          countryCode: data.countryCode ?? "IN",
-          city: data.city ?? "Unknown",
-          country: data.country ?? "Unknown",
-          flag: getFlagEmoji(data.countryCode ?? "IN"),
-        };
-
-        setLocation(freshLocation);
-        localStorage.setItem(
-          "user-location",
-          JSON.stringify({ ip, data: freshLocation })
-        );
+        setLocation(geoData);
+        localStorage.setItem("user-location", JSON.stringify({ ip, geoData }));
       } catch (error) {
         console.error("Location fetch error:", error);
         const fallback: LocationData = {
-          countryCode: "IN",
+          countryCode: "in",
           city: "Unknown",
           country: "India",
           flag: getFlagEmoji("IN"),
+          language: "en",
         };
         setLocation(fallback);
       } finally {

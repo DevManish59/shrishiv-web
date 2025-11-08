@@ -39,3 +39,19 @@ export interface ApiProduct {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface FilterAttribute {
+  attributeId: number;
+  name: string;
+  count: number;
+}
+
+export interface FilterParentGroup {
+  parentId: number;
+  parentName: string;
+  attributes: FilterAttribute[];
+}
+
+export interface FilterTransformedData {
+  [key: string]: { value: string; label: string }[];
+}

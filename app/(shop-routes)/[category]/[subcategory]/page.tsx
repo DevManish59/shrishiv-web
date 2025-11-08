@@ -4,6 +4,7 @@ import ProductGrid from "@/components/product-grid";
 import ActiveFilters from "@/components/active-filter";
 import StickyFilterBar from "@/components/sticky-filter-bar";
 import Image from "next/image";
+import { FilterParentGroup, FilterTransformedData } from "@/types/product";
 
 interface PageProps {
   params: {
@@ -12,30 +13,6 @@ interface PageProps {
   };
   searchParams: { [key: string]: string | string[] | undefined };
 }
-
-const initialValueOfCategory = {
-  id: 0,
-  name: "",
-  slug: "",
-  parentCategoryName: "",
-  displayOrder: "",
-  shortDescription: "",
-  longDescription: "",
-  images: "",
-  imageUrls: "",
-  metaTitle: "",
-  metaKeyword: [],
-  metaTag: [],
-  metaDescription: "",
-  url: "",
-  published: false,
-  featured: false,
-  existingImages: undefined,
-  deleted: null,
-  createdAt: "",
-  updatedAt: null,
-  subCategories: [],
-};
 
 // Define the product interface based on your API response
 interface ApiProduct {
@@ -135,7 +112,20 @@ interface CategoryData {
   // }>;
 }
 
-const getFilterOptions = () => {
+const getFilterOptions = (
+  filterData: FilterParentGroup[]
+): FilterTransformedData => {
+  if (filterData.length > 0) {
+    const transformed = filterData.reduce((acc: any, item: any) => {
+      acc[item.parentName.toLowerCase().replace(/\s+/g, "_")] =
+        item.attributes.map((attr: any) => ({
+          value: attr.name.toLowerCase().replace(/\s+/g, "-"),
+          label: attr.name,
+        }));
+      return acc;
+    }, {});
+    return transformed;
+  }
   return {
     price: [
       { value: "0-30", label: "Under $30" },
@@ -368,6 +358,9 @@ export default async function SubcategoryPage({
 
   const categoryApiUrl = `${externalApiUrl}/web/category/by-slug?slug=${subcategory}`;
   const productApiUrl = `${externalApiUrl}/product/by-category?slug=${subcategory}`;
+  const filterApiUrl = `${externalApiUrl}/web/filters?categorySlug=${subcategory}`;
+
+  let filterData = [];
 
   let categoryData: CategoryData = {
     id: 0,
@@ -395,21 +388,24 @@ export default async function SubcategoryPage({
   let allProductsData: any[] = [];
   try {
     // Fetch category & products concurrently
-    const [categoryResponse, productResponse] = await Promise.all([
-      fetch(categoryApiUrl, { cache: "no-store" }),
-      fetch(productApiUrl, { cache: "no-store" }),
-    ]);
+    const [categoryResponse, productResponse, filterResponse] =
+      await Promise.all([
+        fetch(categoryApiUrl, { cache: "no-store" }),
+        fetch(productApiUrl, { cache: "no-store" }),
+        fetch(filterApiUrl, { cache: "no-store" }),
+      ]);
 
     // Validate responses
-    if (!categoryResponse.ok || !productResponse.ok) {
+    if (!categoryResponse.ok || !productResponse.ok || !filterResponse.ok) {
       throw new Error(
         `Failed to fetch data: category=${categoryResponse.status}, product=${productResponse.status}`
       );
     }
 
-    [categoryData, allProductsData] = await Promise.all([
+    [categoryData, allProductsData, filterData] = await Promise.all([
       categoryResponse.json(),
       productResponse.json(),
+      filterResponse.json(),
     ]);
   } catch (error) {
     console.error(
@@ -477,7 +473,7 @@ export default async function SubcategoryPage({
     );
   }
 
-  const filterOptions = getFilterOptions();
+  const filterOptions = getFilterOptions(filterData);
 
   // Extract filter params from URL
   const activeFilters = {
@@ -501,6 +497,20 @@ export default async function SubcategoryPage({
         ? resolvedSearchParams.color
         : resolvedSearchParams.color.split(",")
       : [],
+  };
+
+  const fetchFilterCategories = async () => {
+    const res = await fetch(
+      `${process.env.EXTERNAL_API_URL}/web/filters?categorySlug=${pathname
+        .split("/")
+        .pop()}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    const filterData = res.json();
+    setDynamicFilters(filterData);
   };
 
   return (
