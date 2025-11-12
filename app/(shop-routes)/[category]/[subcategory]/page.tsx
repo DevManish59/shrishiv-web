@@ -113,10 +113,10 @@ interface CategoryData {
 }
 
 const getFilterOptions = (
-  filterData: FilterParentGroup[]
+  filterData?: FilterParentGroup[]
 ): FilterTransformedData => {
-  if (filterData.length > 0) {
-    const transformed = filterData.reduce((acc: any, item: any) => {
+  if (filterData?.length > 0) {
+    const transformed = filterData?.reduce((acc: any, item: any) => {
       acc[item.parentName.toLowerCase().replace(/\s+/g, "_")] =
         item.attributes.map((attr: any) => ({
           value: attr.name.toLowerCase().replace(/\s+/g, "-"),
@@ -396,10 +396,15 @@ export default async function SubcategoryPage({
       ]);
 
     // Validate responses
-    if (!categoryResponse.ok || !productResponse.ok || !filterResponse.ok) {
+    if (!categoryResponse.ok) {
       throw new Error(
         `Failed to fetch data: category=${categoryResponse.status}, product=${productResponse.status}`
       );
+    }
+    if (!productResponse.ok) {
+      allProductsData = generateDummyData(category, subcategory);
+    }
+    if (!filterResponse.ok) {
     }
 
     [categoryData, allProductsData, filterData] = await Promise.all([
@@ -497,20 +502,6 @@ export default async function SubcategoryPage({
         ? resolvedSearchParams.color
         : resolvedSearchParams.color.split(",")
       : [],
-  };
-
-  const fetchFilterCategories = async () => {
-    const res = await fetch(
-      `${process.env.EXTERNAL_API_URL}/web/filters?categorySlug=${pathname
-        .split("/")
-        .pop()}`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    const filterData = res.json();
-    setDynamicFilters(filterData);
   };
 
   return (
