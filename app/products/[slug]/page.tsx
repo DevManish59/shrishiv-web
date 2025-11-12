@@ -193,10 +193,8 @@ export default async function ProductPage({
   let product: ReturnType<typeof transformApiProduct>;
 
   try {
-    // Fetch data from our API route (following consistent pattern)
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/products/${slug}`;
-
     const response = await fetch(apiUrl, {
       cache: "no-store", // Disable caching for dynamic data
     });
@@ -235,7 +233,7 @@ export default async function ProductPage({
       />
 
       {/* Reviews Section */}
-      <ReviewsPage productId={product.id} productName={product.name} />
+      <ReviewsPage />
 
       {/* Cart Modal */}
       <CartModal />

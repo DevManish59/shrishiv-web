@@ -3,7 +3,7 @@ import { Product } from "@/lib/types";
 
 interface SimilarProductsProps {
   products: Product[];
-  currentProductId?: string; // To exclude current product from similar products if needed
+  currentProductId?: string | number; // To exclude current product from similar products if needed
 }
 
 export default function SimilarProducts({

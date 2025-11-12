@@ -322,7 +322,7 @@ export default function ReviewsPage() {
                           <span>
                             Posted on{" "}
                             {formatDate(
-                              review?.createdAt || (Date.now() as string)
+                              review?.createdAt || Date.now().toString()
                             )}
                           </span>
                           {/* <span>{review.helpfulCount} found this helpful</span> */}

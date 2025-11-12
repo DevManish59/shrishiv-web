@@ -1,14 +1,7 @@
+import { ProductGridProduct } from "@/types/product";
 import ProductCard from "./product-card";
 
 // Define the product interface that ProductCard actually expects
-interface ProductGridProduct {
-  id: string | number;
-  name: string;
-  price: number;
-  originalPrice?: number;
-  image: string;
-}
-
 interface ProductGridProps {
   products: ProductGridProduct[];
   basePath?: string;

@@ -1,5 +1,5 @@
 export interface User {
-  id: string;
+  id: string | number;
   email: string;
   name: string;
   role: "user" | "admin";
@@ -8,7 +8,7 @@ export interface User {
 }
 
 export interface Category {
-  id: string;
+  id: string | number;
   name: string;
   slug: string;
   description: string;
@@ -20,7 +20,7 @@ export interface Category {
 }
 
 export interface Product {
-  id: string;
+  id: string | number;
   name: string;
   slug: string;
   description: string;
@@ -30,7 +30,7 @@ export interface Product {
   sku: string;
   stock: number;
   rating: number;
-  images: string[];
+  images?: string[] | string;
   categoryIds: string[];
   tags: string[];
   featured: boolean;
@@ -48,14 +48,14 @@ export interface Product {
 }
 
 export interface CartItem {
-  id: string;
+  id: string | number;
   productId: string;
   quantity: number;
   price: number;
 }
 
 export interface Cart {
-  id: string;
+  id: string | number;
   userId?: string;
   items: CartItem[];
   subtotal: number;
@@ -67,7 +67,7 @@ export interface Cart {
 }
 
 export interface Order {
-  id: string;
+  id: string | number;
   userId: string;
   items: CartItem[];
   subtotal: number;
@@ -99,7 +99,7 @@ export interface Address {
 }
 
 export interface Coupon {
-  id: string;
+  id: string | number;
   code: string;
   type: "percentage" | "fixed";
   value: number;
@@ -114,7 +114,7 @@ export interface Coupon {
 }
 
 export interface Wishlist {
-  id: string;
+  id: string | number;
   userId: string;
   productIds: string[];
   createdAt: Date;
@@ -122,7 +122,7 @@ export interface Wishlist {
 }
 
 export interface Review {
-  id: string;
+  id: string | number;
   rating: number;
   title: string;
   comment: string;
@@ -193,7 +193,7 @@ export interface AttributeValue {
 }
 
 export interface ApiProduct {
-  id: number;
+  id: string | number;
   productName: string;
   shortDescription: string;
   pointOne: string | null;
@@ -222,7 +222,7 @@ export interface ApiProduct {
 
 // Transformed Product Type for UI
 export interface TransformedProduct {
-  id: string;
+  id: number | string;
   name: string;
   price: number;
   originalPrice: number; // Made required
@@ -284,7 +284,7 @@ export interface DynamicPageItem {
   name: string;
   title: string;
   description: string;
-  longDesc: any;
+  longDesc: string;
   pageUrl: string;
   displayOrder: number;
   images: string | null; // depends on your API, could also be File[] if uploading

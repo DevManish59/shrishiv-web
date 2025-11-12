@@ -1,5 +1,5 @@
 export interface ApiProduct {
-  id: number;
+  id: number | string;
   productName: string;
   shortDescription: string;
   pointOne: string | null;
@@ -54,4 +54,13 @@ export interface FilterParentGroup {
 
 export interface FilterTransformedData {
   [key: string]: { value: string; label: string }[];
+}
+
+export interface ProductGridProduct {
+  id: string | number;
+  name: string;
+  price: number;
+  originalPrice?: number;
+  image: string[] | string;
+  images?: string[] | string;
 }
