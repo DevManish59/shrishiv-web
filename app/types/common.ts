@@ -22,6 +22,8 @@ export interface Language {
   };
 }
 export interface SelectedCountry {
-  name: string;
-  languages: { code: string; name: string };
+  countryCode: string;
+  languageCode: string;
+  // country: { code: string; name: string };
+  // languages: { code: string; name: string };
 }

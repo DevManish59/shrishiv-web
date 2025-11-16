@@ -1,4 +1,6 @@
-export async function fetchLocationData(ip: string) {
+import { LocationData } from "@/hooks/useLocation";
+
+export async function fetchLocationData(ip: string): Promise<LocationData> {
   try {
     // const apiKey = "3085ec9551ec4a50a06f6c8de8c98573";
     // if (!apiKey) throw new Error("IP Geolocation API key is not defined");
@@ -6,8 +8,8 @@ export async function fetchLocationData(ip: string) {
     //   `https://api.ipgeolocation.io/ipgeo?apiKey=${apiKey}`
     // );
     // if (!resOld.ok) throw new Error("Failed to fetch location data");
-    // const dataOld = await resOld.json();
-    // console.log("dataOld", dataOld);
+    // const data = await resOld.json();
+    // console.log("data", data);
 
     const res = await fetch(`https://ipapi.co/${ip}/json/`);
     if (!res.ok) throw new Error("Failed to fetch location data");
@@ -23,7 +25,7 @@ export async function fetchLocationData(ip: string) {
         .toLowerCase(),
     };
   } catch {
-    return { countryCode: "", country: "", city: "", flag: "" };
+    return { countryCode: "", country: "", city: "", flag: "", language: "" };
   }
 }
 

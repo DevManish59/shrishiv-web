@@ -26,7 +26,6 @@ export default function ProductStickyBar({ product }: ProductStickyBarProps) {
   };
 
   useEffect(() => {
-    console.log("useEffect");
     const handleScroll = () => {
       const productDetails = document.getElementById("product-details");
       console.log(productDetails);
