@@ -1,8 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useCookieManager } from "@/hooks/useCookieManager";
-import { COOKIE_KEY_COUNTRY_ISO, COOKIE_KEY_LANGUAGE_ISO } from "@/constants";
+import { useCookieManager } from "@/hooks/useCookie";
+import {
+  COOKIE_KEY_COUNTRY_ISO,
+  COOKIE_KEY_LANGUAGE_ISO,
+} from "@/lib/cookie-constant";
 
 export default function LocalizedLink({ href, children, ...props }: any) {
   const { cookieValues } = useCookieManager([

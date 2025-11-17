@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Link from "next/link";
 import Image from "next/image";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { motion, AnimatePresence } from "framer-motion";
+import LocalizedLink from "./LocalizedLink";
 // import { useCart } from "@/contexts/CartContext";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 import LoginModal from "../ui/login-modal";
@@ -165,7 +165,7 @@ export default function Header() {
 
           {/* Center: Logo */}
           <div className="sm:mx-auto mr-[30%] text-center">
-            <Link
+            <LocalizedLink
               href="/"
               // className="absolute left-1/2 transform -translate-x-1/2"
             >
@@ -177,7 +177,7 @@ export default function Header() {
                 className="h-[60px] w-[150px] object-cover"
                 priority
               />
-            </Link>
+            </LocalizedLink>
           </div>
 
           {/* Right: Search + Auth */}
@@ -271,13 +271,13 @@ export default function Header() {
                         {categories.length ? (
                           <div className="grid grid-cols-2 gap-2">
                             {categories.map((item) => (
-                              <Link
+                              <LocalizedLink
                                 key={item.slug}
                                 href={`/${hoveredMenu}/${item.slug}`}
                                 className="hover:text-gray-600 transition-colors"
                               >
                                 {item.label}
-                              </Link>
+                              </LocalizedLink>
                             ))}
                           </div>
                         ) : null}
@@ -289,13 +289,13 @@ export default function Header() {
                         {featured.length ? (
                           <div className="grid grid-cols-2 gap-2">
                             {featured.map((item) => (
-                              <Link
+                              <LocalizedLink
                                 key={item.slug}
                                 href={`/${hoveredMenu}/${item.slug}`}
                                 className="hover:text-gray-600 transition-colors"
                               >
                                 {item.label}
-                              </Link>
+                              </LocalizedLink>
                             ))}
                           </div>
                         ) : null}
@@ -334,7 +334,7 @@ export default function Header() {
             className="fixed top-0 left-0 w-full h-full bg-white z-50 md:hidden overflow-y-auto"
           >
             <div className="sticky top-0 bg-white z-10 border-b border-gray-200 flex justify-between items-center px-2.5 py-1">
-              <Link href="/">
+              <LocalizedLink href="/">
                 <Image
                   src="/logo.png"
                   alt="SHRISHIV"
@@ -343,7 +343,7 @@ export default function Header() {
                   className="h-[50px] w-[150px] object-cover"
                   priority
                 />
-              </Link>{" "}
+              </LocalizedLink>{" "}
               <button
                 onClick={() => handleMobileMenu(false)}
                 className="p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
@@ -397,13 +397,13 @@ export default function Header() {
                               className="flex flex-col gap-1.5"
                               key={item.slug}
                             >
-                              <Link
+                              <LocalizedLink
                                 href={`/${category.slug}/${item.slug}`}
                                 className="hover:text-gray-600 transition-colors"
                                 onClick={() => setShowMobileMenu(false)}
                               >
                                 {item.label}
-                              </Link>
+                              </LocalizedLink>
                             </div>
                           ))}
                         </div>
@@ -419,13 +419,13 @@ export default function Header() {
                               className="flex flex-col gap-1.5"
                               key={item.slug}
                             >
-                              <Link
+                              <LocalizedLink
                                 href={`/${category.slug}/${item.slug}`}
                                 className="hover:text-gray-600 transition-colors mb-2"
                                 onClick={() => setShowMobileMenu(false)}
                               >
                                 {item.label}
-                              </Link>
+                              </LocalizedLink>
                             </div>
                           ))}
                         </div>

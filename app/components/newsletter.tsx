@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import LocalizedLink from "./layout/LocalizedLink";
 
 export default function Newsletter() {
   const [email, setEmail] = useState("");
@@ -62,9 +63,9 @@ export default function Newsletter() {
 
           <p className="text-xs text-gray-500 mt-4">
             By subscribing you confirm that you have read the{" "}
-            <Link href="/p/privacy-policy" className="underline">
+            <LocalizedLink href="/p/privacy-policy" className="underline">
               Privacy Policy
-            </Link>
+            </LocalizedLink>
             .
           </p>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import CountrySelectorModal from "../ui/country-selector-modal";
+import LocalizedLink from "./LocalizedLink";
 import {
   Loader2,
   Facebook,
@@ -22,6 +22,7 @@ import {
   COOKIE_KEY_LANGUAGE_ISO,
 } from "@/lib/cookie-constant";
 import { useCookieManager } from "@/hooks/useCookie";
+import Link from "next/link";
 
 export default function Footer() {
   const [showCountrySelector, setShowCountrySelector] =
@@ -196,7 +197,7 @@ export default function Footer() {
           <div className="flex justify-center mb-8">
             <button
               onClick={() => setShowCountrySelector(true)}
-              className="text-sm hover:opacity-70 flex items-center gap-2 cursor-pointer"
+              className="text-sm hover:opacity-70 flex items-center gap-2 cursor-pointer uppercase"
             >
               {selectedCountryName || "INDIA"}
               <svg
@@ -244,13 +245,13 @@ export default function Footer() {
             <div className="grid grid-cols-2 lg:grid-cols-4 md:gap-8 gap-1 md:gap-y-4">
               {pageListdata.length > 0 &&
                 pageListdata.map((pageItem: DynamicPageItem, idx) => (
-                  <Link
+                  <LocalizedLink
                     key={idx}
                     href={`/p/${pageItem?.pageUrl}`}
                     className="hover:opacity-70 sm:text-sm text-[13px] uppercase"
                   >
                     {pageItem?.name}
-                  </Link>
+                  </LocalizedLink>
                 ))}
             </div>
           )}

@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
+import LocalizedLink from "./layout/LocalizedLink";
 
 interface Props {
   product: {
@@ -52,7 +52,7 @@ export default function ProductCard({
       transition={{ duration: 0.3 }}
       className="group relative"
     >
-      <Link href={`${basePath}/${product.id}`} className="block">
+      <LocalizedLink href={`${basePath}/${product.id}`} className="block">
         <div
           className={`aspect-[3/4] w-full overflow-hidden relative ${
             imageError || !imageLoaded || !product.image
@@ -117,7 +117,7 @@ export default function ProductCard({
             )}
           </div>
         </div>
-      </Link>
+      </LocalizedLink>
     </motion.div>
   );
 }
