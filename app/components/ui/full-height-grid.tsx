@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import Link from "next/link";
 import { motion } from "framer-motion";
 import { UnifiedItem } from "@/lib/types";
+import LocalizedLink from "../layout/LocalizedLink";
 
 interface FullHeightGridProps {
   items: UnifiedItem[];
@@ -13,7 +13,7 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-1">
       {items.map((item) => (
-        <Link
+        <LocalizedLink
           key={item.id}
           href={`${item.href || item.slug || "#"}`}
           className={`relative group overflow-hidden h-svh ${
@@ -61,7 +61,7 @@ export default function FullHeightGrid({ items }: FullHeightGridProps) {
               </div>
             </div>
           </motion.div>
-        </Link>
+        </LocalizedLink>
       ))}
     </div>
   );

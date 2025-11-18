@@ -1,4 +1,4 @@
-import FullHeightGrid from "../components/ui/full-height-grid";
+import FullHeightGrid from "../../components/ui/full-height-grid";
 
 const gridItems = [
   {

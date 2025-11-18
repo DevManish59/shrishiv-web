@@ -1,121 +1,79 @@
 "use client";
 import { Loader2, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Country, Language, SelectedCountry } from "../../types/common";
-import { useSharedCookie } from "@/hooks/useSharedCookie";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  COOKIE_KEY_COUNTRY_ISO,
+  COOKIE_KEY_LANGUAGE_ISO,
+} from "@/lib/cookie-constant";
+import { useCookieManager } from "@/hooks/useCookie";
 
 interface CountrySelectorModalProps {
   isOpen: boolean;
   onClose: () => void;
+  countryData: Country[];
+  languageData: Language[];
+  isDataFetching: boolean;
 }
 
 export default function CountrySelectorModal({
   isOpen,
   onClose,
+  countryData,
+  languageData,
+  isDataFetching,
 }: CountrySelectorModalProps) {
-  const { cookieData, updateCookie } = useSharedCookie();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const { cookieValues, setCookieValues } = useCookieManager([
+    COOKIE_KEY_COUNTRY_ISO,
+    COOKIE_KEY_LANGUAGE_ISO,
+  ]);
+
   const [selectedData, setSelectedData] = useState<SelectedCountry>({
-    name: "India",
-    languages: { code: "en", name: "English" },
+    countryCode: cookieValues.countryISO || "in",
+    languageCode: cookieValues.languageISO || "en",
   });
 
-  const [countries, setCountries] = useState<Country[]>([]);
-  const [languages, setLanguages] = useState<Language[]>([]);
-
-  const fetchCountryAndLanguage = async () => {
-    try {
-      setIsLoading(true);
-      const endpoints = {
-        country: `${process.env.EXTERNAL_API_URL}/countries`,
-        language: `${process.env.EXTERNAL_API_URL}/web/common/languages`,
-      };
-
-      // Fetch both in parallel
-      const [countryRes, languageRes] = await Promise.all([
-        fetch(endpoints.country, { cache: "no-store" }),
-        fetch(endpoints.language, { cache: "no-store" }),
-      ]);
-
-      // Check for failed responses
-      if (!countryRes.ok || !languageRes.ok) {
-        throw new Error(
-          `External API failed: country=${countryRes.status} language=${languageRes.status}`
-        );
-      }
-
-      const [countryData, languageData] = await Promise.all([
-        countryRes.json(),
-        languageRes.json(),
-      ]);
-
-      const publishedCountry = countryData.filter(
-        (country: Country) => country.published
-      );
-      const sortedLanguages = languageData.sort((a: any, b: any) =>
-        a.name.localeCompare(b.name)
-      );
-
-      setCountries(publishedCountry);
-      setLanguages(sortedLanguages);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching country and language:", error);
-      setIsLoading(false);
-    }
-  };
-
   useEffect(() => {
-    if (isOpen) {
-      fetchCountryAndLanguage();
-      if (cookieData?.selectedCountryAndLang) {
-        // If cookie exists, use it to set the state
-        setSelectedData(cookieData.selectedCountryAndLang);
-      } else {
-        // If cookie doesn't exist, set the initial value in cookie
-        updateCookie({
-          selectedCountryAndLang: {
-            name: "India",
-            languages: { code: "en", name: "English" },
-          },
-        });
-      }
-    }
-  }, [isOpen]);
+    if (!isOpen) return;
+
+    setSelectedData({
+      countryCode: cookieValues.countryISO || "in",
+      languageCode: cookieValues.languageISO || "en",
+    });
+  }, [isOpen, cookieValues.countryISO, cookieValues.languageISO]);
 
   // Prevent background scroll when modal is open
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
+    document.body.style.overflow = isOpen ? "hidden" : "unset";
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
 
-  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const languageCode = e.target.value;
-
-    // Find the selected language from the languages array
-    const selectedLang = languages.find(
-      (lang) => lang.data.code === languageCode
-    );
-
-    if (selectedLang) {
-      setSelectedData({
-        ...selectedData,
-        languages: {
-          code: selectedLang.data.code,
-          name: selectedLang.name,
-        },
-      });
-    }
-  };
+  const handleLanguageChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      const langCode = e.target.value;
+      setSelectedData((prev) => ({
+        ...prev,
+        languageCode: langCode,
+      }));
+    },
+    []
+  );
 
   const handleAccept = () => {
-    updateCookie({ selectedCountryAndLang: selectedData });
+    setCookieValues({
+      [COOKIE_KEY_COUNTRY_ISO]: selectedData.countryCode,
+      [COOKIE_KEY_LANGUAGE_ISO]: selectedData.languageCode,
+    });
+    const cleanPath = pathname.replace(/^\/[a-z]{2}-[a-z]{2}/, "") || "/";
+    const locale = `${selectedData.countryCode}-${selectedData.languageCode}`;
+
+    router.push(`/${locale}${cleanPath}`);
     onClose();
   };
 
@@ -135,7 +93,7 @@ export default function CountrySelectorModal({
         </div>
 
         <div className="p-6">
-          {isLoading ? (
+          {isDataFetching ? (
             <div className="flex items-center space-x-2 justify-center px-6 py-10 my-10">
               <Loader2 className="w-4 h-4 animate-spin" />
               <span className="text-base text-gray-500">Loading...</span>
@@ -148,14 +106,20 @@ export default function CountrySelectorModal({
                 </label>
                 <div className="relative">
                   <select
-                    value={selectedData.name}
+                    value={selectedData.countryCode}
                     onChange={(e) =>
-                      setSelectedData({ ...selectedData, name: e.target.value })
+                      setSelectedData({
+                        ...selectedData,
+                        countryCode: e.target.value,
+                      })
                     }
                     className="w-full border p-2 pr-8 appearance-none bg-white cursor-pointer"
                   >
-                    {countries.map((country) => (
-                      <option key={country.name} value={country.name}>
+                    {countryData.map((country) => (
+                      <option
+                        key={country.name}
+                        value={country.iso2.toLowerCase()}
+                      >
                         {country.name}
                       </option>
                     ))}
@@ -182,11 +146,11 @@ export default function CountrySelectorModal({
                 <label className="block text-sm mb-2">Select a language</label>
                 <div className="relative">
                   <select
-                    value={selectedData.languages.code}
+                    value={selectedData.languageCode}
                     onChange={handleLanguageChange}
                     className="w-full border p-2 pr-8 appearance-none bg-white cursor-pointer"
                   >
-                    {languages.map((language) => (
+                    {languageData.map((language) => (
                       <option
                         key={language.data.code}
                         value={language.data.code}

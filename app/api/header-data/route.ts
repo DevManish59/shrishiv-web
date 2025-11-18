@@ -1,9 +1,11 @@
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
 import {
   DynamicCategory,
   HeaderCategory,
   ParentCategory,
   SubCategory,
 } from "@/types/header";
+import { NextApiRequest } from "next";
 import { NextResponse } from "next/server";
 
 type NewApiResponse = ParentCategory[];
@@ -24,9 +26,11 @@ interface OldApiResponse {
 // Cache duration in seconds
 const CACHE_DURATION = 3600; // 1 hour
 
-export async function GET() {
+export async function GET(req: NextApiRequest) {
   try {
     // Check if we have cached data
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
     const cachedData = await getCachedHeaderData();
     if (cachedData) {
       return NextResponse.json(cachedData, {
@@ -46,6 +50,9 @@ export async function GET() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
       },
       // Add timeout
       signal: AbortSignal.timeout(5000), // 5 second timeout

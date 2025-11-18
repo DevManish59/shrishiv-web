@@ -3,9 +3,9 @@
 import { useSharedCookie } from "@/hooks/useSharedCookie";
 import { fallbackBannerData } from "@/lib/constant";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
+import LocalizedLink from "../layout/LocalizedLink";
 
 interface SingleBannerProps {
   data?: {
@@ -83,12 +83,12 @@ export default function SingleBanner({ data }: SingleBannerProps) {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Link
+                <LocalizedLink
                   href={`/${bannerData.slug}`}
                   className="inline-block bg-white text-black px-8 py-3 rounded-full font-semibold text-lg transition-all hover:bg-gray-100 shadow-lg"
                 >
-                  {bannerData.buttonText || "Shop Now"}
-                </Link>
+                  {bannerData.buttonText}
+                </LocalizedLink>
               </motion.div>
             )}
           </div>

@@ -75,7 +75,7 @@ export default function ActiveFilters({
   };
 
   return (
-    <div className="mb-6 flex flex-wrap gap-2">
+    <div className="my-2.5 mx-5 flex flex-wrap gap-2">
       {Object.entries(activeFilters).flatMap(([category, values]) =>
         values.map((value) => {
           const option = filterOptions[category]?.find(

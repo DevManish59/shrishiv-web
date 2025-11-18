@@ -28,19 +28,20 @@ export const loadModelViewer = (): Promise<void> => {
   loadPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
     script.type = "module";
-    script.src = "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
-    
+    script.src =
+      "https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js";
+
     script.onload = () => {
       isScriptLoaded = true;
       isScriptLoading = false;
       resolve();
     };
-    
+
     script.onerror = () => {
       isScriptLoading = false;
       reject(new Error("Failed to load Model Viewer script"));
     };
-    
+
     document.head.appendChild(script);
   });
 
@@ -49,4 +50,4 @@ export const loadModelViewer = (): Promise<void> => {
 
 export const isModelViewerAvailable = (): boolean => {
   return isScriptLoaded || customElements.get("model-viewer") !== undefined;
-}; 
+};

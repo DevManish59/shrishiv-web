@@ -101,7 +101,9 @@ export const products: Product[] = [
   },
 ];
 
-export const mockFeaturedProducts = products.filter(product => product.featured);
+export const mockFeaturedProducts = products.filter(
+  (product) => product.featured
+);
 
 export const mockCategories: Category[] = [
   {
@@ -111,7 +113,7 @@ export const mockCategories: Category[] = [
     description: "Beautiful lab grown diamond engagement rings",
     image: "/categories/engagement-rings.jpg",
     featured: true,
-    height: "tall"
+    height: "tall",
   },
   {
     id: "2",
@@ -120,7 +122,7 @@ export const mockCategories: Category[] = [
     description: "Elegant wedding bands for your special day",
     image: "/categories/wedding-bands.jpg",
     featured: true,
-    height: "tall"
+    height: "tall",
   },
   {
     id: "3",
@@ -129,7 +131,7 @@ export const mockCategories: Category[] = [
     description: "Stunning lab grown diamond earrings",
     image: "/categories/earrings.jpg",
     featured: false,
-    height: "short"
+    height: "short",
   },
   {
     id: "4",
@@ -138,8 +140,8 @@ export const mockCategories: Category[] = [
     description: "Beautiful lab grown diamond necklaces",
     image: "/categories/necklaces.jpg",
     featured: false,
-    height: "short"
-  }
+    height: "short",
+  },
 ];
 
 export const mockReviews = [
@@ -147,78 +149,87 @@ export const mockReviews = [
     id: "1",
     rating: 5,
     title: "Exceptional Quality and Service!",
-    comment: "This ring is even more beautiful in person! The craftsmanship is outstanding, and the customer service was exceptional. The sparkle and detail are exactly what I was hoping for. Shipping was super quick, and the ring paperwork actually shows that the ring is even better than described!",
+    comment:
+      "This ring is even more beautiful in person! The craftsmanship is outstanding, and the customer service was exceptional. The sparkle and detail are exactly what I was hoping for. Shipping was super quick, and the ring paperwork actually shows that the ring is even better than described!",
     author: "Rebecca M.",
     date: "2024-03-15",
     isVerified: true,
     helpfulCount: 12,
     media: [
       "https://images.pexels.com/photos/1721937/pexels-photo-1721937.jpeg",
-      "https://images.pexels.com/photos/1721938/pexels-photo-1721938.jpeg"
+      "https://images.pexels.com/photos/1721938/pexels-photo-1721938.jpeg",
     ],
     storeResponse: {
-      response: "Thank you for your fantastic feedback and for sharing the photos! We're thrilled to hear that you love the ring even more in person. It was a pleasure working with you, and we're glad the shipping was quick. Enjoy your beautiful ring!",
-      date: "2024-03-16"
-    }
+      response:
+        "Thank you for your fantastic feedback and for sharing the photos! We're thrilled to hear that you love the ring even more in person. It was a pleasure working with you, and we're glad the shipping was quick. Enjoy your beautiful ring!",
+      date: "2024-03-16",
+    },
   },
   {
     id: "2",
     rating: 5,
     title: "Dream Ring Come True",
-    comment: "Can not say enough good things about this jeweler! They created my dream ring, and it's even more beautiful in person! The communication was excellent every step of the way and the ring came relatively quickly! The band is sturdy, the prongs are perfect, and the sparkle is unreal! Everything checks out and I couldn't be more happy! I've received so many compliments!",
+    comment:
+      "Can not say enough good things about this jeweler! They created my dream ring, and it's even more beautiful in person! The communication was excellent every step of the way and the ring came relatively quickly! The band is sturdy, the prongs are perfect, and the sparkle is unreal! Everything checks out and I couldn't be more happy! I've received so many compliments!",
     author: "Kristin W.",
     date: "2024-03-10",
     isVerified: true,
     helpfulCount: 15,
     media: [
-      "https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg"
+      "https://images.pexels.com/photos/2735970/pexels-photo-2735970.jpeg",
     ],
     storeResponse: {
-      response: "Your glowing review means the world to us, Kristin! We're overjoyed to hear your dream ring surpassed expectations and that our communication and craftsmanship met your needs. Thank you for choosing us and sharing your happiness!",
-      date: "2024-03-11"
-    }
+      response:
+        "Your glowing review means the world to us, Kristin! We're overjoyed to hear your dream ring surpassed expectations and that our communication and craftsmanship met your needs. Thank you for choosing us and sharing your happiness!",
+      date: "2024-03-11",
+    },
   },
   {
     id: "3",
     rating: 4,
     title: "Beautiful Ring, Slightly Delayed Shipping",
-    comment: "The ring is absolutely gorgeous and exactly what I wanted. The only reason for 4 stars instead of 5 is that shipping took a bit longer than expected. However, the quality and craftsmanship more than make up for the wait. The diamonds are incredibly sparkly and the setting is very secure.",
+    comment:
+      "The ring is absolutely gorgeous and exactly what I wanted. The only reason for 4 stars instead of 5 is that shipping took a bit longer than expected. However, the quality and craftsmanship more than make up for the wait. The diamonds are incredibly sparkly and the setting is very secure.",
     author: "Sarah L.",
     date: "2024-03-05",
     isVerified: true,
     helpfulCount: 8,
     youtubeUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
     storeResponse: {
-      response: "Thank you for your honest feedback, Sarah. We apologize for the shipping delay and appreciate your patience. We're delighted that you're happy with the ring's quality and will continue to work on improving our shipping times.",
-      date: "2024-03-06"
-    }
+      response:
+        "Thank you for your honest feedback, Sarah. We apologize for the shipping delay and appreciate your patience. We're delighted that you're happy with the ring's quality and will continue to work on improving our shipping times.",
+      date: "2024-03-06",
+    },
   },
   {
     id: "4",
     rating: 5,
     title: "Perfect Anniversary Gift",
-    comment: "Ordered this as an anniversary gift for my wife and she absolutely loves it! The attention to detail is remarkable, and the sizing was perfect. The presentation box was also very elegant. Definitely exceeded our expectations!",
+    comment:
+      "Ordered this as an anniversary gift for my wife and she absolutely loves it! The attention to detail is remarkable, and the sizing was perfect. The presentation box was also very elegant. Definitely exceeded our expectations!",
     author: "Michael P.",
     date: "2024-03-01",
     isVerified: true,
     helpfulCount: 10,
     media: [
-      "https://images.pexels.com/photos/1457801/pexels-photo-1457801.jpeg"
-    ]
+      "https://images.pexels.com/photos/1457801/pexels-photo-1457801.jpeg",
+    ],
   },
   {
     id: "5",
     rating: 3,
     title: "Nice Ring, Size Issue",
-    comment: "The ring itself is beautiful, but I had to return it for resizing. The process was a bit complicated and took longer than I would have liked. The customer service was helpful though, and they covered the shipping costs for the resize.",
+    comment:
+      "The ring itself is beautiful, but I had to return it for resizing. The process was a bit complicated and took longer than I would have liked. The customer service was helpful though, and they covered the shipping costs for the resize.",
     author: "Emma R.",
     date: "2024-02-28",
     isVerified: true,
     helpfulCount: 6,
     storeResponse: {
-      response: "We appreciate your feedback, Emma. We're sorry for any inconvenience with the sizing process. We've noted your comments and are working to streamline our resizing service. Thank you for your patience and understanding.",
-      date: "2024-02-29"
-    }
+      response:
+        "We appreciate your feedback, Emma. We're sorry for any inconvenience with the sizing process. We've noted your comments and are working to streamline our resizing service. Thank you for your patience and understanding.",
+      date: "2024-02-29",
+    },
   },
   // {
   //   id: "6",
@@ -298,6 +309,40 @@ export const mockReviewSummary = {
     4: 2,
     3: 1,
     2: 1,
-    1: 0
-  }
-}; 
+    1: 0,
+  },
+};
+
+export const mockFilters = {
+  price: [
+    { value: "0-30", label: "Under $30" },
+    { value: "30-50", label: "$30 - $50" },
+    { value: "50-100", label: "$50 - $100" },
+    { value: "100+", label: "$100+" },
+  ],
+  // category: [
+  //   { value: "tops", label: "Tops" },
+  //   { value: "bottoms", label: "Bottoms" },
+  //   { value: "dresses", label: "Dresses" },
+  //   { value: "outerwear", label: "Outerwear" },
+  //   { value: "accessories", label: "Accessories" },
+  //   { value: "footwear", label: "Footwear" },
+  // ],
+  size: [
+    { value: "xs", label: "XS" },
+    { value: "s", label: "S" },
+    { value: "m", label: "M" },
+    { value: "l", label: "L" },
+    { value: "xl", label: "XL" },
+    { value: "xxl", label: "XXL" },
+  ],
+  color: [
+    { value: "white", label: "White" },
+    { value: "black", label: "Black" },
+    { value: "blue", label: "Blue" },
+    { value: "red", label: "Red" },
+    { value: "green", label: "Green" },
+    { value: "yellow", label: "Yellow" },
+    { value: "beige", label: "Beige" },
+  ],
+};

@@ -1,8 +1,7 @@
 "use client";
-
-import { useEffect, useState } from "react";
-import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
 import CountrySelectorModal from "../ui/country-selector-modal";
+import LocalizedLink from "./LocalizedLink";
 import {
   Loader2,
   Facebook,
@@ -17,21 +16,83 @@ import {
   Music, // for TikTok
 } from "lucide-react";
 import { DynamicPageItem, StoreSocial } from "@/lib/types";
-import { useSharedCookie } from "@/hooks/useSharedCookie";
-import { SelectedCountry } from "@/types/common";
+import { Country, Language, SelectedCountry } from "@/types/common";
+import {
+  COOKIE_KEY_COUNTRY_ISO,
+  COOKIE_KEY_LANGUAGE_ISO,
+} from "@/lib/cookie-constant";
+import { useCookieManager } from "@/hooks/useCookie";
+import Link from "next/link";
 
 export default function Footer() {
   const [showCountrySelector, setShowCountrySelector] =
     useState<boolean>(false);
+
   const [selectedCountryData, setSelectedCountryData] =
     useState<SelectedCountry>({
-      name: "India",
-      languages: { code: "en", name: "English" },
+      countryCode: "in",
+      languageCode: "en",
     });
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [pageListdata, setPageListdata] = useState([]);
   const [storeSocialLinks, setStoreSocialLinks] = useState<StoreSocial>();
-  const { cookieData, refetchCookie } = useSharedCookie();
+  const { cookieValues, refetchCookie } = useCookieManager([
+    COOKIE_KEY_COUNTRY_ISO,
+    COOKIE_KEY_LANGUAGE_ISO,
+  ]);
+  const [countriesLoading, setCountriesLoading] = useState<boolean>(false);
+  const [countries, setCountries] = useState<Country[]>([]);
+  const [languages, setLanguages] = useState<Language[]>([]);
+
+  const selectedCountryName = useMemo(() => {
+    const code = selectedCountryData.countryCode;
+    return (
+      countries.find((c) => c.iso2.toLowerCase() === code.toLowerCase())
+        ?.name || "INDIA"
+    );
+  }, [selectedCountryData.countryCode, countries]);
+
+  const fetchCountryAndLanguage = async () => {
+    try {
+      setCountriesLoading(true);
+      const endpoints = {
+        country: `${process.env.EXTERNAL_API_URL}/countries`,
+        language: `${process.env.EXTERNAL_API_URL}/web/common/languages`,
+      };
+
+      // Fetch both in parallel
+      const [countryRes, languageRes] = await Promise.all([
+        fetch(endpoints.country, { cache: "no-store" }),
+        fetch(endpoints.language, { cache: "no-store" }),
+      ]);
+
+      // Check for failed responses
+      if (!countryRes.ok || !languageRes.ok) {
+        throw new Error(
+          `External API failed: country=${countryRes.status} language=${languageRes.status}`
+        );
+      }
+
+      const [countryData, languageData] = await Promise.all([
+        countryRes.json(),
+        languageRes.json(),
+      ]);
+
+      const publishedCountry = countryData.filter(
+        (country: Country) => country.published
+      );
+      const sortedLanguages = languageData.sort((a: any, b: any) =>
+        a.name.localeCompare(b.name)
+      );
+
+      setCountries(publishedCountry);
+      setLanguages(sortedLanguages);
+      setCountriesLoading(false);
+    } catch (error) {
+      console.error("Error fetching country and language:", error);
+      setCountriesLoading(false);
+    }
+  };
 
   const fetchPagesData = async () => {
     try {
@@ -49,16 +110,15 @@ export default function Footer() {
 
   useEffect(() => {
     fetchPagesData();
+    fetchCountryAndLanguage();
   }, []);
 
-  // Update selectedCountryData whenever cookieData changes
   useEffect(() => {
-    if (
-      cookieData?.selectedCountryAndLang?.name !== selectedCountryData?.name
-    ) {
-      setSelectedCountryData(cookieData.selectedCountryAndLang);
-    }
-  }, [cookieData]);
+    setSelectedCountryData((prev) => ({
+      countryCode: cookieValues.countryISO || prev.countryCode,
+      languageCode: cookieValues.languageISO || prev.languageCode,
+    }));
+  }, [cookieValues.countryISO, cookieValues.languageISO]);
 
   const socialLinks = [
     {
@@ -137,9 +197,9 @@ export default function Footer() {
           <div className="flex justify-center mb-8">
             <button
               onClick={() => setShowCountrySelector(true)}
-              className="text-sm hover:opacity-70 flex items-center gap-2 cursor-pointer"
+              className="text-sm hover:opacity-70 flex items-center gap-2 cursor-pointer uppercase"
             >
-              {selectedCountryData?.name || "INDIA"}
+              {selectedCountryName || "INDIA"}
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -174,36 +234,8 @@ export default function Footer() {
                   </Link>
                 );
               })}
-            {/* {socialLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className="text-gray-600 hover:text-black transition-colors"
-                  aria-label={link.label}
-                  target="_blank"
-                >
-                  <Icon className="w-6 h-6" />
-                </Link>
-              );
-            })} */}
           </div>
 
-          {/* Footer Links Grid */}
-          {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
-            {Object.entries(footerLinks).map(([key, links]) => (
-              <div key={key} className="space-y-4">
-                {links.map((link) => (
-                  <div key={link.label}>
-                    <Link href={link.href} className="hover:opacity-70 text-sm">
-                      {link.label}
-                    </Link>
-                  </div>
-                ))}
-              </div>
-            ))}
-          </div> */}
           {isLoading ? (
             <div className="flex items-center space-x-2 justify-center p-4">
               <Loader2 className="w-4 h-4 animate-spin" />
@@ -213,13 +245,13 @@ export default function Footer() {
             <div className="grid grid-cols-2 lg:grid-cols-4 md:gap-8 gap-1 md:gap-y-4">
               {pageListdata.length > 0 &&
                 pageListdata.map((pageItem: DynamicPageItem, idx) => (
-                  <Link
+                  <LocalizedLink
                     key={idx}
                     href={`/p/${pageItem?.pageUrl}`}
                     className="hover:opacity-70 sm:text-sm text-[13px] uppercase"
                   >
                     {pageItem?.name}
-                  </Link>
+                  </LocalizedLink>
                 ))}
             </div>
           )}
@@ -232,6 +264,9 @@ export default function Footer() {
           refetchCookie();
           setShowCountrySelector(false);
         }}
+        countryData={countries}
+        languageData={languages}
+        isDataFetching={countriesLoading}
       />
     </footer>
   );

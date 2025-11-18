@@ -1,7 +1,7 @@
 import Image from "next/image";
 import CheckoutForm from "./checkout-form";
 import CartModal from "@/components/ui/cart-modal";
-import Link from "next/link";
+import LocalizedLink from "@/components/layout/LocalizedLink";
 // import { cookies } from "next/headers";
 
 // Mock data for server-side rendering
@@ -37,7 +37,7 @@ export default function CheckoutPage() {
     <div className="min-h-screen">
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex justify-center mb-8">
-          <Link href="/">
+          <LocalizedLink href="/">
             <Image
               src="/logo.png"
               alt="SHRISHIV"
@@ -46,7 +46,7 @@ export default function CheckoutPage() {
               className="h-[30px] w-[150px] object-cover"
               priority
             />
-          </Link>
+          </LocalizedLink>
         </div>
 
         {/* Client component with all interactive elements */}
