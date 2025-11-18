@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import { NextRequest, NextResponse } from "next/server";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
@@ -54,10 +55,13 @@ const mockProductData = {
 };
 
 export async function GET(
-  request: Request,
+  req: NextRequest,
   { params }: { params: { slug: string } }
 ) {
   try {
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+
     // Check if external API is configured
     const externalApiUrl = process.env.EXTERNAL_API_URL;
     if (!externalApiUrl) {
@@ -70,7 +74,14 @@ export async function GET(
 
     console.log("🚀 Product API: Calling external API:", url);
 
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`External API failed: ${response.statusText}`);

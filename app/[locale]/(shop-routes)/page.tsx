@@ -5,6 +5,8 @@ import {
   fallbackGridItems,
   homepgeMetadata,
 } from "@/lib/constant";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import { cookies } from "next/headers";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
@@ -13,6 +15,9 @@ export const revalidate = 0;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function getHomePageData(): Promise<any> {
   try {
+    const cookieStore = await cookies();
+    const currentLanguage =
+      cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
     // Check if we're in build mode
     if (
       process.env.NODE_ENV === "production" &&
@@ -31,8 +36,18 @@ async function getHomePageData(): Promise<any> {
 
     // Fetch both in parallel
     const [featuredRes, storeRes] = await Promise.all([
-      fetch(endpoints.featured, { cache: "no-store" }),
-      fetch(endpoints.store, { cache: "no-store" }),
+      fetch(endpoints.featured, {
+        cache: "no-store",
+        headers: {
+          ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+        },
+      }),
+      fetch(endpoints.store, {
+        cache: "no-store",
+        headers: {
+          ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+        },
+      }),
     ]);
 
     // Check for failed responses

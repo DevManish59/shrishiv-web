@@ -1,8 +1,11 @@
-import { ReviewType } from "@/lib/types";
-import { NextResponse } from "next/server";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   try {
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+
     const formData = await req.formData();
 
     const externalApiUrl =
@@ -14,6 +17,11 @@ export async function POST(req: Request) {
     const response = await fetch(url, {
       method: "POST",
       body: formData, // forward as form-data
+      headers: {
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
+      },
     });
 
     if (!response.ok) {
@@ -31,15 +39,25 @@ export async function POST(req: Request) {
     );
   }
 }
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
     const url = `${externalApiUrl}/product-review`;
 
     // Forward request to external API
-    const response = await fetch(url);
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
+      },
+    });
 
     if (!response.ok) {
       throw new Error(`External API error: ${response.status}`);

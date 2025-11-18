@@ -5,6 +5,10 @@ import ActiveFilters from "@/components/active-filter";
 import StickyFilterBar from "@/components/sticky-filter-bar";
 import Image from "next/image";
 import { FilterParentGroup, FilterTransformedData } from "@/types/product";
+import { mockFilters } from "@/lib/mock-data";
+import { generateDummyData } from "@/lib/constant";
+import { cookies } from "next/headers";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
 
 interface PageProps {
   params: {
@@ -94,7 +98,7 @@ interface CategoryData {
   url: string;
   published: boolean;
   featured: boolean;
-  existingImages?: any;
+  existingImages?: undefined;
   deleted: string | null;
   createdAt: string;
   updatedAt: string | null;
@@ -115,7 +119,7 @@ interface CategoryData {
 const getFilterOptions = (
   filterData?: FilterParentGroup[]
 ): FilterTransformedData => {
-  if (filterData?.length > 0) {
+  if (filterData && filterData?.length > 0) {
     const transformed = filterData?.reduce((acc: any, item: any) => {
       acc[item.parentName.toLowerCase().replace(/\s+/g, "_")] =
         item.attributes.map((attr: any) => ({
@@ -126,134 +130,7 @@ const getFilterOptions = (
     }, {});
     return transformed;
   }
-  return {
-    price: [
-      { value: "0-30", label: "Under $30" },
-      { value: "30-50", label: "$30 - $50" },
-      { value: "50-100", label: "$50 - $100" },
-      { value: "100+", label: "$100+" },
-    ],
-    // category: [
-    //   { value: "tops", label: "Tops" },
-    //   { value: "bottoms", label: "Bottoms" },
-    //   { value: "dresses", label: "Dresses" },
-    //   { value: "outerwear", label: "Outerwear" },
-    //   { value: "accessories", label: "Accessories" },
-    //   { value: "footwear", label: "Footwear" },
-    // ],
-    size: [
-      { value: "xs", label: "XS" },
-      { value: "s", label: "S" },
-      { value: "m", label: "M" },
-      { value: "l", label: "L" },
-      { value: "xl", label: "XL" },
-      { value: "xxl", label: "XXL" },
-    ],
-    color: [
-      { value: "white", label: "White" },
-      { value: "black", label: "Black" },
-      { value: "blue", label: "Blue" },
-      { value: "red", label: "Red" },
-      { value: "green", label: "Green" },
-      { value: "yellow", label: "Yellow" },
-      { value: "beige", label: "Beige" },
-    ],
-  };
-};
-
-// Generate dummy data in the correct API format when API fails
-const generateDummyData = (
-  category: string,
-  subcategory: string
-): ApiProduct[] => {
-  return [
-    {
-      id: 1,
-      productName: `${subcategory} Sample Product 1`,
-      shortDescription: `Beautiful ${subcategory} from ${category} collection`,
-      pointOne: "High quality material",
-      pointTwo: "Elegant design",
-      pointThree: "Perfect fit",
-      pointFour: "Durable construction",
-      pointFive: "Trendy style",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/${subcategory}-sample-1`,
-      slug: `${subcategory}-sample-1`,
-      stock: 50,
-      shipDay: 3,
-      categoryIds: [1],
-      sizeChartId: 1,
-      sku: "SKU001",
-      hsnCode: "123456",
-      ageGroup: "Adult",
-      gender: "Female",
-      googleProductCategory: "Jewelry",
-      mrpPrice: 1000,
-      discount: 10,
-      salesPrice: 900,
-      isFeatured: true,
-      images: ["/placeholder-image.jpg"],
-      imageFiles: [],
-      attributeValues: [
-        {
-          id: 1,
-          attributeId: 1,
-          parentAttributeId: null,
-          attributeName: "Gold",
-          attributeColor: "#FFD700",
-          price: 900,
-          isDefault: true,
-          images: null,
-          existingImages: null,
-          imageFiles: [],
-        },
-      ],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    {
-      id: 2,
-      productName: `${subcategory} Sample Product 2`,
-      shortDescription: `Elegant ${subcategory} for ${category} lovers`,
-      pointOne: "Premium quality",
-      pointTwo: "Modern design",
-      pointThree: "Comfortable wear",
-      pointFour: "Long lasting",
-      pointFive: "Versatile style",
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/${subcategory}-sample-2`,
-      slug: `${subcategory}-sample-2`,
-      stock: 30,
-      shipDay: 2,
-      categoryIds: [1],
-      sizeChartId: 1,
-      sku: "SKU002",
-      hsnCode: "123456",
-      ageGroup: "Adult",
-      gender: "Female",
-      googleProductCategory: "Jewelry",
-      mrpPrice: 800,
-      discount: 15,
-      salesPrice: 680,
-      isFeatured: false,
-      images: ["/placeholder-image.jpg"],
-      imageFiles: [],
-      attributeValues: [
-        {
-          id: 2,
-          attributeId: 2,
-          parentAttributeId: null,
-          attributeName: "Silver",
-          attributeColor: "#C0C0C0",
-          price: 680,
-          isDefault: true,
-          images: null,
-          existingImages: null,
-          imageFiles: [],
-        },
-      ],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-  ];
+  return mockFilters;
 };
 
 // Transform external API products to match ProductCard component format
@@ -297,7 +174,9 @@ export async function generateMetadata({
   params: { category: string; subcategory: string };
 }): Promise<Metadata> {
   const { category, subcategory } = await params;
-
+  const cookieStore = await cookies();
+  const currentLanguage =
+    cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
   try {
     // Fetch data from our API route (following home page pattern)
     const baseUrl = process.env.EXTERNAL_API_URL;
@@ -306,6 +185,9 @@ export async function generateMetadata({
 
     const response = await fetch(apiUrl, {
       cache: "no-store", // Disable caching for dynamic data
+      headers: {
+        ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+      },
     });
 
     if (!response.ok) {

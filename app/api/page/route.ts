@@ -1,10 +1,14 @@
-import { NextResponse } from "next/server";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import { NextRequest, NextResponse } from "next/server";
 
 const CACHE_DURATION = 3600; // 1 hour
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   try {
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
     const { searchParams } = new URL(req.url);
     const slug = searchParams.get("slug");
+
     // Fetch from external API
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
@@ -18,6 +22,9 @@ export async function GET(req: Request) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          ...(currentLanguageCode !== "en" && {
+            languageCode: currentLanguageCode,
+          }),
         },
       });
       if (!specificPageRes.ok) {
@@ -33,8 +40,19 @@ export async function GET(req: Request) {
     }
 
     const [storeDataResponse, pageDataResponse] = await Promise.all([
-      fetch(storeDataUrl, { headers: { "Content-Type": "application/json" } }),
-      fetch(pageUrl, { headers: { "Content-Type": "application/json" } }),
+      fetch(storeDataUrl, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }),
+      fetch(pageUrl, {
+        headers: {
+          "Content-Type": "application/json",
+          ...(currentLanguageCode !== "en" && {
+            languageCode: currentLanguageCode,
+          }),
+        },
+      }),
     ]);
     // const storeDataResponse = await fetch(storeDataUrl, {
     //   method: "GET",
