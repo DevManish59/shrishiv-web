@@ -1,0 +1,1347 @@
+{
+  "my": [
+    {
+      "title": "အခမဲ့ ပို့ဆောင်မှု",
+      "description": "$99 ကျော် အော်ဒါများအတွက် အခမဲ့ ပို့ဆောင်ပေးသည်"
+    },
+    {
+      "title": "လုံခြုံသော ငွေပေးချေမှု",
+      "description": "အချက်အလက်လုံခြုံမှု 100% ငွေပေးချေမှုစနစ်များ"
+    },
+    {
+      "title": "လွယ်ကူသော ပြန်ပို့နိုင်မှု",
+      "description": "၃၀ ရက် ပြန်သွင်းခွင့် မူဝါဒ"
+    },
+    {
+      "title": "၂၄/၇ အသင်းအဖွဲ့ အထောက်အပံ့",
+      "description": "နေ့ရော ညရော မျှဝေသည့် 고객ဝန်ဆောင်မှု"
+    },
+    {
+      "title": "Shrishiv ၏ ယုံကြည်မှု",
+      "description": "100% သ hàဖို့ အာမခံချက်"
+    },
+    {
+      "title": "စျေးကွက်တွင် အကောင်းဆုံး စျေးနှုန်း",
+      "description": "ကျွန်ုပ်တို့သည် စျေးကွက်ထဲတွင် အကောင်းဆုံး စျေးနှုန်းများပေးသည်"
+    }
+  ],
+
+  "ga": [
+    {
+      "title": "Loingseoireacht In Aisce",
+      "description": "Loingseoireacht in aisce ar orduithe os cionn $99"
+    },
+    {
+      "title": "Íocaíocht Shlán",
+      "description": "Modhanna íocaíochta 100% slána"
+    },
+    {
+      "title": "Fillteáin Éasca",
+      "description": "Polasaí fillte 30 lá"
+    },
+    {
+      "title": "Tacaíocht 24/7",
+      "description": "Seirbhís do chustaiméirí i gcónaí ar fáil"
+    },
+    {
+      "title": "Muintearas Shrishiv",
+      "description": "Ráthú sástachta 100%"
+    },
+    {
+      "title": "Praghas Margaidh Dochreidte",
+      "description": "Cuirimid na praghsanna is fearr ar fáil"
+    }
+  ],
+
+  "cs": [
+    {
+      "title": "Doprava Zdarma",
+      "description": "Doprava zdarma při objednávkách nad 99 USD"
+    },
+    {
+      "title": "Bezpečná Platba",
+      "description": "100% bezpečné platební metody"
+    },
+    {
+      "title": "Snadné Vrácení",
+      "description": "30denní zásady vrácení"
+    },
+    {
+      "title": "Podpora 24/7",
+      "description": "Zákaznická podpora nonstop"
+    },
+    {
+      "title": "Důvěra Shrishiv",
+      "description": "100% záruka spokojenosti"
+    },
+    {
+      "title": "Nepřekonatelná Cena",
+      "description": "Nabízíme nejlepší ceny na trhu"
+    }
+  ],
+
+  "da": [
+    {
+      "title": "Gratis Fragt",
+      "description": "Gratis fragt på ordrer over $99"
+    },
+    {
+      "title": "Sikker Betaling",
+      "description": "100% sikre betalingsmetoder"
+    },
+    {
+      "title": "Nem Returnering",
+      "description": "30-dages returpolitik"
+    },
+    {
+      "title": "24/7 Support",
+      "description": "Kundeservice døgnet rundt"
+    },
+    {
+      "title": "Shrishivs Tillid",
+      "description": "100% tilfredshedsgaranti"
+    },
+    {
+      "title": "Uovertruffen Markedspris",
+      "description": "Vi tilbyder de bedste priser på markedet"
+    }
+  ],
+
+  "nl": [
+    {
+      "title": "Gratis Verzending",
+      "description": "Gratis verzending voor bestellingen boven $99"
+    },
+    {
+      "title": "Veilige Betaling",
+      "description": "100% veilige betaalmethoden"
+    },
+    {
+      "title": "Eenvoudige Retournering",
+      "description": "30-dagen retourbeleid"
+    },
+    {
+      "title": "24/7 Ondersteuning",
+      "description": "Rond-de-klok klantenservice"
+    },
+    {
+      "title": "Shrishiv's Vertrouwen",
+      "description": "100% tevredenheidsgarantie"
+    },
+    {
+      "title": "Onverslaanbare Marktprijs",
+      "description": "Wij bieden de beste prijzen op de markt"
+    }
+  ],
+
+  "de": [
+    {
+      "title": "Kostenloser Versand",
+      "description": "Kostenloser Versand für Bestellungen über 99 $"
+    },
+    {
+      "title": "Sichere Zahlung",
+      "description": "100% sichere Zahlungsmethoden"
+    },
+    {
+      "title": "Einfache Rückgabe",
+      "description": "30-Tage Rückgaberecht"
+    },
+    {
+      "title": "24/7 Unterstützung",
+      "description": "Rund-um-die-Uhr Kundenservice"
+    },
+    {
+      "title": "Shrishivs Vertrauen",
+      "description": "100% Zufriedenheitsgarantie"
+    },
+    {
+      "title": "Unschlagbarer Marktpreis",
+      "description": "Wir bieten die besten Preise auf dem Markt"
+    }
+  ],
+
+  "ka": [
+    {
+      "title": "უფასო მიწოდება",
+      "description": "უფასო მიწოდება $99-ზე მაღალ შეკვეთებზე"
+    },
+    {
+      "title": "უსაფრთხო გადახდა",
+      "description": "100% უსაფრთხო გადახდის მეთოდები"
+    },
+    {
+      "title": "მარტივი დაბრუნება",
+      "description": "30-დღიანი დაბრუნების პოლიტიკა"
+    },
+    {
+      "title": "24/7 მხარდაჭერა",
+      "description": "მომხმარებელთა მომსახურება 24/7"
+    },
+    {
+      "title": "Shrishiv-ის ნდობა",
+      "description": "100% დაკმაყოფილების გარანტია"
+    },
+    {
+      "title": "უმეტ Rival ნაკრები",
+      "description": "ჩვენ ბაზარზე საუკეთესო ფასებს გთავაზობთ"
+    }
+  ],
+
+  "no": [
+    {
+      "title": "Gratis Frakt",
+      "description": "Gratis frakt på bestillinger over $99"
+    },
+    {
+      "title": "Sikker Betaling",
+      "description": "100% sikre betalingsmetoder"
+    },
+    {
+      "title": "Enkle Returer",
+      "description": "30-dagers returpolicy"
+    },
+    {
+      "title": "24/7 Kundestøtte",
+      "description": "Kundeservice døgnet rundt"
+    },
+    {
+      "title": "Shrishivs Tillit",
+      "description": "100% tilfredshetsgaranti"
+    },
+    {
+      "title": "Uslåelige Markedspriser",
+      "description": "Vi tilbyr de beste prisene på markedet"
+    }
+  ],
+
+  "uk": [
+    {
+      "title": "Безкоштовна Доставка",
+      "description": "Безкоштовна доставка для замовлень понад $99"
+    },
+    {
+      "title": "Безпечна Оплата",
+      "description": "100% безпечні методи оплати"
+    },
+    {
+      "title": "Легке Повернення",
+      "description": "30-денна політика повернення"
+    },
+    {
+      "title": "Підтримка 24/7",
+      "description": "Цілодобове обслуговування клієнтів"
+    },
+    {
+      "title": "Довіра Shrishiv",
+      "description": "100% гарантія задоволення"
+    },
+    {
+      "title": "Неперевершена Ринкова Ціна",
+      "description": "Ми пропонуємо найкращі ціни на ринку"
+    }
+  ],
+
+  "kk": [
+    {
+      "title": "Тегін жеткізу",
+      "description": "$99 асқан тапсырыстарға тегін жеткізу"
+    },
+    {
+      "title": "Қауіпсіз Төлем",
+      "description": "100% қауіпсіз төлем тәсілдері"
+    },
+    {
+      "title": "Оңай Қайтару",
+      "description": "30 күндік қайтару саясаты"
+    },
+    {
+      "title": "24/7 Қолдау",
+      "description": "Тәулік бойғы клиенттерге қызмет"
+    },
+    {
+      "title": "Shrishiv Сенімі",
+      "description": "100% қанағаттану кепілдігі"
+    },
+    {
+      "title": "Ең Төмен Нарық Бағасы",
+      "description": "Біз нарықтағы ең жақсы бағаларды ұсынамыз"
+    }
+  ],
+  "km": [
+    {
+      "title": "ដឹកជញ្ជូន​ឥតគិតថ្លៃ",
+      "description": "ដឹកជញ្ជូន​ឥតគិតថ្លៃសម្រាប់ការបញ្ជាទិញលើស $99"
+    },
+    {
+      "title": "ការទូទាត់មានសុវត្ថិភាព",
+      "description": "វិធីសាស្រ្តទូទាត់ 100% មានសុវត្ថិភាព"
+    },
+    {
+      "title": "ការត្រឡប់ងាយស្រួល",
+      "description": "គោលការណ៍ត្រឡប់ 30 ថ្ងៃ"
+    },
+    {
+      "title": "ការគាំទ្រ 24/7",
+      "description": "សេវាអតិថិជនជាមួយការគាំទ្រទាំងអស់គ្រប់ពេល"
+    },
+    {
+      "title": "ការជឿទុកចិត្តរបស់ Shrishiv",
+      "description": "ការធានាការពេញចិត្ត 100%"
+    },
+    {
+      "title": "តម្លៃទីផ្សារល្អបំផុត",
+      "description": "យើងផ្តល់តម្លៃល្អបំផុតនៅក្នុងទីផ្សារ"
+    }
+  ],
+
+  "af": [
+    {
+      "title": "Gratis Versending",
+      "description": "Gratis versending vir bestellings bo $99"
+    },
+    {
+      "title": "Veilige Betaling",
+      "description": "100% veilige betaalmetodes"
+    },
+    {
+      "title": "Maklike Terugsendings",
+      "description": "30-dae terugstuurbeleid"
+    },
+    {
+      "title": "24/7 Ondersteuning",
+      "description": "Klanteondersteuning dwarsdeur die dag"
+    },
+    {
+      "title": "Shrishiv se Vertroue",
+      "description": "100% tevredenheidswaarborg"
+    },
+    {
+      "title": "Onoortreflike Markprys",
+      "description": "Ons bied die beste pryse op die mark"
+    }
+  ],
+
+  "ko": [
+    {
+      "title": "무료 배송",
+      "description": "$99 이상 주문 시 무료 배송"
+    },
+    {
+      "title": "안전한 결제",
+      "description": "100% 안전한 결제 방식"
+    },
+    {
+      "title": "간편한 반품",
+      "description": "30일 반품 정책"
+    },
+    {
+      "title": "24/7 고객 지원",
+      "description": "연중무휴 고객 서비스"
+    },
+    {
+      "title": "Shrishiv의 신뢰",
+      "description": "100% 만족 보장"
+    },
+    {
+      "title": "최고의 시장 가격",
+      "description": "우리는 시장에서 최고의 가격을 제공합니다"
+    }
+  ],
+
+  "uz": [
+    {
+      "title": "Bepul Yetkazib Berish",
+      "description": "$99 dan yuqori buyurtmalar uchun bepul yetkazib berish"
+    },
+    {
+      "title": "Xavfsiz Toʻlov",
+      "description": "100% xavfsiz toʻlov usullari"
+    },
+    {
+      "title": "Oson Qaytarish",
+      "description": "30 kunlik qaytarish siyosati"
+    },
+    {
+      "title": "24/7 Qo‘llab-quvvatlash",
+      "description": "Kun-u tun mijozlarga xizmat ko‘rsatish"
+    },
+    {
+      "title": "Shrishiv Ishonchi",
+      "description": "100% qoniqish kafolati"
+    },
+    {
+      "title": "Eng Yaxshi Bozor Narxi",
+      "description": "Biz bozordagi eng yaxshi narxlarni taklif qilamiz"
+    }
+  ],
+
+  "rm": [
+    {
+      "title": "Transport Gratuit",
+      "description": "Transport gratuit per cumandas sur $99"
+    },
+    {
+      "title": "Pajama Securisada",
+      "description": "100% metodas da pajama segiras"
+    },
+    {
+      "title": "Returnaziuns Sempelas",
+      "description": "Politica da returnaziun da 30 dis"
+    },
+    {
+      "title": "Agid 24/7",
+      "description": "Servetsch da clientella da tut las uras"
+    },
+    {
+      "title": "Confidenza da Shrishiv",
+      "description": "100% garanzia da cuntentezza"
+    },
+    {
+      "title": "Meglier Pretsch da Fiera",
+      "description": "Nus b'idain ils megliers pretschs sin fiera"
+    }
+  ],
+
+  "ro": [
+    {
+      "title": "Transport Gratuit",
+      "description": "Transport gratuit pentru comenzi peste 99 USD"
+    },
+    {
+      "title": "Plată Securizată",
+      "description": "Metode de plată 100% sigure"
+    },
+    {
+      "title": "Retur Ușor",
+      "description": "Politică de retur în 30 de zile"
+    },
+    {
+      "title": "Asistență 24/7",
+      "description": "Servicii clienți disponibile non-stop"
+    },
+    {
+      "title": "Încrederea Shrishiv",
+      "description": "Garanție 100% satisfacție"
+    },
+    {
+      "title": "Cel Mai Bun Preț de pe Piață",
+      "description": "Oferim cele mai bune prețuri de pe piață"
+    }
+  ],
+
+  "he": [
+    {
+      "title": "משלוח חינם",
+      "description": "משלוח חינם בהזמנות מעל $99"
+    },
+    {
+      "title": "תשלום מאובטח",
+      "description": "100% שיטות תשלום מאובטחות"
+    },
+    {
+      "title": "החזרות קלות",
+      "description": "מדיניות החזרה של 30 יום"
+    },
+    {
+      "title": "תמיכה 24/7",
+      "description": "שירות לקוחות בכל שעות היממה"
+    },
+    {
+      "title": "האמון של Shrishiv",
+      "description": "100% אחריות לשביעות רצון"
+    },
+    {
+      "title": "מחיר שוק ללא תחרות",
+      "description": "אנו מציעים את המחירים הטובים ביותר בשוק"
+    }
+  ],
+
+  "ar": [
+    {
+      "title": "شحن مجاني",
+      "description": "شحن مجاني للطلبات التي تزيد عن 99 دولارًا"
+    },
+    {
+      "title": "دفع آمن",
+      "description": "طرق دفع آمنة بنسبة 100%"
+    },
+    {
+      "title": "سهولة الإرجاع",
+      "description": "سياسة إرجاع لمدة 30 يومًا"
+    },
+    {
+      "title": "دعم 24/7",
+      "description": "خدمة عملاء على مدار الساعة"
+    },
+    {
+      "title": "ثقة Shrishiv",
+      "description": "ضمان رضا بنسبة 100%"
+    },
+    {
+      "title": "أفضل سعر في السوق",
+      "description": "نحن نقدم أفضل الأسعار في السوق"
+    }
+  ],
+
+  "ru": [
+    {
+      "title": "Бесплатная Доставка",
+      "description": "Бесплатная доставка при заказах свыше $99"
+    },
+    {
+      "title": "Безопасная Оплата",
+      "description": "100% безопасные способы оплаты"
+    },
+    {
+      "title": "Лёгкий Возврат",
+      "description": "30-дневная политика возврата"
+    },
+    {
+      "title": "Поддержка 24/7",
+      "description": "Круглосуточная служба поддержки клиентов"
+    },
+    {
+      "title": "Доверие Shrishiv",
+      "description": "100% гарантия удовлетворенности"
+    },
+    {
+      "title": "Лучшие Рыночные Цены",
+      "description": "Мы предлагаем лучшие цены на рынке"
+    }
+  ],
+
+  "hr": [
+    {
+      "title": "Besplatna Dostava",
+      "description": "Besplatna dostava za narudžbe iznad 99 USD"
+    },
+    {
+      "title": "Sigurno Plaćanje",
+      "description": "100% sigurni načini plaćanja"
+    },
+    {
+      "title": "Jednostavni Povrati",
+      "description": "Politika povrata od 30 dana"
+    },
+    {
+      "title": "Podrška 24/7",
+      "description": "Korisnička podrška dostupna 24 sata dnevno"
+    },
+    {
+      "title": "Povjerenje Shrishiv",
+      "description": "100% jamstvo zadovoljstva"
+    },
+    {
+      "title": "Nenadmašna Tržišna Cijena",
+      "description": "Nudimo najbolje cijene na tržištu"
+    }
+  ],
+  "vi": [
+    {
+      "title": "Miễn Phí Vận Chuyển",
+      "description": "Miễn phí vận chuyển cho đơn hàng trên $99"
+    },
+    {
+      "title": "Thanh Toán An Toàn",
+      "description": "Phương thức thanh toán an toàn 100%"
+    },
+    {
+      "title": "Dễ Dàng Đổi Trả",
+      "description": "Chính sách đổi trả trong 30 ngày"
+    },
+    {
+      "title": "Hỗ Trợ 24/7",
+      "description": "Dịch vụ chăm sóc khách hàng 24/7"
+    },
+    {
+      "title": "Niềm Tin Của Shrishiv",
+      "description": "Đảm bảo hài lòng 100%"
+    },
+    {
+      "title": "Giá Thị Trường Tốt Nhất",
+      "description": "Chúng tôi cung cấp mức giá tốt nhất trên thị trường"
+    }
+  ],
+
+  "lb": [
+    {
+      "title": "Gratis Liwwerung",
+      "description": "Gratis Liwwerung fir Bestellungen iwwer $99"
+    },
+    {
+      "title": "Sécher Bezuelung",
+      "description": "100% sécher Bezuelmethoden"
+    },
+    {
+      "title": "Einfach Retour",
+      "description": "30-Deeg Retourpolitik"
+    },
+    {
+      "title": "24/7 Support",
+      "description": "Clientsservice ronderëm d'Auer"
+    },
+    {
+      "title": "Shrishiv Vertrau",
+      "description": "100% Zefriddenheetsgarantie"
+    },
+    {
+      "title": "Onschloobare Präisser",
+      "description": "Mir bidden déi bescht Präisser um Maart"
+    }
+  ],
+
+  "hu": [
+    {
+      "title": "Ingyenes Szállítás",
+      "description": "Ingyenes szállítás 99 USD feletti rendelés esetén"
+    },
+    {
+      "title": "Biztonságos Fizetés",
+      "description": "100% biztonságos fizetési módok"
+    },
+    {
+      "title": "Könnyű Visszaküldés",
+      "description": "30 napos visszaküldési politika"
+    },
+    {
+      "title": "24/7 Ügyfélszolgálat",
+      "description": "Éjjel-nappali ügyfélszolgálat"
+    },
+    {
+      "title": "Shrishiv Bizalma",
+      "description": "100% elégedettségi garancia"
+    },
+    {
+      "title": "Verhetetlen Piaci Ár",
+      "description": "A legjobb árakat kínáljuk a piacon"
+    }
+  ],
+
+  "el": [
+    {
+      "title": "Δωρεάν Αποστολή",
+      "description": "Δωρεάν αποστολή για παραγγελίες άνω των $99"
+    },
+    {
+      "title": "Ασφαλής Πληρωμή",
+      "description": "100% ασφαλείς μέθοδοι πληρωμής"
+    },
+    {
+      "title": "Εύκολες Επιστροφές",
+      "description": "Πολιτική επιστροφής 30 ημερών"
+    },
+    {
+      "title": "Υποστήριξη 24/7",
+      "description": "Εξυπηρέτηση πελατών όλο το 24ωρο"
+    },
+    {
+      "title": "Η Εμπιστοσύνη του Shrishiv",
+      "description": "Εγγύηση 100% ικανοποίησης"
+    },
+    {
+      "title": "Ασύγκριτη Τιμή Αγοράς",
+      "description": "Προσφέρουμε τις καλύτερες τιμές της αγοράς"
+    }
+  ],
+
+  "en": [
+    {
+      "title": "Free Shipping",
+      "description": "Free shipping on orders over $99"
+    },
+    {
+      "title": "Secure Payment",
+      "description": "100% secure payment methods"
+    },
+    {
+      "title": "Easy Returns",
+      "description": "30-day return policy"
+    },
+    {
+      "title": "24/7 Support",
+      "description": "Round-the-clock customer service"
+    },
+    {
+      "title": "Shrishiv's Trust",
+      "description": "100% satisfaction guaranteed"
+    },
+    {
+      "title": "Unbeatable Market Price",
+      "description": "We offer the best prices in the market"
+    }
+  ],
+
+  "be": [
+    {
+      "title": "Бясплатная Дастаўка",
+      "description": "Бясплатная дастаўка для заказаў звыш $99"
+    },
+    {
+      "title": "Бяспечная Аплата",
+      "description": "100% бяспечныя спосабы аплаты"
+    },
+    {
+      "title": "Лёгкі Вяртанне",
+      "description": "30-дзённая палітыка вяртання"
+    },
+    {
+      "title": "Падтрымка 24/7",
+      "description": "Кругласутачная падтрымка кліентаў"
+    },
+    {
+      "title": "Давер Shrishiv",
+      "description": "100% гарантыя задаволенасці"
+    },
+    {
+      "title": "Найлепшая Рынкавая Цана",
+      "description": "Мы прапануем найлепшыя цэны на рынку"
+    }
+  ],
+
+  "es": [
+    {
+      "title": "Envío Gratis",
+      "description": "Envío gratis en pedidos superiores a $99"
+    },
+    {
+      "title": "Pago Seguro",
+      "description": "Métodos de pago 100% seguros"
+    },
+    {
+      "title": "Devoluciones Fáciles",
+      "description": "Política de devolución de 30 días"
+    },
+    {
+      "title": "Soporte 24/7",
+      "description": "Atención al cliente las 24 horas"
+    },
+    {
+      "title": "Confianza de Shrishiv",
+      "description": "100% garantía de satisfacción"
+    },
+    {
+      "title": "Precio Imbatible",
+      "description": "Ofrecemos los mejores precios del mercado"
+    }
+  ],
+
+  "et": [
+    {
+      "title": "Tasuta Kohaletoimetamine",
+      "description": "Tasuta kohaletoimetamine tellimustele üle 99 USD"
+    },
+    {
+      "title": "Turvaline Maksmine",
+      "description": "100% turvalised makseviisid"
+    },
+    {
+      "title": "Lihtne Tagastamine",
+      "description": "30-päevane tagastuspoliitika"
+    },
+    {
+      "title": "24/7 Tugi",
+      "description": "Ööpäevaringne klienditugi"
+    },
+    {
+      "title": "Shrishiv Usaldus",
+      "description": "100% rahulolugarantii"
+    },
+    {
+      "title": "Parim Turuhind",
+      "description": "Pakume parimaid hindu turul"
+    }
+  ],
+
+  "bg": [
+    {
+      "title": "Безплатна Доставка",
+      "description": "Безплатна доставка за поръчки над 99 USD"
+    },
+    {
+      "title": "Сигурно Плащане",
+      "description": "100% сигурни методи за плащане"
+    },
+    {
+      "title": "Лесно Връщане",
+      "description": "30-дневна политика за връщане"
+    },
+    {
+      "title": "24/7 Поддръжка",
+      "description": "Денонощно обслужване на клиенти"
+    },
+    {
+      "title": "Доверието на Shrishiv",
+      "description": "100% гаранция за удовлетвореност"
+    },
+    {
+      "title": "Непобедима Пазарна Цена",
+      "description": "Предлагаме най-добрите цени на пазара"
+    }
+  ],
+
+  "id": [
+    {
+      "title": "Gratis Ongkir",
+      "description": "Gratis ongkir untuk pesanan di atas $99"
+    },
+    {
+      "title": "Pembayaran Aman",
+      "description": "Metode pembayaran 100% aman"
+    },
+    {
+      "title": "Pengembalian Mudah",
+      "description": "Kebijakan pengembalian 30 hari"
+    },
+    {
+      "title": "Dukungan 24/7",
+      "description": "Layanan pelanggan 24/7"
+    },
+    {
+      "title": "Kepercayaan Shrishiv",
+      "description": "Garansi kepuasan 100%"
+    },
+    {
+      "title": "Harga Pasar Terbaik",
+      "description": "Kami menawarkan harga terbaik di pasaran"
+    }
+  ],
+  "zh": [
+    {
+      "title": "免费送货",
+      "description": "订单满 $99 即可享受免费送货"
+    },
+    {
+      "title": "安全支付",
+      "description": "100% 安全的支付方式"
+    },
+    {
+      "title": "轻松退货",
+      "description": "30 天退货政策"
+    },
+    {
+      "title": "24/7 客服支持",
+      "description": "全天候客户服务"
+    },
+    {
+      "title": "Shrishiv 的信任",
+      "description": "100% 满意度保证"
+    },
+    {
+      "title": "无与伦比的市场价格",
+      "description": "我们提供市场上最优惠的价格"
+    }
+  ],
+
+  "sk": [
+    {
+      "title": "Doprava Zdarma",
+      "description": "Doprava zdarma pri objednávkach nad 99 USD"
+    },
+    {
+      "title": "Bezpečná Platba",
+      "description": "100% bezpečné platobné metódy"
+    },
+    {
+      "title": "Jednoduché Vrátenie",
+      "description": "30-dňová politika vrátenia"
+    },
+    {
+      "title": "Podpora 24/7",
+      "description": "Zákaznícka podpora 24 hodín denne"
+    },
+    {
+      "title": "Dôvera Shrishiv",
+      "description": "100% záruka spokojnosti"
+    },
+    {
+      "title": "Nezrovnateľná Trhová Cena",
+      "description": "Ponúkame najlepšie ceny na trhu"
+    }
+  ],
+
+  "lt": [
+    {
+      "title": "Nemokamas Pristatymas",
+      "description": "Nemokamas pristatymas užsakymams virš $99"
+    },
+    {
+      "title": "Saugus Mokėjimas",
+      "description": "100% saugios mokėjimo priemonės"
+    },
+    {
+      "title": "Lengvas Grąžinimas",
+      "description": "30 dienų grąžinimo politika"
+    },
+    {
+      "title": "24/7 Pagalba",
+      "description": "Klientų aptarnavimas visą parą"
+    },
+    {
+      "title": "Shrishiv Pasitikėjimas",
+      "description": "100% pasitenkinimo garantija"
+    },
+    {
+      "title": "Geriausia Rinkos Kaina",
+      "description": "Siūlome geriausias kainas rinkoje"
+    }
+  ],
+
+  "sl": [
+    {
+      "title": "Brezplačna Dostava",
+      "description": "Brezplačna dostava za naročila nad 99 USD"
+    },
+    {
+      "title": "Varno Plačilo",
+      "description": "100% varne plačilne metode"
+    },
+    {
+      "title": "Enostavno Vračilo",
+      "description": "30-dnevna politika vračil"
+    },
+    {
+      "title": "Podpora 24/7",
+      "description": "Podpora strankam 24 ur na dan"
+    },
+    {
+      "title": "Zaupanje Shrishiv",
+      "description": "100% garancija zadovoljstva"
+    },
+    {
+      "title": "Najboljša Tržna Cena",
+      "description": "Ponujamo najboljše cene na trgu"
+    }
+  ],
+
+  "lv": [
+    {
+      "title": "Bezmaksas Piegāde",
+      "description": "Bezmaksas piegāde pasūtījumiem virs $99"
+    },
+    {
+      "title": "Drošs Maksājums",
+      "description": "100% drošas maksājumu metodes"
+    },
+    {
+      "title": "Vienkārša Atgriešana",
+      "description": "30 dienu atgriešanas politika"
+    },
+    {
+      "title": "Atbalsts 24/7",
+      "description": "Klientu apkalpošana visu diennakti"
+    },
+    {
+      "title": "Shrishiv Uzticība",
+      "description": "100% apmierinātības garantija"
+    },
+    {
+      "title": "Labākā Tirgus Cena",
+      "description": "Mēs piedāvājam labākās cenas tirgū"
+    }
+  ],
+
+  "sn": [
+    {
+      "title": "Kutakurwa Mahara",
+      "description": "Kutakurwa mahara pamawadhi anodarika $99"
+    },
+    {
+      "title": "Kubhadhara Kwakachengeteka",
+      "description": "Nzira dzekubhadhara dzakachengeteka 100%"
+    },
+    {
+      "title": "Kudzorera Zviri Nyore",
+      "description": "Mutemo wekudzorera kwemazuva 30"
+    },
+    {
+      "title": "Rutsigiro 24/7",
+      "description": "Rubatsiro rwevatengi nguva dzese"
+    },
+    {
+      "title": "Kuvimba kwaShrishiv",
+      "description": "100% garandi yekugutsikana"
+    },
+    {
+      "title": "Mutengo Wemusika Usingakwikwidzwe",
+      "description": "Tinopa mitengo yakanakisa pamusika"
+    }
+  ],
+
+  "so": [
+    {
+      "title": "Gaarsiin Bilaash Ah",
+      "description": "Gaarsiin bilaash ah dalabka ka badan $99"
+    },
+    {
+      "title": "Bixinta Badbaado Leh",
+      "description": "Hababka lacag bixinta ee 100% ammaan ah"
+    },
+    {
+      "title": "Soo Celin Fudud",
+      "description": "30 maalmood siyaasadda soo celinta"
+    },
+    {
+      "title": "Taageero 24/7",
+      "description": "Adeegga macaamiisha oo 24 saac ah"
+    },
+    {
+      "title": "Kalsoonida Shrishiv",
+      "description": "100% dammaanad qanacsanaan"
+    },
+    {
+      "title": "Qiimaha Suuqa Ugu Fiican",
+      "description": "Waxaan bixinaa qiimaha ugu wanaagsan suuqa"
+    }
+  ],
+
+  "sr": [
+    {
+      "title": "Besplatna Dostava",
+      "description": "Besplatna dostava za narudžbine preko 99 USD"
+    },
+    {
+      "title": "Sigurno Plaćanje",
+      "description": "100% sigurni načini plaćanja"
+    },
+    {
+      "title": "Lako Vraćanje",
+      "description": "Politika vraćanja od 30 dana"
+    },
+    {
+      "title": "24/7 Podrška",
+      "description": "Podrška korisnicima 24 sata dnevno"
+    },
+    {
+      "title": "Poverenje Shrishiv",
+      "description": "100% garancija zadovoljstva"
+    },
+    {
+      "title": "Nenadmašna Tržišna Cena",
+      "description": "Nudimo najbolje cene na tržištu"
+    }
+  ],
+
+  "sv": [
+    {
+      "title": "Fri Frakt",
+      "description": "Fri frakt på beställningar över $99"
+    },
+    {
+      "title": "Säker Betalning",
+      "description": "100% säkra betalningsmetoder"
+    },
+    {
+      "title": "Enkla Returer",
+      "description": "30 dagars returpolicy"
+    },
+    {
+      "title": "24/7 Support",
+      "description": "Kundsupport dygnet runt"
+    },
+    {
+      "title": "Shrishiv’s Förtroende",
+      "description": "100% nöjdhetsgaranti"
+    },
+    {
+      "title": "Oslagbart Marknadspris",
+      "description": "Vi erbjuder de bästa priserna på marknaden"
+    }
+  ],
+
+  "sw": [
+    {
+      "title": "Usafirishaji Bure",
+      "description": "Usafirishaji bure kwa maagizo yanayozidi $99"
+    },
+    {
+      "title": "Malipo Salama",
+      "description": "Mbinu za malipo salama kwa 100%"
+    },
+    {
+      "title": "Kurudisha Kirahisi",
+      "description": "Sera ya kurudisha ndani ya siku 30"
+    },
+    {
+      "title": "Usaidizi wa Saa 24/7",
+      "description": "Huduma kwa wateja saa 24"
+    },
+    {
+      "title": "Uaminifu wa Shrishiv",
+      "description": "Dhamana ya kuridhika kwa 100%"
+    },
+    {
+      "title": "Bei Bora Sokoni",
+      "description": "Tunatoa bei bora zaidi sokoni"
+    }
+  ],
+  "pl": [
+    {
+      "title": "Darmowa Dostawa",
+      "description": "Darmowa dostawa dla zamówień powyżej 99 USD"
+    },
+    {
+      "title": "Bezpieczna Płatność",
+      "description": "100% bezpieczne metody płatności"
+    },
+    {
+      "title": "Łatwe Zwroty",
+      "description": "30-dniowa polityka zwrotów"
+    },
+    {
+      "title": "Wsparcie 24/7",
+      "description": "Obsługa klienta przez całą dobę"
+    },
+    {
+      "title": "Zaufanie Shrishiv",
+      "description": "100% gwarancja satysfakcji"
+    },
+    {
+      "title": "Najlepsza Cena Rynkowa",
+      "description": "Oferujemy najlepsze ceny na rynku"
+    }
+  ],
+
+  "is": [
+    {
+      "title": "Frí Heimsending",
+      "description": "Frí sending fyrir pantanir yfir $99"
+    },
+    {
+      "title": "Örugg Greiðsla",
+      "description": "100% öruggar greiðsluleiðir"
+    },
+    {
+      "title": "Auðvelt Skil",
+      "description": "30 daga skilastefna"
+    },
+    {
+      "title": "Þjónusta 24/7",
+      "description": "Þjónusta við viðskiptavini allan sólarhringinn"
+    },
+    {
+      "title": "Traust Shrishiv",
+      "description": "100% ánægjuábyrgð"
+    },
+    {
+      "title": "Óviðjafnanlegt Verð",
+      "description": "Við bjóðum bestu verðin á markaðnum"
+    }
+  ],
+
+  "it": [
+    {
+      "title": "Spedizione Gratuita",
+      "description": "Spedizione gratuita per ordini superiori a $99"
+    },
+    {
+      "title": "Pagamento Sicuro",
+      "description": "Metodi di pagamento sicuri al 100%"
+    },
+    {
+      "title": "Resi Facili",
+      "description": "Politica di reso entro 30 giorni"
+    },
+    {
+      "title": "Supporto 24/7",
+      "description": "Assistenza clienti 24 ore su 24"
+    },
+    {
+      "title": "Affidabilità Shrishiv",
+      "description": "Garanzia di soddisfazione al 100%"
+    },
+    {
+      "title": "Prezzo di Mercato Imbattibile",
+      "description": "Offriamo i migliori prezzi sul mercato"
+    }
+  ],
+
+  "fi": [
+    {
+      "title": "Ilmainen Toimitus",
+      "description": "Ilmainen toimitus yli 99 USD tilauksille"
+    },
+    {
+      "title": "Turvallinen Maksu",
+      "description": "100% turvalliset maksutavat"
+    },
+    {
+      "title": "Helppo Palautus",
+      "description": "30 päivän palautusoikeus"
+    },
+    {
+      "title": "Tuki 24/7",
+      "description": "Asiakaspalvelua ympäri vuorokauden"
+    },
+    {
+      "title": "Shrishivin Luottamus",
+      "description": "100% tyytyväisyystakuu"
+    },
+    {
+      "title": "Lyömätön Markkinahinta",
+      "description": "Tarjoamme markkinoiden parhaat hinnat"
+    }
+  ],
+
+  "pt": [
+    {
+      "title": "Envio Grátis",
+      "description": "Envio grátis para pedidos acima de $99"
+    },
+    {
+      "title": "Pagamento Seguro",
+      "description": "Métodos de pagamento 100% seguros"
+    },
+    {
+      "title": "Devoluções Fáceis",
+      "description": "Política de devolução de 30 dias"
+    },
+    {
+      "title": "Suporte 24/7",
+      "description": "Atendimento ao cliente 24 horas"
+    },
+    {
+      "title": "Confiança Shrishiv",
+      "description": "Garantia de satisfação de 100%"
+    },
+    {
+      "title": "Preço de Mercado Imbatível",
+      "description": "Oferecemos os melhores preços do mercado"
+    }
+  ],
+
+  "fr": [
+    {
+      "title": "Livraison Gratuite",
+      "description": "Livraison gratuite pour les commandes de plus de 99 $"
+    },
+    {
+      "title": "Paiement Sécurisé",
+      "description": "Méthodes de paiement 100% sécurisées"
+    },
+    {
+      "title": "Retours Faciles",
+      "description": "Politique de retour de 30 jours"
+    },
+    {
+      "title": "Support 24/7",
+      "description": "Service client disponible 24h/24"
+    },
+    {
+      "title": "Confiance de Shrishiv",
+      "description": "Garantie de satisfaction à 100%"
+    },
+    {
+      "title": "Prix Imbattable",
+      "description": "Nous offrons les meilleurs prix du marché"
+    }
+  ],
+
+  "mn": [
+    {
+      "title": "Үнэгүй Хүргэлт",
+      "description": "$99-с дээш захиалгад үнэгүй хүргэлт"
+    },
+    {
+      "title": "Аюулгүй Төлбөр",
+      "description": "100% аюулгүй төлбөрийн аргууд"
+    },
+    {
+      "title": "Хялбар Буцаалт",
+      "description": "30 хоногийн буцаах нөхцөл"
+    },
+    {
+      "title": "24/7 Дэмжлэг",
+      "description": "Үргэлж нээлттэй хэрэглэгчийн үйлчилгээ"
+    },
+    {
+      "title": "Shrishiv Итгэл",
+      "description": "100% сэтгэл ханамжийн баталгаа"
+    },
+    {
+      "title": "Зах Зээлийн Хамгийн Шилдэг Үнэ",
+      "description": "Бид зах зээл дээрх хамгийн сайн үнүүдийг санал болгодог"
+    }
+  ],
+
+  "ja": [
+    {
+      "title": "送料無料",
+      "description": "99ドル以上のご注文で送料無料"
+    },
+    {
+      "title": "安全な支払い",
+      "description": "100% 安全な支払い方法"
+    },
+    {
+      "title": "簡単返品",
+      "description": "30日間の返品ポリシー"
+    },
+    {
+      "title": "24時間年中無休サポート",
+      "description": "24時間対応のカスタマーサービス"
+    },
+    {
+      "title": "Shrishiv の信頼",
+      "description": "100% 満足保証"
+    },
+    {
+      "title": "市場最安値",
+      "description": "市場で最もお得な価格をご提供します"
+    }
+  ],
+
+  "th": [
+    {
+      "title": "จัดส่งฟรี",
+      "description": "จัดส่งฟรีสำหรับคำสั่งซื้อเกิน $99"
+    },
+    {
+      "title": "ชำระเงินปลอดภัย",
+      "description": "วิธีการชำระเงินที่ปลอดภัย 100%"
+    },
+    {
+      "title": "การคืนสินค้าง่าย",
+      "description": "นโยบายการคืนสินค้า 30 วัน"
+    },
+    {
+      "title": "บริการลูกค้า 24/7",
+      "description": "บริการลูกค้าตลอด 24 ชั่วโมง"
+    },
+    {
+      "title": "ความเชื่อมั่นของ Shrishiv",
+      "description": "การรับประกันความพึงพอใจ 100%"
+    },
+    {
+      "title": "ราคาตลาดที่ดีที่สุด",
+      "description": "เรามีราคาที่ดีที่สุดในตลาด"
+    }
+  ],
+
+  "tl": [
+    {
+      "title": "Libreng Shipping",
+      "description": "Libreng shipping para sa mga order na lampas $99"
+    },
+    {
+      "title": "Ligtas na Pagbabayad",
+      "description": "100% ligtas na paraan ng pagbabayad"
+    },
+    {
+      "title": "Madaling Pagbalik",
+      "description": "30-araw na return policy"
+    },
+    {
+      "title": "24/7 Suporta",
+      "description": "Customer support na available 24/7"
+    },
+    {
+      "title": "Tiwala ng Shrishiv",
+      "description": "100% kasiyahan na garantisado"
+    },
+    {
+      "title": "Hindi Matatalong Presyo sa Merkado",
+      "description": "Nag-aalok kami ng pinakamahusay na presyo sa merkado"
+    }
+  ]
+}

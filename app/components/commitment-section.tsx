@@ -1,34 +1,16 @@
 "use client";
 
+import { useLocale } from "@/contexts/LocalProvider";
 import { motion } from "framer-motion";
+import commitmentJson from "../../json/commitment.json";
+import { CommitmentData, CommitmentItem } from "@/types/commitment";
+
+const commitment = commitmentJson as CommitmentData;
 
 export default function CommitmentSection() {
-  const features = [
-    {
-      title: "Free Shipping",
-      description: "Free shipping on orders over $99",
-    },
-    {
-      title: "Secure Payment",
-      description: "100% secure payment methods",
-    },
-    {
-      title: "Easy Returns",
-      description: "30-day return policy",
-    },
-    {
-      title: "24/7 Support",
-      description: "Round-the-clock customer service",
-    },
-    {
-      title: "Shrishiv's Trust",
-      description: "100% satisfaction guaranteed",
-    },
-    {
-      title: "Unbeatable Market Price",
-      description: "We offer the best prices in the market",
-    },
-  ];
+  const { language } = useLocale();
+  const features: CommitmentItem[] = commitment[language] ?? commitment["en"];
+
   return (
     <section className="sm:py-16 py-10 bg-gradient-to-r">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -8,7 +8,11 @@ interface LocaleContextProps {
   language: string;
 }
 
-const LocaleContext = createContext<LocaleContextProps | null>(null);
+const LocaleContext = createContext<LocaleContextProps>({
+  locale: "in-en",
+  country: "in",
+  language: "en",
+});
 
 export const useLocale = () => useContext(LocaleContext);
 
@@ -23,10 +27,9 @@ export default function LocaleProvider({
 
   useEffect(() => {
     if (language) {
-      document.body.lang = language;
       document.documentElement.lang = language;
     }
-  }, []);
+  }, [language]);
 
   return (
     <LocaleContext.Provider value={{ locale, country, language }}>

@@ -27,3 +27,7 @@ export interface SelectedCountry {
   // country: { code: string; name: string };
   // languages: { code: string; name: string };
 }
+
+export interface LanguageValue {
+  [lang: string]: string;
+}
