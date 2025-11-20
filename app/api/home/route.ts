@@ -1,5 +1,6 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { UnifiedPageData } from "@/lib/types";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
@@ -116,8 +117,11 @@ const mockHomeData: UnifiedPageData = {
   ],
 };
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+
     const externalApiUrl = process.env.EXTERNAL_API_URL;
     if (!externalApiUrl) {
       console.warn("⚠️ EXTERNAL_API_URL not set, using mock data");
@@ -133,8 +137,22 @@ export async function GET() {
 
     // Fetch both in parallel
     const [featuredRes, storeRes] = await Promise.all([
-      fetch(endpoints.featured, { next: { revalidate: 3600 } }),
-      fetch(endpoints.store, { next: { revalidate: 3600 } }),
+      fetch(endpoints.featured, {
+        headers: {
+          ...(currentLanguageCode !== "en" && {
+            languageCode: currentLanguageCode,
+          }),
+        },
+        next: { revalidate: 3600 },
+      }),
+      fetch(endpoints.store, {
+        headers: {
+          ...(currentLanguageCode !== "en" && {
+            languageCode: currentLanguageCode,
+          }),
+        },
+        next: { revalidate: 3600 },
+      }),
     ]);
 
     // Check for failed responses

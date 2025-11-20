@@ -5,8 +5,7 @@ import {
   ParentCategory,
   SubCategory,
 } from "@/types/header";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 type NewApiResponse = ParentCategory[];
 
@@ -26,7 +25,7 @@ interface OldApiResponse {
 // Cache duration in seconds
 const CACHE_DURATION = 3600; // 1 hour
 
-export async function GET(req: NextApiRequest) {
+export async function GET(req: NextRequest) {
   try {
     // Check if we have cached data
     const currentLanguageCode =

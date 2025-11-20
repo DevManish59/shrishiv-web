@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import { NextRequest, NextResponse } from "next/server";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
@@ -64,10 +65,12 @@ const mockSubcategoryData = {
 };
 
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { category: string; subcategory: string } }
 ) {
   try {
+    const currentLanguageCode =
+      request.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
     // Check if external API is configured
     const externalApiUrl = process.env.EXTERNAL_API_URL;
     if (!externalApiUrl) {
@@ -80,11 +83,16 @@ export async function GET(
     const { subcategory } = await params;
     const url = `${externalApiUrl}/product/by-category?slug=${subcategory}`;
 
-    console.log(url, "url");
     console.log("🚀 Subcategory API: Calling external API:", url);
 
     const response = await fetch(url, {
       next: { revalidate: 3600 }, // Revalidate every hour
+      headers: {
+        "Content-Type": "application/json",
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
+      },
     });
 
     if (!response.ok) {

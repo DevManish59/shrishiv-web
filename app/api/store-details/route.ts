@@ -1,8 +1,12 @@
-import { NextResponse } from "next/server";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import { NextRequest, NextResponse } from "next/server";
 
 const CACHE_DURATION = 3600; // 1 hour
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
+    const currentLanguageCode =
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+
     // Fetch from external API
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
@@ -13,6 +17,9 @@ export async function GET() {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
       },
     });
     if (!response.ok) {

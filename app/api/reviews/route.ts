@@ -1,7 +1,7 @@
 import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const currentLanguageCode =
       req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
