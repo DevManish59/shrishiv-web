@@ -83,7 +83,7 @@ export default function ReviewListing({
         ref={emblaRef}
       >
         <div className={`flex gap-2 px-1`}>
-          {reviews.map((review) => (
+          {reviews.slice(0, 5).map((review) => (
             <div
               key={review.id}
               className={`${
@@ -97,6 +97,7 @@ export default function ReviewListing({
           ))}
 
           {/* View More Card */}
+
           <div
             className={`${
               isLargeScreen

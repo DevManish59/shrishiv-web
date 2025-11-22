@@ -20,7 +20,11 @@ const sectionTitles = constantJson.customer_reviews as LanguageValue;
 
 type RatingData = Record<number, number>;
 
-export default function ReviewsPage() {
+export default function ReviewsPage({
+  productId,
+}: {
+  productId?: string | number;
+}) {
   const { language } = useLocale();
   const sectionTitle = sectionTitles[language] ?? sectionTitles["en"];
   const [currentPage, setCurrentPage] = useState(1);
@@ -56,7 +60,8 @@ export default function ReviewsPage() {
 
   const fetchProductReviewStats = async () => {
     try {
-      const response = await fetch("/api/reviews-stats");
+      const filterOnProduct = productId ? `?${productId}` : "";
+      const response = await fetch(`/api/reviews-stats`);
       if (!response.ok) {
         throw new Error("Failed to fetch reviews");
       }
@@ -244,6 +249,7 @@ export default function ReviewsPage() {
           <>
             <div className="w-full !border-b !border-b-gray-300 my-5" />
             <WriteReview
+              productId={productId}
               onCancel={() => setShowWriteReview(false)}
               onSubmit={handleSubmitReview}
             />

@@ -241,7 +241,7 @@ export default async function ProductPage({
       )}
 
       {/* Reviews Section */}
-      <ReviewsPage />
+      <ReviewsPage productId={product?.id} />
 
       {/* Cart Modal */}
       <CartModal />

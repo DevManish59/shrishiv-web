@@ -71,7 +71,7 @@ const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
     }
 
     return {
-      id: slug, // Use slug as id for routing
+      id: product.id, // Use slug as id for routing
       name: product.productName || "Product",
       price: price,
       originalPrice: product.mrpPrice || undefined,

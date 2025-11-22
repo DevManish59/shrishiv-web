@@ -57,7 +57,8 @@ export interface FilterTransformedData {
 }
 
 export interface ProductGridProduct {
-  id: string | number;
+  id: number;
+  slug: string;
   name: string;
   price: number;
   originalPrice?: number;

@@ -27,7 +27,7 @@ export default function ProductGrid({
       {displayProducts.map((product, index) => {
         return (
           <ProductCard
-            key={`${product.id}-${index}`}
+            key={`${product.slug}-${index}`}
             product={product}
             basePath={basePath}
             index={index}

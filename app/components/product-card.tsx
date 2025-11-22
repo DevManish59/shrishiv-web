@@ -9,7 +9,8 @@ import LocalizedLink from "./layout/LocalizedLink";
 
 interface Props {
   product: {
-    id: string | number;
+    id: number;
+    slug: string;
     name: string;
     price: number;
     originalPrice?: number;
@@ -52,7 +53,7 @@ export default function ProductCard({
       transition={{ duration: 0.3 }}
       className="group relative"
     >
-      <LocalizedLink href={`${basePath}/${product.id}`} className="block">
+      <LocalizedLink href={`${basePath}/${product.slug}`} className="block">
         <div
           className={`aspect-[3/4] w-full overflow-hidden relative ${
             imageError || !imageLoaded || !product.image
