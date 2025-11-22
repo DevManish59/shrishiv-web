@@ -1,4 +1,7 @@
-import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import {
+  COOKIE_KEY_COUNTRY_ISO,
+  COOKIE_KEY_LANGUAGE_ISO,
+} from "@/lib/cookie-constant";
 import { NextRequest, NextResponse } from "next/server";
 
 // Force dynamic rendering - disable static generation
@@ -61,6 +64,8 @@ export async function GET(
   try {
     const currentLanguageCode =
       req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+    const currentCountryCode =
+      req.cookies.get(COOKIE_KEY_COUNTRY_ISO)?.value || "in";
 
     // Check if external API is configured
     const externalApiUrl = process.env.EXTERNAL_API_URL;
@@ -79,6 +84,9 @@ export async function GET(
       headers: {
         ...(currentLanguageCode !== "en" && {
           languageCode: currentLanguageCode,
+        }),
+        ...(currentCountryCode !== "in" && {
+          countryCode: currentCountryCode,
         }),
       },
     });

@@ -8,7 +8,7 @@ import constantJson from "../../json/constant.json";
 import { useLocale } from "@/contexts/LocalProvider";
 import { LanguageValue } from "@/types/common";
 
-const sectionTitle = constantJson as LanguageValue;
+const sectionTitle = constantJson.faq as LanguageValue;
 const faqs = [
   {
     id: 1,

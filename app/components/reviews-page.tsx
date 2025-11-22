@@ -13,8 +13,15 @@ import { mockReviews, mockReviewSummary } from "@/lib/mock-data";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
+import constantJson from "../../json/constant.json";
+import { useLocale } from "@/contexts/LocalProvider";
+import { LanguageValue } from "@/types/common";
+
+const sectionTitles = constantJson.customer_reviews as LanguageValue;
 
 export default function ReviewsPage() {
+  const { language } = useLocale();
+  const sectionTitle = sectionTitles[language] ?? sectionTitles["en"];
   const [currentPage, setCurrentPage] = useState(1);
   const [currentFilter, setCurrentFilter] =
     useState<ReviewFilterType>("most_recent");
@@ -131,7 +138,7 @@ export default function ReviewsPage() {
     return (
       <>
         <h1 className="text-3xl font-bold text-center w-full mb-4">
-          Customer Reviews
+          {sectionTitle}
         </h1>
         <div className="w-full flex flex-col lg:flex-row gap-8">
           <div className="flex-1 flex flex-col justify-center items-center">
