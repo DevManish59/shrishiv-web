@@ -210,66 +210,6 @@ export const headerMenuStaticData = {
   error: null,
 };
 
-export const headerFallbackData: DynamicCategory[] = [
-  {
-    id: 1,
-    name: "Rings",
-    slug: "rings",
-    categories: [
-      { label: "Diamond Rings", slug: "diamond-rings" },
-      { label: "Gold Rings", slug: "gold-rings" },
-      { label: "Silver Rings", slug: "silver-rings" },
-      { label: "Platinum Rings", slug: "platinum-rings" },
-    ],
-    featured: [
-      { label: "ENGAGEMENT RINGS", slug: "engagement" },
-      { label: "WEDDING BANDS", slug: "wedding-bands" },
-    ],
-  },
-  {
-    id: 2,
-    name: "Necklaces",
-    slug: "necklaces",
-    categories: [
-      { label: "Diamond Necklaces", slug: "diamond-necklaces" },
-      { label: "Gold Necklaces", slug: "gold-necklaces" },
-      { label: "Pearl Necklaces", slug: "pearl-necklaces" },
-    ],
-    featured: [
-      { label: "PENDANTS", slug: "pendants" },
-      { label: "CHAINS", slug: "chains" },
-    ],
-  },
-  {
-    id: 3,
-    name: "Earrings",
-    slug: "earrings",
-    categories: [
-      { label: "Diamond Earrings", slug: "diamond-earrings" },
-      { label: "Gold Earrings", slug: "gold-earrings" },
-      { label: "Silver Earrings", slug: "silver-earrings" },
-    ],
-    featured: [
-      { label: "STUD EARRINGS", slug: "studs" },
-      { label: "HOOP EARRINGS", slug: "hoops" },
-    ],
-  },
-  {
-    id: 4,
-    name: "Bracelets",
-    slug: "bracelets",
-    categories: [
-      { label: "Diamond Bracelets", slug: "diamond-bracelets" },
-      { label: "Gold Bracelets", slug: "gold-bracelets" },
-      { label: "Silver Bracelets", slug: "silver-bracelets" },
-    ],
-    featured: [
-      { label: "BANGLES", slug: "bangles" },
-      { label: "CHAIN BRACELETS", slug: "chains" },
-    ],
-  },
-];
-
 export const generateDummyData = (
   category: string,
   subcategory: string

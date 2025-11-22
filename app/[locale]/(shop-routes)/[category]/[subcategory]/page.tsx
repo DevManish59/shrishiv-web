@@ -229,6 +229,9 @@ export default async function SubcategoryPage({
   searchParams,
 }: PageProps) {
   const resolvedSearchParams = await searchParams;
+  const cookieStore = await cookies();
+  const currentLanguage =
+    cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
   const { category, subcategory } = await params;
   const externalApiUrl =
     process.env.EXTERNAL_API_URL ?? "http://localhost:3000";
@@ -272,9 +275,24 @@ export default async function SubcategoryPage({
     // Fetch category & products concurrently
     const [categoryResponse, productResponse, filterResponse] =
       await Promise.all([
-        fetch(categoryApiUrl, { cache: "no-store" }),
-        fetch(productApiUrl, { cache: "no-store" }),
-        fetch(filterApiUrl, { cache: "no-store" }),
+        fetch(categoryApiUrl, {
+          cache: "no-store",
+          headers: {
+            ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+          },
+        }),
+        fetch(productApiUrl, {
+          cache: "no-store",
+          headers: {
+            ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+          },
+        }),
+        fetch(filterApiUrl, {
+          cache: "no-store",
+          headers: {
+            ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+          },
+        }),
       ]);
 
     // Validate responses
@@ -284,7 +302,7 @@ export default async function SubcategoryPage({
       );
     }
     if (!productResponse.ok) {
-      allProductsData = generateDummyData(category, subcategory);
+      allProductsData = [];
     }
     if (!filterResponse.ok) {
     }
@@ -294,12 +312,13 @@ export default async function SubcategoryPage({
       productResponse.json(),
       filterResponse.json(),
     ]);
+    console.log("allProductsData", allProductsData);
   } catch (error) {
     console.error(
       "❌ Subcategory Page: Fetch failed, using fallback data:",
       error
     );
-    allProductsData = generateDummyData(category, subcategory);
+    allProductsData = [];
   }
 
   // Create collection object for CollectionHeader
@@ -315,50 +334,8 @@ export default async function SubcategoryPage({
 
   // Transform products for ProductGrid component
   const products = transformProducts(allProductsData);
-
+  const hasProducts = products && products.length > 0;
   // Ensure we always have products
-  if (!products || products.length === 0) {
-    const dummyProducts = transformProducts(
-      generateDummyData(category, subcategory)
-    );
-    return (
-      <div className="mx-auto">
-        {/* <CollectionHeader collection={collection} /> */}
-        <div className="relative h-[300px] overflow-hidden">
-          {/* Background image (optional) */}
-          <Image
-            src={collection.image}
-            alt={collection.name}
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-black/40" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white max-w-4xl px-4">
-              <h1 className="text-3xl font-bold mb-4">{collection.name}</h1>
-              <p className="text-lg leading-relaxed">
-                {collection.shortDescription}
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="relative min-h-[80vh]">
-          <StickyFilterBar
-            filterOptions={getFilterOptions()}
-            activeFilters={{ price: [], size: [], color: [] }}
-            searchParams={resolvedSearchParams}
-          />
-          <ActiveFilters
-            activeFilters={{ price: [], size: [], color: [] }}
-            filterOptions={getFilterOptions()}
-            searchParams={resolvedSearchParams}
-          />
-          <ProductGrid products={dummyProducts} basePath="/products" />
-        </div>
-      </div>
-    );
-  }
 
   const filterOptions = getFilterOptions(filterData);
 
@@ -369,11 +346,6 @@ export default async function SubcategoryPage({
         ? resolvedSearchParams.price
         : resolvedSearchParams.price?.split(",")
       : [],
-    // category: resolvedSearchParams.category
-    //   ? Array.isArray(resolvedSearchParams.category)
-    //     ? resolvedSearchParams.category
-    //     : resolvedSearchParams.category.split(",")
-    //   : [],
     size: resolvedSearchParams.size
       ? Array.isArray(resolvedSearchParams.size)
         ? resolvedSearchParams.size
@@ -390,7 +362,6 @@ export default async function SubcategoryPage({
     <div className="mx-auto">
       {/* <CollectionHeader collection={collection} /> */}
       <div className="relative h-[300px] overflow-hidden">
-        {/* Background image (optional) */}
         <Image
           src={collection.image}
           alt={"banner-image"}
@@ -410,18 +381,31 @@ export default async function SubcategoryPage({
       </div>
 
       {/* Container for sticky behavior */}
-      <div className="relative min-h-[80vh]">
-        <StickyFilterBar
-          filterOptions={filterOptions}
-          activeFilters={activeFilters}
-          searchParams={resolvedSearchParams}
-        />
-        <ActiveFilters
-          activeFilters={activeFilters}
-          filterOptions={filterOptions}
-          searchParams={resolvedSearchParams}
-        />
-        <ProductGrid products={products} basePath="/products" />
+      <div
+        className={`relative ${hasProducts ? "min-h-[80vh]" : "min-h-[50vh]"}`}
+      >
+        {hasProducts ? (
+          <>
+            <StickyFilterBar
+              filterOptions={filterOptions}
+              activeFilters={activeFilters}
+              searchParams={resolvedSearchParams}
+            />
+            <ActiveFilters
+              activeFilters={activeFilters}
+              filterOptions={filterOptions}
+              searchParams={resolvedSearchParams}
+            />
+            <ProductGrid products={products} basePath="/products" />
+          </>
+        ) : (
+          <div className="flex flex-col items-center justify-center min-h-[30vh]">
+            <h2 className="text-2xl font-semibold mb-2">No Products Found</h2>
+            <p className="text-gray-600 text-center max-w-md">
+              Try adjusting your filters or exploring other collections.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

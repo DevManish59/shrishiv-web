@@ -196,7 +196,7 @@ export default async function ProductPage({
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
     const apiUrl = `${baseUrl}/api/products/${slug}`;
     const response = await fetch(apiUrl, {
-      cache: "no-store", // Disable caching for dynamic data
+      cache: "no-store",
     });
 
     if (!response.ok) {

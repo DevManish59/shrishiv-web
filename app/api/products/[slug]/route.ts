@@ -67,15 +67,8 @@ export async function GET(
     const currentCountryCode =
       req.cookies.get(COOKIE_KEY_COUNTRY_ISO)?.value || "in";
 
-    // Check if external API is configured
-    const externalApiUrl = process.env.EXTERNAL_API_URL;
-    if (!externalApiUrl) {
-      console.warn("⚠️ Product API: EXTERNAL_API_URL not set, using mock data");
-      return NextResponse.json(mockProductData);
-    }
-
     const { slug } = params;
-    const url = `${externalApiUrl}/product/by-slug/${slug}`;
+    const url = `${process.env.EXTERNAL_API_URL}/product/by-slug/${slug}`;
 
     console.log("🚀 Product API: Calling external API:", url);
 
@@ -103,6 +96,6 @@ export async function GET(
 
     // Return mock data as fallback
     console.log("🔄 Product API: Using mock data as fallback");
-    return NextResponse.json(mockProductData);
+    return NextResponse.json("");
   }
 }

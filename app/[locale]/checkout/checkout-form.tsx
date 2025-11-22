@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import Link from "next/link";
 // import { useCart } from "@/contexts/CartContext";
 import { Country } from "@/types/common";
 import { useCart } from "@/contexts/LocalStorageCartContext";
+import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import Cookies from "js-cookie";
 
 // PayPal types
 declare global {
@@ -95,9 +96,15 @@ export default function CheckoutForm({ initialSubtotal }: CheckoutFormProps) {
 
   const fetchCountries = async () => {
     try {
+      const currentLanguage = Cookies.get(COOKIE_KEY_LANGUAGE_ISO);
       const countryRes = await fetch(
         `${process.env.EXTERNAL_API_URL}/countries`,
-        { cache: "no-store" }
+        {
+          cache: "no-store",
+          headers: {
+            ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+          },
+        }
       );
 
       // Check for failed responses

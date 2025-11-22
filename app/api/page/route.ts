@@ -14,7 +14,7 @@ export async function GET(req: NextRequest) {
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
     const pageUrl = `${externalApiUrl}/pages`;
-    const webPageUrl = `${externalApiUrl}/web/pages`;
+    const webPageUrl = `${externalApiUrl}/web/pages/slug`;
     const storeDataUrl = `${externalApiUrl}/store-detail`;
 
     if (slug) {
@@ -32,11 +32,8 @@ export async function GET(req: NextRequest) {
       }
 
       const specificPageData = await specificPageRes.json();
-      return NextResponse.json(specificPageData, {
-        headers: {
-          "Cache-Control": `public, s-maxage=${CACHE_DURATION}, stale-while-revalidate`,
-        },
-      });
+      console.log("specificPageData", specificPageData);
+      return NextResponse.json(specificPageData);
     }
 
     const [storeDataResponse, pageDataResponse] = await Promise.all([

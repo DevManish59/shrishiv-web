@@ -19,7 +19,6 @@ import {
   ChevronDown,
 } from "lucide-react";
 import { DynamicCategory } from "@/types/header";
-import { headerFallbackData } from "@/lib/constant";
 interface ApiMenuData {
   categories: DynamicCategory[];
 }
@@ -29,8 +28,6 @@ export default function Header() {
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
-  const [selectedMobileCategory, setSelectedMobileCategory] =
-    useState<string>("");
   const [menuData, setMenuData] = useState<DynamicCategory[]>([]);
   const [menuLoading, setMenuLoading] = useState(true);
   const [menuError, setMenuError] = useState<string | null>(null);
@@ -87,18 +84,12 @@ export default function Header() {
         const data: ApiMenuData = await response.json();
         setMenuData(data.categories);
         // Set the first category as selected for mobile menu
-        if (data.categories.length > 0) {
-          setSelectedMobileCategory(data.categories[0].slug);
-        }
+        // if (data.categories.length > 0) {
+        //   setSelectedMobileCategory(data.categories[0].slug);
+        // }
       } catch (error) {
         console.error("Error fetching header data:", error);
         setMenuError("Failed to load menu data");
-        // Fallback to static jewelry data
-
-        setMenuData(headerFallbackData);
-        if (headerFallbackData.length > 0) {
-          setSelectedMobileCategory(headerFallbackData[0].slug);
-        }
       } finally {
         setMenuLoading(false);
       }
@@ -113,7 +104,6 @@ export default function Header() {
     setShowOverlay(isOpen);
     if (isOpen) {
       document.body.style.overflow = "hidden";
-      setSelectedMobileCategory("women"); // Reset to women when opening
     } else {
       document.body.style.overflow = "unset";
     }
@@ -139,7 +129,6 @@ export default function Header() {
             <Menu className="w-6 h-6" />
           </button>
 
-          {/* Left: Categories for Desktop */}
           <nav className="hidden md:flex items-center absolute left-0 space-x-6 h-full">
             {menuLoading ? (
               <div className="flex items-center space-x-2">
@@ -149,7 +138,7 @@ export default function Header() {
             ) : menuError ? (
               <span className="text-sm text-red-500">Error loading menu</span>
             ) : (
-              menuData.map((category) => (
+              menuData.slice(0, 5).map((category) => (
                 <div
                   key={category.slug}
                   className="relative h-full flex items-center cursor-pointer uppercase text-sm font-semibold hover:text-gray-600 transition-colors"
@@ -280,7 +269,13 @@ export default function Header() {
                               </LocalizedLink>
                             ))}
                           </div>
-                        ) : null}
+                        ) : (
+                          <div>
+                            <h3 className="text-gray-500 text-sm my-2">
+                              No Categories Found
+                            </h3>
+                          </div>
+                        )}
                       </div>
 
                       {/* Featured Section */}
@@ -298,7 +293,13 @@ export default function Header() {
                               </LocalizedLink>
                             ))}
                           </div>
-                        ) : null}
+                        ) : (
+                          <div>
+                            <h3 className="text-gray-500 text-sm my-2">
+                              No Featured Found
+                            </h3>
+                          </div>
+                        )}
                       </div>
                     </>
                   );
@@ -385,7 +386,7 @@ export default function Header() {
                     transition={{ duration: 0.3 }}
                     className="overflow-hidden text-sm"
                   >
-                    <div className="px-6 pb-4">
+                    <div className="px-5 pb-4">
                       {category?.categories.length > 0 && (
                         <div>
                           <h3 className="text-gray-500 font-semibold my-2">
@@ -430,6 +431,14 @@ export default function Header() {
                           ))}
                         </div>
                       )}
+                      {!category?.featured.length &&
+                        !category?.categories.length && (
+                          <div>
+                            <h3 className="text-gray-500 font-medium text-center">
+                              No Items Found
+                            </h3>
+                          </div>
+                        )}
                     </div>
                   </motion.div>
                 </motion.div>
