@@ -302,17 +302,6 @@ export const mockReviews = [
   // }
 ];
 
-export const mockReviewSummary = {
-  totalRating: 4.3,
-  ratingDistribution: {
-    5: 6,
-    4: 2,
-    3: 1,
-    2: 1,
-    1: 0,
-  },
-};
-
 export const mockFilters = {
   price: [
     { value: "0-30", label: "Under $30" },

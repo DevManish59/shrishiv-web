@@ -7,14 +7,25 @@ import { useMediaQuery } from "@/hooks/useMediaQuery";
 import ReviewCard from "./review-card";
 import ViewMoreCard from "./view-more-card";
 
+// interface Review {
+//   id: number;
+//   image: string;
+//   review: string;
+//   customerName: string;
+//   purchaseDate: string;
+//   fullComment?: string;
+//   countryName: string;
+// }
 interface Review {
   id: number;
-  image: string;
+  imageUrls?: string[];
   review: string;
-  customerName: string;
-  purchaseDate: string;
+  rating?: number;
+  name?: string;
+  isApproved?: boolean;
+  purchaseDate?: string;
   fullComment?: string;
-  countryName: string;
+  countryName?: string;
 }
 
 interface ReviewListingProps {
@@ -71,7 +82,7 @@ export default function ReviewListing({
         }`}
         ref={emblaRef}
       >
-        <div className={`flex gap-2 px-1 justify-between`}>
+        <div className={`flex gap-2 px-1`}>
           {reviews.map((review) => (
             <div
               key={review.id}

@@ -138,11 +138,10 @@ export interface Review {
   };
 }
 
-export interface ReviewSummary {
+export interface ReviewStatistics {
+  totalReviews: number;
   totalRating: number;
-  ratingDistribution: {
-    [key: number]: number;
-  };
+  ratingDistribution: Record<number, number>;
 }
 
 // Unified API Types - Used for both home page and subcategory pages

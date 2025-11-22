@@ -2,14 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Star from "@/components/ui/star";
-import { Review, ReviewType } from "@/lib/types";
+import { Review, ReviewStatistics, ReviewType } from "@/lib/types";
 import ReviewFilter, { ReviewFilterType } from "./product/review-filter";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Masonry from "react-masonry-css";
 import { motion, AnimatePresence } from "framer-motion";
 import ReviewSkeleton from "./product/review-skeleton";
 import WriteReview from "./product/write-review";
-import { mockReviews, mockReviewSummary } from "@/lib/mock-data";
 import Image from "next/image";
 import { formatDate } from "@/lib/utils";
 import { toast } from "sonner";
@@ -20,11 +19,6 @@ import { LanguageValue } from "@/types/common";
 const sectionTitles = constantJson.customer_reviews as LanguageValue;
 
 type RatingData = Record<number, number>;
-interface ReviewStatistics {
-  totalReviews: number;
-  totalRating: number;
-  ratingDistribution: RatingData;
-}
 
 export default function ReviewsPage() {
   const { language } = useLocale();
@@ -53,13 +47,8 @@ export default function ReviewsPage() {
       const data = await response.json();
       setReviewsList(data);
       // setReviews(data.reviews);
-      // setTotalRating(data.summary.totalRating);
-      // setRatingDistribution(data.summary.ratingDistribution);
-      // setTotalRating(mockReviewSummary.totalRating);
     } catch (error) {
       console.error("Error fetching reviews:", error);
-      // TODO: Implement error handling UI
-      // setError('Failed to load reviews. Please try again later.');
     } finally {
       setIsLoading(false);
     }

@@ -12,8 +12,9 @@ interface Review {
   name: string;
   isApproved: boolean;
   purchaseDate: string;
-  fullComment?: string;
   countryName: string;
+  fullComment?: string;
+  image?: string;
 }
 
 interface ReviewCardProps {
