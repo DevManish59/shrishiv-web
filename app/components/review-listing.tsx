@@ -83,18 +83,20 @@ export default function ReviewListing({
         ref={emblaRef}
       >
         <div className={`flex gap-2 px-1`}>
-          {reviews.slice(0, 5).map((review) => (
-            <div
-              key={review.id}
-              className={`${
-                isLargeScreen
-                  ? "w-full sm:w-1/2 md:w-1/3 lg:w-1/6"
-                  : "flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_calc(16.666%-15px)]"
-              }`}
-            >
-              <ReviewCard review={review} />
-            </div>
-          ))}
+          {reviews.length > 0
+            ? reviews.slice(0, 5).map((review) => (
+                <div
+                  key={review.id}
+                  className={`${
+                    isLargeScreen
+                      ? "w-full sm:w-1/2 md:w-1/3 lg:w-1/6"
+                      : "flex-[0_0_100%] min-w-0 sm:flex-[0_0_50%] md:flex-[0_0_33.333%] lg:flex-[0_0_calc(16.666%-15px)]"
+                  }`}
+                >
+                  <ReviewCard review={review} />
+                </div>
+              ))
+            : ""}
 
           {/* View More Card */}
 

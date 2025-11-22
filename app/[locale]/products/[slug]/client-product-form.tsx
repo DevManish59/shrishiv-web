@@ -20,11 +20,13 @@ interface ClientProductFormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   product: any;
   onImagesChange?: (images: string[]) => void;
+  sizeChartData?: any;
 }
 
 export function ClientProductForm({
   product,
   onImagesChange,
+  sizeChartData,
 }: ClientProductFormProps) {
   const [dynamicPrice, setDynamicPrice] = useState(product.price);
 
@@ -55,6 +57,7 @@ export function ClientProductForm({
         <AttributeProductForm
           product={product}
           onAttributeChange={handleAttributeChange}
+          sizeChartData={sizeChartData}
         />
       ) : (
         <ProductForm

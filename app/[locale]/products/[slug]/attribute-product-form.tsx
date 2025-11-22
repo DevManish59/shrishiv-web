@@ -39,11 +39,13 @@ interface AttributeProductFormProps {
     images: string[];
     price: number;
   }) => void;
+  sizeChartData?: any;
 }
 
 export default function AttributeProductForm({
   product,
   onAttributeChange,
+  sizeChartData,
 }: AttributeProductFormProps) {
   const [selectedOptions, setSelectedOptions] = useState<
     Record<number, AttributeOption>
@@ -223,6 +225,7 @@ export default function AttributeProductForm({
       <SizeGuideModal
         isOpen={showSizeGuide}
         onClose={() => setShowSizeGuide(false)}
+        sizeChartData={sizeChartData}
       />
     </div>
   );

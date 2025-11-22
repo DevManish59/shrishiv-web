@@ -273,14 +273,14 @@ export default function ReviewsPage({
         </motion.div>
 
         {/* Filter */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           className="flex justify-start"
         >
           <ReviewFilter value={currentFilter} onChange={setCurrentFilter} />
-        </motion.div>
+        </motion.div> */}
 
         {/* Reviews Masonry Grid */}
         <div>

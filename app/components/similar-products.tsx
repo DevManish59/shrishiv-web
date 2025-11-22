@@ -103,24 +103,31 @@ export default async function SimilarProducts({
   );
 
   const products = await response.json();
-  console.log("products++", products);
 
   // Limit to 8 items
   const productsList = transformProducts(products);
-  console.log("productsList", productsList);
+
   const displayProducts =
-    productsList?.filter((data) => data.slug !== pathUrl).slice(0, 8) ?? [];
+    productsList?.filter((data) => data.slug !== pathUrl).slice(0, 4) ?? [];
 
   return (
     <section className="py-16">
-      <div className="text-center mb-12">
+      <div className="text-center">
         <h2 className="md:text-4xl text-3xl font-bold text-gray-900 mb-4">
           Similar Products
         </h2>
       </div>
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <ProductGrid products={displayProducts} />
-      </div>
+      {displayProducts.length > 0 ? (
+        <div className="mx-auto">
+          <ProductGrid products={displayProducts} />
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16">
+          <h2 className="text-2xl text-gray-500 font-semibold mb-2">
+            No Products Found
+          </h2>
+        </div>
+      )}
     </section>
   );
 }

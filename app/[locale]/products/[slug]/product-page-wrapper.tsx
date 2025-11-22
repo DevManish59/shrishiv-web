@@ -8,10 +8,12 @@ import { TransformedProduct } from "@/lib/types";
 
 interface ProductPageWrapperProps {
   product: TransformedProduct;
+  sizeChartData?: any;
 }
 
 export default function ProductPageWrapper({
   product,
+  sizeChartData,
 }: ProductPageWrapperProps) {
   const [dynamicImages, setDynamicImages] = useState<string[]>(
     product.images || []
@@ -38,10 +40,14 @@ export default function ProductPageWrapper({
               <ClientProductForm
                 product={product}
                 onImagesChange={handleImagesChange}
+                sizeChartData={sizeChartData}
               />
 
               {/* Description */}
-              <ProductDescription description={product.description} />
+              <ProductDescription
+                description={product.description}
+                points={product.points}
+              />
             </div>
           </div>
         </div>

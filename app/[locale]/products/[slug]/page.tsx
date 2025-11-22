@@ -200,7 +200,10 @@ export default async function ProductPage({
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let product: any = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let sizeChartData: any = null;
 
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -217,6 +220,26 @@ export default async function ProductPage({
 
     const apiProduct: ApiProduct = data;
     product = transformApiProduct(apiProduct);
+
+    // Fetch size chart data if sizeChartId exists
+    if (data?.sizeChartId) {
+      try {
+        const externalApiUrl = process.env.EXTERNAL_API_URL;
+        if (externalApiUrl) {
+          const sizeChartUrl = `${externalApiUrl}/size-chart/${apiProduct.sizeChartId}`;
+          const sizeChartResponse = await fetch(sizeChartUrl, {
+            cache: "no-store",
+          });
+
+          if (sizeChartResponse.ok) {
+            sizeChartData = await sizeChartResponse.json();
+          }
+        }
+      } catch (sizeChartError) {
+        console.error("Failed to fetch size chart:", sizeChartError);
+        // Continue without size chart data
+      }
+    }
   } catch (error) {
     console.error(
       "❌ Product Page: Failed to fetch data, using fallback:",
@@ -229,7 +252,7 @@ export default async function ProductPage({
       {/* <Schema schema={productSchema} /> */}
       {/* <Schema schema={breadcrumbSchema} /> */}
       <div className="mx-auto">
-        <ProductPageWrapper product={product} />
+        <ProductPageWrapper product={product} sizeChartData={sizeChartData} />
       </div>
 
       {/* Similar Products */}

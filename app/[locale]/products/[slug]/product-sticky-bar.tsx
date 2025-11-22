@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 // import { useCart } from "@/contexts/CartContext";
@@ -45,11 +44,11 @@ export default function ProductStickyBar({ product }: ProductStickyBarProps) {
     // Get current selected values from the DOM
     const selectedMetalType =
       document
-        .querySelector('button[class*="border-black"]')
+        ?.querySelector('button[class*="border-black"]')
         ?.getAttribute("data-metal-key") || "SL";
 
     const selectedDiamondSize = document
-      .querySelector('button[class*="border-black bg-black text-white"]')
+      ?.querySelector('button[class*="border-black bg-black text-white"]')
       ?.textContent?.trim();
 
     const selectedAttributes: { [key: string]: number } = {};

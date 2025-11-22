@@ -62,12 +62,12 @@ interface ApiProduct {
 
 // Define the transformed product interface for UI - matches ProductCard expectations
 interface TransformedProduct {
-  id: string | number;
+  id: number;
   name: string;
   price: number;
   originalPrice?: number;
   image: string;
-  slug?: string;
+  slug: string;
 }
 
 // Define the collection interface
@@ -119,32 +119,121 @@ const getFilterOptions = (
   filterData?: FilterParentGroup[]
 ): FilterTransformedData => {
   if (filterData && filterData?.length > 0) {
-    const transformed = filterData?.reduce((acc: any, item: any) => {
-      acc[item.parentName.toLowerCase().replace(/\s+/g, "_")] =
-        item.attributes.map((attr: any) => ({
-          value: attr.name.toLowerCase().replace(/\s+/g, "-"),
-          label: attr.name,
-        }));
-      return acc;
-    }, {});
+    const transformed = filterData?.reduce(
+      (acc: FilterTransformedData, item: FilterParentGroup) => {
+        acc[item.parentName.toLowerCase().replace(/\s+/g, "_")] =
+          item.attributes.map((attr) => ({
+            value: attr.name.toLowerCase().replace(/\s+/g, "-"),
+            label: attr.name,
+          }));
+        return acc;
+      },
+      {}
+    );
     return transformed;
   }
   return mockFilters;
+};
+
+// Create a mapping from filter category key to parentName
+const getFilterCategoryMap = (
+  filterData?: FilterParentGroup[]
+): Record<string, string> => {
+  if (!filterData || filterData.length === 0) return {};
+
+  return filterData.reduce(
+    (acc: Record<string, string>, item: FilterParentGroup) => {
+      const categoryKey = item.parentName.toLowerCase().replace(/\s+/g, "_");
+      acc[categoryKey] = item.parentName;
+      return acc;
+    },
+    {}
+  );
+};
+
+// Filter products based on active filters
+const filterProducts = (
+  products: ApiProduct[],
+  activeFilters: { [key: string]: string[] },
+  filterData?: FilterParentGroup[],
+  filterOptions?: FilterTransformedData
+): ApiProduct[] => {
+  // If no active filters, return all products
+  const hasActiveFilters = Object.values(activeFilters).some(
+    (filters) => filters.length > 0
+  );
+  if (!hasActiveFilters) {
+    return products;
+  }
+
+  // Create mapping from filter category to parentName
+  const categoryMap = getFilterCategoryMap(filterData);
+
+  return products.filter((product) => {
+    // Check each active filter category
+    return Object.entries(activeFilters).every(
+      ([categoryKey, filterValues]) => {
+        // If no filters for this category, skip
+        if (!filterValues || filterValues.length === 0) {
+          return true;
+        }
+
+        // Get the parentName for this category (e.g., "Color" for "color")
+        const parentName = categoryMap[categoryKey];
+        if (!parentName) {
+          return true; // Unknown category, don't filter
+        }
+
+        // Get filter labels for matching
+        const categoryOptions = filterOptions?.[categoryKey] || [];
+        const filterLabels = filterValues.map((value) => {
+          const option = categoryOptions.find((opt) => opt.value === value);
+          return option
+            ? option.label.toLowerCase().trim()
+            : value.toLowerCase().trim();
+        });
+
+        // Get the filter attribute names from filterData for this category
+        const filterGroup = filterData?.find(
+          (group) =>
+            group.parentName.toLowerCase().replace(/\s+/g, "_") === categoryKey
+        );
+        const filterAttributeNames =
+          filterGroup?.attributes.map((attr) =>
+            attr.name.toLowerCase().trim()
+          ) || [];
+
+        // Check if product has any attributeValue that matches the filters
+        const matchingAttributes = product.attributeValues?.filter((attr) => {
+          if (!attr.attributeName) return false;
+
+          const normalizedAttrName = attr.attributeName.toLowerCase().trim();
+
+          // Match against filter labels (from filterOptions)
+          const matchesLabel = filterLabels.some(
+            (label) => label === normalizedAttrName
+          );
+
+          // Also match against filter attribute names directly
+          const matchesAttributeName = filterAttributeNames.some(
+            (name) => name === normalizedAttrName
+          );
+
+          return matchesLabel || matchesAttributeName;
+        });
+
+        // Product matches if it has at least one matching attribute
+        return matchingAttributes && matchingAttributes.length > 0;
+      }
+    );
+  });
 };
 
 // Transform external API products to match ProductCard component format
 const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
   return products.map((product) => {
     // Extract slug from URL or generate from ID
-    const slug = product.slug ? product.slug : `product-${product.id}`;
-    //  let slug: string;
-    //   if (product.url) {
-    //     // Extract slug from URL like "${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-testing-product"
-    //     const urlParts = product.url.split("/");
-    //     slug = urlParts[urlParts.length - 1];
-    //   } else {
-    //     slug = `product-${product.id}`;
-    //   }
+    const slug = product.slug || `product-${product.id}`;
 
     // Get price from attributeValues if available, otherwise use salesPrice/mrpPrice
     let price = product.salesPrice || product.mrpPrice || 0;
@@ -153,7 +242,7 @@ const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
     }
 
     return {
-      id: slug, // Use slug as id for routing
+      id: typeof product.id === "number" ? product.id : Number(product.id) || 0,
       name: product.productName || "Product",
       price: price,
       originalPrice: product.mrpPrice || undefined,
@@ -228,10 +317,11 @@ export default async function SubcategoryPage({
   searchParams,
 }: PageProps) {
   const resolvedSearchParams = await searchParams;
+  const { category, subcategory } = await params;
   const cookieStore = await cookies();
   const currentLanguage =
     cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
-  const { category, subcategory } = await params;
+
   const externalApiUrl =
     process.env.EXTERNAL_API_URL ?? "http://localhost:3000";
 
@@ -269,7 +359,7 @@ export default async function SubcategoryPage({
     updatedAt: null,
     subCategories: [],
   };
-  let allProductsData: any[] = [];
+  let allProductsData: ApiProduct[] = [];
   try {
     // Fetch category & products concurrently
     const [categoryResponse, productResponse, filterResponse] =
@@ -330,17 +420,12 @@ export default async function SubcategoryPage({
     productCount: allProductsData.length,
   };
 
-  // Transform products for ProductGrid component
-  const products = transformProducts(allProductsData);
-  const hasProducts = products && products.length > 0;
-  // Ensure we always have products
-
   const filterOptions = getFilterOptions(filterData);
 
   // Extract filter params from URL
-  const activeFilters = {
+  const activeFilters: { [key: string]: string[] } = {
     price: resolvedSearchParams.price
-      ? Array.isArray(searchParams.price)
+      ? Array.isArray(resolvedSearchParams.price)
         ? resolvedSearchParams.price
         : resolvedSearchParams.price?.split(",")
       : [],
@@ -355,6 +440,30 @@ export default async function SubcategoryPage({
         : resolvedSearchParams.color.split(",")
       : [],
   };
+
+  // Add any other filter categories from filterOptions
+  Object.keys(filterOptions).forEach((category) => {
+    if (!activeFilters[category]) {
+      const paramValue = resolvedSearchParams[category];
+      activeFilters[category] = paramValue
+        ? Array.isArray(paramValue)
+          ? paramValue
+          : paramValue.split(",")
+        : [];
+    }
+  });
+
+  // Filter products based on active filters
+  const filteredProducts = filterProducts(
+    allProductsData,
+    activeFilters,
+    filterData,
+    filterOptions
+  );
+
+  // Transform filtered products for ProductGrid component
+  const products = transformProducts(filteredProducts);
+  const hasProducts = products && products.length > 0;
 
   return (
     <div className="mx-auto">
