@@ -19,6 +19,13 @@ import { LanguageValue } from "@/types/common";
 
 const sectionTitles = constantJson.customer_reviews as LanguageValue;
 
+type RatingData = Record<number, number>;
+interface ReviewStatistics {
+  totalReviews: number;
+  totalRating: number;
+  ratingDistribution: RatingData;
+}
+
 export default function ReviewsPage() {
   const { language } = useLocale();
   const sectionTitle = sectionTitles[language] ?? sectionTitles["en"];
@@ -28,14 +35,12 @@ export default function ReviewsPage() {
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [reviewStats, setReviewStats] = useState({});
+  const [reviewStats, setReviewStats] = useState<ReviewStatistics>({
+    totalReviews: 0,
+    totalRating: 0,
+    ratingDistribution: {},
+  });
   const [reviewsList, setReviewsList] = useState<ReviewType[]>([]);
-  const [totalRating, setTotalRating] = useState(0);
-  const [ratingDistribution, setRatingDistribution] = useState<{
-    [key: number]: number;
-  }>({});
-
-  console.log("reviewStats", reviewStats);
 
   const fetchReviews = async () => {
     setIsLoading(true);
@@ -50,10 +55,7 @@ export default function ReviewsPage() {
       // setReviews(data.reviews);
       // setTotalRating(data.summary.totalRating);
       // setRatingDistribution(data.summary.ratingDistribution);
-
-      setReviews(mockReviews);
-      setTotalRating(mockReviewSummary.totalRating);
-      setRatingDistribution(mockReviewSummary.ratingDistribution);
+      // setTotalRating(mockReviewSummary.totalRating);
     } catch (error) {
       console.error("Error fetching reviews:", error);
       // TODO: Implement error handling UI
@@ -65,14 +67,24 @@ export default function ReviewsPage() {
 
   const fetchProductReviewStats = async () => {
     try {
-      const response = await fetch(
-        `http://api.shrishiv.com/product-review/stats`
-      );
+      const response = await fetch("/api/reviews-stats");
       if (!response.ok) {
         throw new Error("Failed to fetch reviews");
       }
-      const data = await response.json();
-      setReviewStats(data);
+      const ratingData: RatingData = await response.json();
+
+      const totalReviews = Object.values(ratingData).reduce((a, b) => a + b, 0);
+      const totalRating =
+        Object.entries(ratingData).reduce(
+          (sum, [rating, count]) => sum + Number(rating) * Number(count),
+          0
+        ) / totalReviews;
+
+      setReviewStats({
+        ratingDistribution: ratingData,
+        totalReviews,
+        totalRating,
+      });
     } catch (error) {
       console.error("Error fetching reviews:", error);
     } finally {
@@ -82,8 +94,11 @@ export default function ReviewsPage() {
 
   useEffect(() => {
     fetchReviews();
-    fetchProductReviewStats();
   }, [currentFilter]);
+
+  useEffect(() => {
+    fetchProductReviewStats();
+  }, []);
 
   // Filter and sort reviews
   const filteredReviews = [...reviews].sort((a, b) => {
@@ -169,7 +184,7 @@ export default function ReviewsPage() {
                   <Star
                     key={value}
                     className={`w-6 h-6 ${
-                      value <= totalRating
+                      value <= reviewStats?.totalRating
                         ? "text-yellow-400 fill-yellow-400"
                         : "text-gray-300"
                     }`}
@@ -177,11 +192,11 @@ export default function ReviewsPage() {
                 ))}
               </div>
               <span className="text-lg font-medium">
-                {(totalRating || 0).toFixed(1)} out of 5
+                {(reviewStats?.totalRating || 0).toFixed(1)} out of 5
               </span>
             </div>
             <p className="text-gray-600 mb-6">
-              Based on {reviews?.length || 0} reviews
+              Based on {reviewStats?.totalReviews || 0} reviews
             </p>
           </div>
 
@@ -211,7 +226,7 @@ export default function ReviewsPage() {
                     initial={{ width: 0 }}
                     animate={{
                       width: `${
-                        ((ratingDistribution?.[rating] || 0) /
+                        ((reviewStats?.ratingDistribution?.[rating] || 0) /
                           (reviews?.length || 1)) *
                         100
                       }%`,
@@ -221,7 +236,7 @@ export default function ReviewsPage() {
                   />
                 </div>
                 <span className="text-sm text-gray-500 w-8">
-                  {ratingDistribution?.[rating] || 0}
+                  {reviewStats?.ratingDistribution?.[rating] || 0}
                 </span>
               </div>
             ))}
