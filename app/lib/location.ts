@@ -9,7 +9,6 @@ export async function fetchLocationData(ip: string): Promise<LocationData> {
     // );
     // if (!resOld.ok) throw new Error("Failed to fetch location data");
     // const data = await resOld.json();
-    // console.log("data", data);
 
     const res = await fetch(`https://ipapi.co/${ip}/json/`);
     if (!res.ok) throw new Error("Failed to fetch location data");

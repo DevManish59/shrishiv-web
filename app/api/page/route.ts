@@ -32,7 +32,6 @@ export async function GET(req: NextRequest) {
       }
 
       const specificPageData = await specificPageRes.json();
-      console.log("specificPageData", specificPageData);
       return NextResponse.json(specificPageData);
     }
 

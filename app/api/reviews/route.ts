@@ -29,7 +29,6 @@ export async function POST(req: NextRequest) {
     }
 
     const result = await response.json();
-    console.log("Reciew++", result);
     return NextResponse.json(result);
   } catch (error) {
     console.error("Review POST error:", error);

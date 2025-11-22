@@ -1,11 +1,9 @@
+import { Metadata } from "next";
 import ProductPageWrapper from "./product-page-wrapper";
 import SimilarProducts from "@/components/similar-products";
 import CartModal from "@/components/ui/cart-modal";
-import { mockFeaturedProducts } from "@/lib/mock-data";
-import { Metadata } from "next";
 import ReviewsPage from "@/components/reviews-page";
 import { ApiProduct } from "@/types/product";
-import { mockApiProduct } from "@/lib/constant";
 
 // Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
@@ -93,6 +91,7 @@ const transformApiProduct = (apiProduct: ApiProduct) => {
     image: defaultImages[0] || "/placeholder-image.jpg",
     images: defaultImages,
     slug: slug,
+
     // Add other fields as needed
     stock: apiProduct.stock || 0,
     sku: apiProduct.sku || "",
@@ -106,6 +105,17 @@ const transformApiProduct = (apiProduct: ApiProduct) => {
     is3DViewEnabled: false,
     rating: 4.5,
     reviewCount: 10,
+    isFeatured: apiProduct.isFeatured,
+    points: [
+      apiProduct.pointOne,
+      apiProduct.pointTwo,
+      apiProduct.pointThree,
+      apiProduct.pointFour,
+      apiProduct.pointFive,
+    ],
+    shipDay: apiProduct.shipDay,
+    categoryIds: apiProduct?.categoryIds,
+    sizeChartId: apiProduct.sizeChartId,
     // Legacy format for backward compatibility
     metalTypes:
       transformedAttributes[0]?.options?.map((option) => ({
@@ -190,7 +200,7 @@ export default async function ProductPage({
     );
   }
 
-  let product: ReturnType<typeof transformApiProduct>;
+  let product: any = {};
 
   try {
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
@@ -212,10 +222,6 @@ export default async function ProductPage({
       "❌ Product Page: Failed to fetch data, using fallback:",
       error
     );
-
-    // Fallback to mock data if API fails
-    const apiProduct = mockApiProduct;
-    product = transformApiProduct(apiProduct);
   }
 
   return (
@@ -227,10 +233,12 @@ export default async function ProductPage({
       </div>
 
       {/* Similar Products */}
-      <SimilarProducts
-        products={mockFeaturedProducts}
-        currentProductId={product.id}
-      />
+      {product?.categoryIds?.[0] && (
+        <SimilarProducts
+          currentCategoryId={product?.categoryIds?.[0]}
+          pathUrl={slug}
+        />
+      )}
 
       {/* Reviews Section */}
       <ReviewsPage />

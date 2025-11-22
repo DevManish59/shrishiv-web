@@ -28,15 +28,14 @@ export default function ReviewsPage() {
   const [showWriteReview, setShowWriteReview] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewStats, setReviewStats] = useState({});
   const [reviewsList, setReviewsList] = useState<ReviewType[]>([]);
   const [totalRating, setTotalRating] = useState(0);
   const [ratingDistribution, setRatingDistribution] = useState<{
     [key: number]: number;
   }>({});
 
-  useEffect(() => {
-    fetchReviews();
-  }, [currentFilter]);
+  console.log("reviewStats", reviewStats);
 
   const fetchReviews = async () => {
     setIsLoading(true);
@@ -63,6 +62,28 @@ export default function ReviewsPage() {
       setIsLoading(false);
     }
   };
+
+  const fetchProductReviewStats = async () => {
+    try {
+      const response = await fetch(
+        `http://api.shrishiv.com/product-review/stats`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch reviews");
+      }
+      const data = await response.json();
+      setReviewStats(data);
+    } catch (error) {
+      console.error("Error fetching reviews:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+    fetchProductReviewStats();
+  }, [currentFilter]);
 
   // Filter and sort reviews
   const filteredReviews = [...reviews].sort((a, b) => {

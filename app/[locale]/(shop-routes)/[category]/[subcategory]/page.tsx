@@ -6,7 +6,6 @@ import StickyFilterBar from "@/components/sticky-filter-bar";
 import Image from "next/image";
 import { FilterParentGroup, FilterTransformedData } from "@/types/product";
 import { mockFilters } from "@/lib/mock-data";
-import { generateDummyData } from "@/lib/constant";
 import { cookies } from "next/headers";
 import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
 
@@ -312,7 +311,6 @@ export default async function SubcategoryPage({
       productResponse.json(),
       filterResponse.json(),
     ]);
-    console.log("allProductsData", allProductsData);
   } catch (error) {
     console.error(
       "❌ Subcategory Page: Fetch failed, using fallback data:",

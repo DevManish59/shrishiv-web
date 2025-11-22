@@ -5,8 +5,8 @@ import ProductStickyBar from "./product-sticky-bar";
 import ProductGallery from "./product-gallery";
 import ProductInfo from "./product-info";
 import ProductDescription from "./product-description";
-import SimilarProducts from "@/components/similar-products";
-import { mockFeaturedProducts } from "@/lib/mock-data";
+// import SimilarProducts from "@/components/similar-products";
+// import { mockFeaturedProducts } from "@/lib/mock-data";
 
 // Mock product data
 const product = {
@@ -88,10 +88,10 @@ export default function ProductDetails() {
       <ProductStickyBar product={product} />
 
       {/* Similar Products */}
-      <SimilarProducts
+      {/* <SimilarProducts
         products={mockFeaturedProducts}
         currentProductId={product.id.toString()}
-      />
+      /> */}
     </div>
   );
 }

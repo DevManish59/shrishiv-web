@@ -109,11 +109,11 @@ export default function ProductCard({
                   Rs. {product.originalPrice.toLocaleString()}
                 </span>
                 <span className="ml-2 text-red-500">
-                  Rs. {product.price.toLocaleString()}
+                  Rs. {product?.price?.toLocaleString()}
                 </span>
               </>
             ) : (
-              <span>Rs. {product.price.toLocaleString()}</span>
+              <span>Rs. {product?.price?.toLocaleString()}</span>
             )}
           </div>
         </div>
