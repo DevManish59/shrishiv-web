@@ -97,7 +97,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         updatedAt?: string;
         updated_at?: string;
       }) => ({
-        url: `${baseUrl}/products/${product.id}-${product.slug}`,
+        url: `${baseUrl}/product/${product.id}-${product.slug}`,
         lastModified: new Date(
           product.updatedAt || product.updated_at || Date.now()
         ),

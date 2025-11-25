@@ -9,7 +9,7 @@ interface ProductGridProps {
 
 export default function ProductGrid({
   products,
-  basePath = "/products",
+  basePath = "/product",
 }: ProductGridProps) {
   // Limit number of products based on grid size
   const maxProducts = {

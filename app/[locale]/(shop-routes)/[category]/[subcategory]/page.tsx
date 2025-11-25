@@ -7,7 +7,10 @@ import Image from "next/image";
 import { FilterParentGroup, FilterTransformedData } from "@/types/product";
 import { mockFilters } from "@/lib/mock-data";
 import { cookies } from "next/headers";
-import { COOKIE_KEY_LANGUAGE_ISO } from "@/lib/cookie-constant";
+import {
+  COOKIE_KEY_COUNTRY_ISO,
+  COOKIE_KEY_LANGUAGE_ISO,
+} from "@/lib/cookie-constant";
 
 interface PageProps {
   params: {
@@ -321,6 +324,8 @@ export default async function SubcategoryPage({
   const cookieStore = await cookies();
   const currentLanguage =
     cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+  const currentCountryCode =
+    cookieStore.get(COOKIE_KEY_COUNTRY_ISO)?.value || "en";
 
   const externalApiUrl =
     process.env.EXTERNAL_API_URL ?? "http://localhost:3000";
@@ -374,6 +379,9 @@ export default async function SubcategoryPage({
           cache: "no-store",
           headers: {
             ...(currentLanguage !== "en" && { languageCode: currentLanguage }),
+            ...(currentCountryCode !== "in" && {
+              countryCode: currentCountryCode,
+            }),
           },
         }),
         fetch(filterApiUrl, {
@@ -503,7 +511,7 @@ export default async function SubcategoryPage({
               filterOptions={filterOptions}
               searchParams={resolvedSearchParams}
             />
-            <ProductGrid products={products} basePath="/products" />
+            <ProductGrid products={products} basePath="/product" />
           </>
         ) : (
           <div className="flex flex-col items-center justify-center min-h-[30vh]">

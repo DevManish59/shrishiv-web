@@ -20,10 +20,7 @@ interface Props {
   index?: number;
 }
 
-export default function ProductCard({
-  product,
-  basePath = "/products",
-}: Props) {
+export default function ProductCard({ product, basePath = "/product" }: Props) {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",

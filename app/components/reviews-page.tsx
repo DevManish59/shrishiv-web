@@ -343,7 +343,10 @@ export default function ReviewsPage({
                             {review.imageUrls.map((url, index) => (
                               <Image
                                 key={index}
-                                src={`https://mabji-india-artifacts.s3.amazonaws.com${url}`}
+                                src={
+                                  url ||
+                                  `https://mabji-india-artifacts.s3.amazonaws.com${url}`
+                                }
                                 alt={`Review media ${index + 1}`}
                                 className="w-full h-40 object-cover rounded"
                                 width={100}

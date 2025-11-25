@@ -7,7 +7,7 @@ Disallow: /checkout/
 Disallow: /account/
 
 # Allow important pages
-Allow: /products/
+Allow: /product/
 Allow: /collections/
 Allow: /reviews/
 

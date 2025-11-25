@@ -4,8 +4,12 @@ import SimilarProducts from "@/components/similar-products";
 import CartModal from "@/components/ui/cart-modal";
 import ReviewsPage from "@/components/reviews-page";
 import { ApiProduct } from "@/types/product";
+import { cookies } from "next/headers";
+import {
+  COOKIE_KEY_COUNTRY_ISO,
+  COOKIE_KEY_LANGUAGE_ISO,
+} from "@/lib/cookie-constant";
 
-// Force dynamic rendering - disable static generation
 export const dynamic = "force-dynamic";
 
 // Transform API product to match the expected format
@@ -46,8 +50,6 @@ const transformApiProduct = (apiProduct: ApiProduct) => {
       : apiProduct.imageFiles?.length > 0
       ? apiProduct.imageFiles
       : apiProduct.images || [];
-
-  console.log("🚀 Product Page: Default Images =", defaultImages);
 
   // Extract slug from URL or generate from ID
   let slug: string;
@@ -146,14 +148,27 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const { slug } = await params;
-
+  const cookieStore = await cookies();
+  const currentLanguageCode =
+    cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+  const currentCountryCode =
+    cookieStore.get(COOKIE_KEY_COUNTRY_ISO)?.value || "in";
   try {
     // Fetch data from our API route (following consistent pattern)
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const apiUrl = `${baseUrl}/api/products/${slug}`;
+    const externalApiUrl = process.env.EXTERNAL_API_URL;
+    // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+    const apiUrl = `${externalApiUrl}/product/by-slug/${slug}`;
 
     const response = await fetch(apiUrl, {
-      cache: "no-store", // Disable caching for dynamic data
+      cache: "no-store",
+      headers: {
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
+        ...(currentCountryCode !== "in" && {
+          countryCode: currentCountryCode,
+        }),
+      },
     });
 
     if (!response.ok) {
@@ -164,6 +179,7 @@ export async function generateMetadata({
     }
 
     const product: ApiProduct = await response.json();
+    console.log("product", product);
 
     return {
       title: `${product.productName} | Our Store`,
@@ -191,6 +207,11 @@ export default async function ProductPage({
   params: { slug: string };
 }) {
   const { slug } = await params;
+  const cookieStore = await cookies();
+  const currentLanguageCode =
+    cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
+  const currentCountryCode =
+    cookieStore.get(COOKIE_KEY_COUNTRY_ISO)?.value || "in";
 
   const externalApiUrl = process.env.EXTERNAL_API_URL;
 
@@ -206,10 +227,17 @@ export default async function ProductPage({
   let sizeChartData: any = null;
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const apiUrl = `${baseUrl}/api/products/${slug}`;
+    const apiUrl = `${externalApiUrl}/product/by-slug/${slug}`;
     const response = await fetch(apiUrl, {
       cache: "no-store",
+      headers: {
+        ...(currentLanguageCode !== "en" && {
+          languageCode: currentLanguageCode,
+        }),
+        ...(currentCountryCode !== "in" && {
+          countryCode: currentCountryCode,
+        }),
+      },
     });
 
     if (!response.ok) {
@@ -224,7 +252,6 @@ export default async function ProductPage({
     // Fetch size chart data if sizeChartId exists
     if (data?.sizeChartId) {
       try {
-        const externalApiUrl = process.env.EXTERNAL_API_URL;
         if (externalApiUrl) {
           const sizeChartUrl = `${externalApiUrl}/size-chart/${apiProduct.sizeChartId}`;
           const sizeChartResponse = await fetch(sizeChartUrl, {

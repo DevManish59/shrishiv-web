@@ -8,66 +8,27 @@ import { NextRequest, NextResponse } from "next/server";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
-// Mock product data as fallback
-const mockProductData = {
-  id: 1,
-  productName: "Sample Chain Necklace",
-  shortDescription:
-    "Beautiful chain necklace design with premium quality material",
-  pointOne: "Premium quality material",
-  pointTwo: "Elegant design",
-  pointThree: "Perfect for any occasion",
-  pointFour: "Adjustable length",
-  pointFive: "Includes gift box",
-  url: `${process.env.NEXT_PUBLIC_BASE_URL}/product/sample-chain-necklace`,
-  stock: 10,
-  shipDay: 3,
-  categoryIds: [1],
-  sizeChartId: 1,
-  sku: "NECK001",
-  hsnCode: "711319",
-  ageGroup: "Adult",
-  gender: "Female",
-  googleProductCategory: "Jewelry",
-  mrpPrice: 5000,
-  discount: 20,
-  salesPrice: 4000,
-  isFeatured: true,
-  images: [
-    "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
-  ],
-  imageFiles: [],
-  attributeValues: [
-    {
-      id: 1,
-      attributeId: 1,
-      parentAttributeId: null,
-      attributeName: "Gold Plated",
-      attributeColor: "#FFD700",
-      price: 4000,
-      isDefault: true,
-      images: [
-        "https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg",
-      ],
-      existingImages: null,
-      imageFiles: [],
-    },
-  ],
-  createdAt: "2025-01-01T00:00:00.000Z",
-  updatedAt: "2025-01-01T00:00:00.000Z",
-};
-
 export async function GET(
   req: NextRequest,
   { params }: { params: { slug: string } }
 ) {
   try {
+    console.log(
+      "req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)",
+      req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)
+    );
     const currentLanguageCode =
       req.cookies.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
     const currentCountryCode =
       req.cookies.get(COOKIE_KEY_COUNTRY_ISO)?.value || "in";
 
-    const { slug } = params;
+    console.log(
+      "currentLanguageCode-&-currentCountryCode",
+      currentLanguageCode,
+      currentCountryCode
+    );
+
+    const { slug } = await params;
     const url = `${process.env.EXTERNAL_API_URL}/product/by-slug/${slug}`;
 
     console.log("🚀 Product API: Calling external API:", url);
