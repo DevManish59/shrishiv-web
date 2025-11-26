@@ -30,8 +30,8 @@ async function getHomePageData(): Promise<any> {
     }
 
     const endpoints = {
-      featured: `${process.env.EXTERNAL_API_URL}/product-category`,
-      store: `${process.env.EXTERNAL_API_URL}/store-detail`,
+      featured: `${process.env.EXTERNAL_API_URL}/web/category`,
+      store: `${process.env.EXTERNAL_API_URL}/web/store-detail`,
     };
 
     // Fetch both in parallel

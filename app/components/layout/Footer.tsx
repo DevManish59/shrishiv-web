@@ -56,7 +56,7 @@ export default function Footer() {
     try {
       setCountriesLoading(true);
       const endpoints = {
-        country: `${process.env.EXTERNAL_API_URL}/countries`,
+        country: `${process.env.EXTERNAL_API_URL}/web/countries`,
         language: `${process.env.EXTERNAL_API_URL}/web/common/languages`,
       };
 

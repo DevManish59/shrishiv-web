@@ -5,7 +5,7 @@ export async function GET() {
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
-    const url = `${externalApiUrl}/product-review/stats`;
+    const url = `${externalApiUrl}/web/product-review/stats`;
 
     // Forward request to external API
     const response = await fetch(url);

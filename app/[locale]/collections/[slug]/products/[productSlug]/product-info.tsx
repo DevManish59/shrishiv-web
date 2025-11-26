@@ -12,7 +12,7 @@ import {
   Shield,
   RefreshCw,
 } from "lucide-react";
-
+import { useTranslate } from "@/hooks/useTranslate";
 interface ProductInfoProps {
   product: {
     id: number;
@@ -28,6 +28,7 @@ interface ProductInfoProps {
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+  const t = useTranslate();
   const [selectedColor, setSelectedColor] = useState(0);
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState(1);
@@ -219,10 +220,10 @@ export default function ProductInfo({ product }: ProductInfoProps) {
             {isAddedToCart ? (
               <>
                 <Check size={18} />
-                Added to Cart
+                {t("added_to_cart")}
               </>
             ) : (
-              "Add to Cart"
+              t("add_to_cart")
             )}
           </motion.button>
           <motion.button

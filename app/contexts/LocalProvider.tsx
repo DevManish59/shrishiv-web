@@ -32,7 +32,7 @@ export default function LocaleProvider({
   const fetchCountries = async () => {
     try {
       const countryRes = await fetch(
-        `${process.env.EXTERNAL_API_URL}/countries`,
+        `${process.env.EXTERNAL_API_URL}/web/countries`,
         {
           cache: "no-store",
           headers: {

@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
-    const url = `${externalApiUrl}/product-review`;
+    const url = `${externalApiUrl}/web/product-review`;
 
     // Forward request to external API
     const response = await fetch(url, {
@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
-    const url = `${externalApiUrl}/product-review`;
+    const url = `${externalApiUrl}/web/product-review`;
 
     // Forward request to external API
     const response = await fetch(url, {

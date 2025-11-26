@@ -81,7 +81,7 @@ export async function GET(
     }
 
     const { subcategory } = await params;
-    const url = `${externalApiUrl}/product/by-category?slug=${subcategory}`;
+    const url = `${externalApiUrl}/web/product/by-category?slug=${subcategory}`;
 
     console.log("🚀 Subcategory API: Calling external API:", url);
 

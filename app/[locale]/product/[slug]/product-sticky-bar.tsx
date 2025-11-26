@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 import { useRouter } from "next/navigation";
 import { calculateProductPrice } from "@/lib/utils";
+import { useLocale } from "@/contexts/LocalProvider";
 
 interface ProductStickyBarProps {
   product: {
@@ -38,6 +39,7 @@ export default function ProductStickyBar({ product }: ProductStickyBarProps) {
   const [imageError, setImageError] = useState(false);
   const { addItem } = useCart();
   const router = useRouter();
+  const { currentCountry } = useLocale();
 
   // Calculate dynamic price based on selected attributes
   const calculatedPrice = useMemo(() => {
@@ -171,11 +173,13 @@ export default function ProductStickyBar({ product }: ProductStickyBarProps) {
             </h3>
             <div className="flex items-center space-x-2">
               <span className="font-bold text-gray-900">
-                Rs. {calculatedPrice.toLocaleString()}
+                {currentCountry?.currencySymbol || "Rs."}{" "}
+                {calculatedPrice.toLocaleString()}
               </span>
               {calculatedPrice !== product.price && (
                 <span className="text-xs text-gray-500">
-                  Base: Rs. {product.price.toLocaleString()}
+                  Base: {currentCountry?.currencySymbol || "Rs."}{" "}
+                  {product.price.toLocaleString()}
                 </span>
               )}
             </div>

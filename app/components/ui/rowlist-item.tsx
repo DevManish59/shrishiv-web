@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 import { Product } from "@/lib/types";
+import { useLocale } from "@/contexts/LocalProvider";
 
 interface Props {
   product: Product;
@@ -11,6 +12,7 @@ interface Props {
 
 export default function RowlistItem({ product }: Props) {
   const [hovered, setHovered] = useState(false);
+  const { currentCountry } = useLocale();
 
   const discount = Math.round(
     100 - (product.salePrice || 0 / product.price) * 100
@@ -40,10 +42,12 @@ export default function RowlistItem({ product }: Props) {
         </p>
         <div className="flex items-center gap-2">
           <p className="font-semibold text-sm">
-            Rs. {product.price.toLocaleString()}
+            {currentCountry?.currencySymbol || "Rs."}{" "}
+            {product.price.toLocaleString()}
           </p>
           <p className="line-through text-sm text-gray-400">
-            Rs. {product.price.toLocaleString()}
+            {currentCountry?.currencySymbol || "Rs."}{" "}
+            {product.price.toLocaleString()}
           </p>
           <p className="text-sm text-red-500">({discount}% off)</p>
         </div>

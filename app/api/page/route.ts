@@ -13,9 +13,9 @@ export async function GET(req: NextRequest) {
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
-    const pageUrl = `${externalApiUrl}/pages`;
+    const pageUrl = `${externalApiUrl}/web/pages`;
     const webPageUrl = `${externalApiUrl}/web/pages/slug`;
-    const storeDataUrl = `${externalApiUrl}/store-detail`;
+    const storeDataUrl = `${externalApiUrl}/web/store-detail`;
 
     if (slug) {
       const specificPageRes = await fetch(`${webPageUrl}/${slug}`, {

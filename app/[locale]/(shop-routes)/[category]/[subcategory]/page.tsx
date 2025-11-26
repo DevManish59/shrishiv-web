@@ -336,7 +336,7 @@ export default async function SubcategoryPage({
     );
 
   const categoryApiUrl = `${externalApiUrl}/web/category/by-slug?slug=${subcategory}`;
-  const productApiUrl = `${externalApiUrl}/product/by-category?slug=${subcategory}`;
+  const productApiUrl = `${externalApiUrl}/web/product/by-category?slug=${subcategory}`;
   const filterApiUrl = `${externalApiUrl}/web/filters?categorySlug=${subcategory}`;
 
   let filterData = [];
@@ -409,6 +409,8 @@ export default async function SubcategoryPage({
       productResponse.json(),
       filterResponse.json(),
     ]);
+
+    console.log("allProductsData", allProductsData);
   } catch (error) {
     console.error(
       "❌ Subcategory Page: Fetch failed, using fallback data:",

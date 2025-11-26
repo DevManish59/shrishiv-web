@@ -6,6 +6,7 @@ import { useCart } from "@/contexts/LocalStorageCartContext";
 import { useRouter } from "next/navigation";
 import SizeGuideModal from "@/components/ui/size-guide-modal";
 import { AttributeValue } from "@/lib/types";
+import { useLocale } from "@/contexts/LocalProvider";
 
 interface AttributeOption {
   id: number;
@@ -54,6 +55,7 @@ export default function AttributeProductForm({
   const [showSizeGuide, setShowSizeGuide] = useState(false);
   const { addItem } = useCart();
   const router = useRouter();
+  const { currentCountry } = useLocale();
 
   // Initialize with default selections
   useEffect(() => {
@@ -174,7 +176,9 @@ export default function AttributeProductForm({
                   backgroundColor: option.color || "transparent",
                   color: option.color ? "#000000" : "black",
                 }}
-                title={`${option.name} - Rs. ${option.price.toLocaleString()}`}
+                title={`${option.name} - ${
+                  currentCountry?.currencySymbol || "Rs."
+                } ${option.price.toLocaleString()}`}
               >
                 {option.name.charAt(0).toUpperCase()}
               </button>

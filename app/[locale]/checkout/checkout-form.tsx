@@ -98,7 +98,7 @@ export default function CheckoutForm({ initialSubtotal }: CheckoutFormProps) {
     try {
       const currentLanguage = Cookies.get(COOKIE_KEY_LANGUAGE_ISO);
       const countryRes = await fetch(
-        `${process.env.EXTERNAL_API_URL}/countries`,
+        `${process.env.EXTERNAL_API_URL}/web/countries`,
         {
           cache: "no-store",
           headers: {

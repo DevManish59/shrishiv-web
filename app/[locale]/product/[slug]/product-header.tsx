@@ -1,3 +1,6 @@
+"use client";
+import { useLocale } from "@/contexts/LocalProvider";
+
 interface ProductHeaderProps {
   product: {
     name: string;
@@ -11,13 +14,15 @@ interface ProductHeaderProps {
 }
 
 export default function ProductHeader({ product }: ProductHeaderProps) {
+  const { currentCountry } = useLocale();
+
   return (
     <div>
       <h1 className="text-2xl font-medium mb-4">{product.name}</h1>
       <div className="flex items-center gap-4 mb-2">
         <div className="flex items-center gap-2">
           <p className="text-lg">
-            From Rs.{" "}
+            From {currentCountry?.currencySymbol || "Rs."}{" "}
             {product.discount > 0
               ? (
                   product.price -
@@ -27,7 +32,8 @@ export default function ProductHeader({ product }: ProductHeaderProps) {
           </p>{" "}
           {product.discount > 0 && (
             <p className="text-2xl font-medium text-gray-500 line-through">
-              Rs. {product.price.toLocaleString()}
+              {currentCountry?.currencySymbol || "Rs."}{" "}
+              {product.price.toLocaleString()}
             </p>
           )}
         </div>

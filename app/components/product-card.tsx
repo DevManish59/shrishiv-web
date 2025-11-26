@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import useEmblaCarousel from "embla-carousel-react";
 import { useMediaQuery } from "@/hooks/useMediaQuery";
 import LocalizedLink from "./layout/LocalizedLink";
+import { useLocale } from "@/contexts/LocalProvider";
 
 interface Props {
   product: {
@@ -22,6 +23,9 @@ interface Props {
 
 export default function ProductCard({ product, basePath = "/product" }: Props) {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
+
+  const { currentCountry } = useLocale();
+  console.log("currentCountry", product);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: true,
@@ -104,14 +108,19 @@ export default function ProductCard({ product, basePath = "/product" }: Props) {
             {product.originalPrice ? (
               <>
                 <span className="line-through">
-                  Rs. {product.originalPrice.toLocaleString()}
+                  {currentCountry?.currencySymbol || "Rs."}{" "}
+                  {product.originalPrice.toLocaleString()}
                 </span>
                 <span className="ml-2 text-red-500">
-                  Rs. {product?.price?.toLocaleString()}
+                  {currentCountry?.currencySymbol || "Rs."}{" "}
+                  {product?.price?.toLocaleString()}
                 </span>
               </>
             ) : (
-              <span>Rs. {product?.price?.toLocaleString()}</span>
+              <span>
+                {currentCountry?.currencySymbol || "Rs."}{" "}
+                {product?.price?.toLocaleString()}
+              </span>
             )}
           </div>
         </div>

@@ -129,8 +129,8 @@ export async function GET(req: NextRequest) {
     }
 
     const endpoints = {
-      featured: `${externalApiUrl}/product-category/featured`,
-      store: `${externalApiUrl}/store-detail`,
+      featured: `${externalApiUrl}/web/category/featured`,
+      store: `${externalApiUrl}/web/store-detail`,
     };
 
     console.log("🚀 Home API: Fetching data from:", endpoints);

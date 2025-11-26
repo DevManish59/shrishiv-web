@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, Loader2 } from "lucide-react";
 import { HelpCategory, HelpItem } from "@/lib/types";
-import constantJson from "../../json/constant.json";
-import { useLocale } from "@/contexts/LocalProvider";
-import { LanguageValue } from "@/types/common";
+import { useTranslate } from "@/hooks/useTranslate";
 
-const sectionTitle = constantJson.faq as LanguageValue;
 const faqs = [
   {
     id: 1,
@@ -43,11 +40,10 @@ const faqs = [
 ];
 
 export default function FAQSection() {
-  const { language } = useLocale();
+  const t = useTranslate();
   const [faqListdata, setFaqListdata] = useState<HelpCategory[]>([]);
   const [activeCategory, setActiveCategory] = useState(1);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const title = sectionTitle[language] ?? sectionTitle["en"];
 
   const [openItems, setOpenItems] = useState<number[]>([]);
 
@@ -95,7 +91,7 @@ export default function FAQSection() {
           className="text-center mb-12"
         >
           <h2 className="md:text-4xl text-3xl font-bold text-gray-900 mb-4">
-            {title || "Frequently Asked Questions"}
+            {t("faq") || "Frequently Asked Questions"}
           </h2>
         </motion.div>
 

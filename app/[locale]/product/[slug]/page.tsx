@@ -157,7 +157,7 @@ export async function generateMetadata({
     // Fetch data from our API route (following consistent pattern)
     const externalApiUrl = process.env.EXTERNAL_API_URL;
     // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-    const apiUrl = `${externalApiUrl}/product/by-slug/${slug}`;
+    const apiUrl = `${externalApiUrl}/web/product/by-slug/${slug}`;
 
     const response = await fetch(apiUrl, {
       cache: "no-store",
@@ -179,7 +179,6 @@ export async function generateMetadata({
     }
 
     const product: ApiProduct = await response.json();
-    console.log("product", product);
 
     return {
       title: `${product.productName} | Our Store`,
@@ -227,7 +226,7 @@ export default async function ProductPage({
   let sizeChartData: any = null;
 
   try {
-    const apiUrl = `${externalApiUrl}/product/by-slug/${slug}`;
+    const apiUrl = `${externalApiUrl}/web/product/by-slug/${slug}`;
     const response = await fetch(apiUrl, {
       cache: "no-store",
       headers: {
@@ -253,7 +252,7 @@ export default async function ProductPage({
     if (data?.sizeChartId) {
       try {
         if (externalApiUrl) {
-          const sizeChartUrl = `${externalApiUrl}/size-chart/${apiProduct.sizeChartId}`;
+          const sizeChartUrl = `${externalApiUrl}/web/size-chart/${apiProduct.sizeChartId}`;
           const sizeChartResponse = await fetch(sizeChartUrl, {
             cache: "no-store",
           });

@@ -6,12 +6,13 @@ import Image from "next/image";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/contexts/LocalProvider";
 
 export default function CartModal() {
   const { isOpen, closeCart, items, removeItem, subtotal, itemCount } =
     useCart();
-
   const router = useRouter();
+  const { currentCountry } = useLocale();
 
   // Lock scroll when cart is open
   useEffect(() => {
@@ -158,10 +159,13 @@ export default function CartModal() {
                                 </p>
                                 <div className="flex items-center gap-4 mb-2">
                                   <p className="font-bold text-black">
-                                    Price: Rs. {item.price}
+                                    Price:{" "}
+                                    {currentCountry?.currencySymbol || "Rs."}{" "}
+                                    {item.price}
                                   </p>
                                   <p className=" text-gray-500 line-through font-bold">
-                                    Rs. {item.originalPrice}
+                                    {currentCountry?.currencySymbol || "Rs."}{" "}
+                                    {item.originalPrice}
                                   </p>
                                 </div>
                               </div>
@@ -225,7 +229,10 @@ export default function CartModal() {
               <div className="border-t p-4 space-y-4">
                 <div className="flex items-center justify-between text-lg font-medium">
                   <span>Subtotal</span>
-                  <span>Rs. {subtotal.toLocaleString()}</span>
+                  <span>
+                    {currentCountry?.currencySymbol || "Rs."}{" "}
+                    {subtotal.toLocaleString()}
+                  </span>
                 </div>
                 <button
                   onClick={handleCheckout}

@@ -96,7 +96,7 @@ export default async function SimilarProducts({
   console.log("currentCategoryId", currentCategory);
   // Fetch category products from API (server-side)
   const response = await fetch(
-    `${process.env.EXTERNAL_API_URL}/product/by-category/${currentCategory}`,
+    `${process.env.EXTERNAL_API_URL}/web/product/by-category/${currentCategory}`,
     {
       cache: "no-store", // or "force-cache" if you want caching
     }

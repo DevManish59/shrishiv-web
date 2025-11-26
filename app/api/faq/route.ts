@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
-    const url = `${externalApiUrl}/help-category`;
+    const url = `${externalApiUrl}/web/help-category`;
 
     const response = await fetch(url, {
       method: "GET",

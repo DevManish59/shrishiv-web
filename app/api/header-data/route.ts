@@ -43,7 +43,7 @@ export async function GET(req: NextRequest) {
     const externalApiUrl =
       process.env.EXTERNAL_API_URL || "https://api.shrishiv.com";
 
-    const url = `${externalApiUrl}/product-category/headers`;
+    const url = `${externalApiUrl}/web/category/headers`;
 
     const response = await fetch(url, {
       method: "GET",

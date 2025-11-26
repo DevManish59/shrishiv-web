@@ -56,8 +56,10 @@ export function useLocation() {
           LOCAL_STORAGE_LOCATION_KEY,
           JSON.stringify({ ip, geoData })
         );
+        const sameCountryCode = cachedCountryISO === match?.[1];
+        const sameLanguageCode = cachedLanguageISO === match?.[2];
 
-        if (!cachedCountryISO && !cachedLanguageISO && match) {
+        if (match && (!sameCountryCode || !sameLanguageCode)) {
           const countryCode = match[1];
           const languageCode = match[2];
 

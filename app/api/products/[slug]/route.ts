@@ -29,7 +29,7 @@ export async function GET(
     );
 
     const { slug } = await params;
-    const url = `${process.env.EXTERNAL_API_URL}/product/by-slug/${slug}`;
+    const url = `${process.env.EXTERNAL_API_URL}/web/product/by-slug/${slug}`;
 
     console.log("🚀 Product API: Calling external API:", url);
 
