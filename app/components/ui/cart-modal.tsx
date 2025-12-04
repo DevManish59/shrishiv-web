@@ -145,12 +145,12 @@ export default function CartModal() {
                                   </span>
                                   {item.diamondSize}
                                 </p>
-                                <p>
+                                {/* <p>
                                   <span className="font-bold text-black">
                                     Metal Type:{" "}
                                   </span>
                                   {item.metalType}
-                                </p>
+                                </p> */}
                                 <p>
                                   <span className="font-bold text-black">
                                     Ring Size(US):

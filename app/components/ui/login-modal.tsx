@@ -27,13 +27,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/send-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
+      const response = await fetch(
+        "https://api.shrishiv.com/customer/send-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to send OTP");
@@ -56,13 +59,16 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
 
     try {
       setIsLoading(true);
-      const response = await fetch("/api/auth/verify-otp", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, otp }),
-      });
+      const response = await fetch(
+        "https://api.shrishiv.com/customer/verify-otp",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email, otp }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Invalid OTP");
@@ -91,7 +97,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
           <h2 className="text-2xl font-semibold">Login to Your Account</h2>
           <button
             onClick={onClose}
-            className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground cursor-pointer"
+            className="absolute hover:bg-gray-100 p-1 right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
