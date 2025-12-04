@@ -59,18 +59,21 @@ export function useLocation() {
         const sameCountryCode = cachedCountryISO === match?.[1];
         const sameLanguageCode = cachedLanguageISO === match?.[2];
 
-        if (match && (!sameCountryCode || !sameLanguageCode)) {
+        if (match) {
           const countryCode = match[1];
           const languageCode = match[2];
-
-          Cookies.set(
-            COOKIE_KEY_COUNTRY_ISO,
-            countryCode || geoData?.countryCode
-          );
-          Cookies.set(
-            COOKIE_KEY_LANGUAGE_ISO,
-            languageCode || geoData?.language
-          );
+          if (!sameCountryCode) {
+            Cookies.set(
+              COOKIE_KEY_COUNTRY_ISO,
+              countryCode || geoData?.countryCode
+            );
+          }
+          if (!sameLanguageCode) {
+            Cookies.set(
+              COOKIE_KEY_LANGUAGE_ISO,
+              languageCode || geoData?.language
+            );
+          }
         }
       } catch (error) {
         console.error("Location fetch error:", error);

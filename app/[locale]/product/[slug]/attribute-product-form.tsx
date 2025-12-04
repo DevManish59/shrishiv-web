@@ -73,15 +73,38 @@ export default function AttributeProductForm({
   }, [product.transformedAttributes]);
 
   // Calculate dynamic price based on selected attributes
-  const calculatedPrice = useMemo(() => {
-    // Get price from the first selected attribute (primary attribute for pricing)
-    const firstAttributeId = product.transformedAttributes[0]?.attributeId;
-    const firstSelectedOption = firstAttributeId
-      ? selectedOptions[firstAttributeId]
-      : null;
+  // const calculatedPrice = useMemo(() => {
+  //   // Get price from the first selected attribute (primary attribute for pricing)
+  //   const firstAttributeId = product.transformedAttributes[0]?.attributeId;
+  //   const firstSelectedOption = firstAttributeId
+  //     ? selectedOptions[firstAttributeId]
+  //     : null;
 
-    return firstSelectedOption ? firstSelectedOption.price : product.price;
+  //   return firstSelectedOption ? firstSelectedOption.price : product.price;
+  // }, [selectedOptions, product.price, product.transformedAttributes]);
+
+  const calculatedPrice = useMemo(() => {
+    // Get the first attribute group (color)
+    const firstAttribute = product.transformedAttributes?.[0];
+    if (!firstAttribute) return product.price ?? 0;
+
+    // Get selected option for that attributeId
+    const selected = selectedOptions[firstAttribute.attributeId];
+
+    // If user has selected a color, return its price
+    return selected?.price ?? product.price ?? 0;
   }, [selectedOptions, product.price, product.transformedAttributes]);
+
+  console.log("Price after selection:", calculatedPrice);
+
+  // const calculatedPrice = useMemo(() => {
+  //   const selectedPriceOption = Object.values(selectedOptions).find(
+  //     (opt) => opt.price && opt.price > 0
+  //   );
+  //   console.log("selectedPriceOption", selectedPriceOption);
+
+  //   return selectedPriceOption ? selectedPriceOption.price : product.price;
+  // }, [selectedOptions, product.price]);
 
   // Get combined images from selected attributes
   const combinedImages = useMemo(() => {
@@ -118,11 +141,21 @@ export default function AttributeProductForm({
     }
   }, [selectedOptions, combinedImages, calculatedPrice, onAttributeChange]);
 
+  // const handleOptionSelect = (attributeId: number, option: AttributeOption) => {
+  //   console.log("SELECTED OPTION:", option); // 👈 ADD THIS
+  //   setSelectedOptions((prev) => ({
+  //     ...prev,
+  //     [attributeId]: option,
+  //   }));
+  // };
+
   const handleOptionSelect = (attributeId: number, option: AttributeOption) => {
-    setSelectedOptions((prev) => ({
-      ...prev,
-      [attributeId]: option,
-    }));
+    console.log("SELECTED OPTION:", option); // 👈 ADD THIS
+    setSelectedOptions((prev) => {
+      const updated = { ...prev, [attributeId]: option };
+      console.log("UPDATED selectedOptions:", updated); // 👈 ADD THIS
+      return updated;
+    });
   };
 
   const handleAddToCart = () => {
@@ -150,6 +183,7 @@ export default function AttributeProductForm({
     // Navigate to checkout page
     // router.push("/checkout");
   };
+  console.log("TRANSFORMED ATTRIBUTES:", product.transformedAttributes);
 
   return (
     <div className="space-y-6 pb-8">

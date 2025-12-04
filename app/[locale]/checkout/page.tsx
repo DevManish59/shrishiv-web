@@ -35,8 +35,8 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="flex justify-center mb-8">
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <div className="flex justify-center mb-6">
           <LocalizedLink href="/">
             <Image
               src="/logo.png"
