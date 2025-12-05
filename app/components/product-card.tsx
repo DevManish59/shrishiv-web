@@ -25,7 +25,6 @@ export default function ProductCard({ product, basePath = "/product" }: Props) {
   const isLargeScreen = useMediaQuery("(min-width: 1024px)");
 
   const { currentCountry } = useLocale();
-  console.log("currentCountry", product);
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     loop: true,

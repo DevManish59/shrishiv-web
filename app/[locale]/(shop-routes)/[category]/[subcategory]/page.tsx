@@ -262,9 +262,10 @@ const transformProducts = (products: ApiProduct[]): TransformedProduct[] => {
 export async function generateMetadata({
   params,
 }: {
-  params: { category: string; subcategory: string };
+  params: { category: string; subcategory: string; locale: string };
 }): Promise<Metadata> {
-  const { category, subcategory } = await params;
+  const { category, subcategory, locale } = await params;
+
   const cookieStore = await cookies();
   const currentLanguage =
     cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
@@ -298,12 +299,24 @@ export async function generateMetadata({
     const image = categoryData.imageUrls?.[0] || "";
 
     return {
-      title: `${title} | Shrishiv`,
+      title: title,
       description: description,
       openGraph: {
         title: title,
         description: description,
-        images: image ? [image] : [],
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/${category}/${subcategory}/`,
+        images: image ? [{ url: image }] : [],
+        locale: locale,
+        type: "website",
+      },
+      twitter: {
+        title: title,
+        description: description,
+        card: "summary_large_image",
+        site: "@shrishiv",
+      },
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/${currentLanguage}/${category}/${subcategory}`,
       },
     };
   } catch (error) {
@@ -409,8 +422,6 @@ export default async function SubcategoryPage({
       productResponse.json(),
       filterResponse.json(),
     ]);
-
-    console.log("allProductsData", allProductsData);
   } catch (error) {
     console.error(
       "❌ Subcategory Page: Fetch failed, using fallback data:",

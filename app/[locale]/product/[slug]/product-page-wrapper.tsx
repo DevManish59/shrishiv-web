@@ -1,9 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-// import DynamicProductGallery from "./dynamic-product-gallery";
-// import { ClientProductForm } from "./client-product-form";
-// import ProductDescription from "./product-description";
 import { TransformedProduct } from "@/lib/types";
 import ProductGallery from "./product-gallery";
 import { useLocale } from "@/contexts/LocalProvider";
@@ -44,7 +41,6 @@ export default function ProductPageWrapper({
   }, [dynamicImages, product.images]);
 
   console.log("productInformation++", product);
-  // console.log("product++", product?.transformedAttributes?.[2]?.options);
 
   const handleAddToCart = () => {
     if (!selectedRingSize) {
@@ -86,35 +82,17 @@ export default function ProductPageWrapper({
           }}
         />
 
-        {/* <DynamicProductGallery
-        product={{ ...product, images: product.images }}
-        dynamicImages={dynamicImages}
-      /> */}
-
         {/* Right Column - Product Details */}
         <div className="lg:col-span-2 w-full lg:w-[90%] p-4">
           <div className="relative">
             <div className="h-full overflow-y-auto hide-scrollbar">
               <div className="space-y-6 pb-8">
-                {/* Client-side interactive components with dynamic pricing */}
-                {/* <ClientProductForm
-                product={product}
-                onImagesChange={handleImagesChange}
-                sizeChartData={sizeChartData}
-              /> */}
-
-                {/* Description */}
-                {/* <ProductDescription
-                description={product.description}
-                points={product.points}
-              /> */}
                 <div>
                   <h1 className="text-2xl font-medium mb-4">{product?.name}</h1>
                   <div className="flex items-center gap-4 mb-2">
                     <div className="flex items-center gap-2">
                       <p className="text-lg">
                         From {currentCountry?.currencySymbol || "Rs."}
-                        {/* {selectedAttr.price.toLocaleString()} */}
                         {product?.discount > 0
                           ? (
                               selectedAttr.price -

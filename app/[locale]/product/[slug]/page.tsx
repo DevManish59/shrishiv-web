@@ -145,9 +145,9 @@ const transformApiProduct = (apiProduct: ApiProduct) => {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const cookieStore = await cookies();
   const currentLanguageCode =
     cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
@@ -181,14 +181,32 @@ export async function generateMetadata({
     const product: ApiProduct = await response.json();
 
     return {
-      title: `${product.productName} | Our Store`,
+      title: product?.meta_title || product.productName,
       description:
+        product?.meta_description ||
         product.shortDescription ||
         `Product details for ${product.productName}`,
       openGraph: {
-        title: product.productName,
-        description: product.shortDescription,
-        images: product.images || product.imageFiles || [],
+        title: product?.meta_title || product.productName,
+        description:
+          product?.meta_description ||
+          product.shortDescription ||
+          `Product details for ${product.productName}`,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/product/${slug}/`,
+        locale: locale,
+        type: "website",
+      },
+      twitter: {
+        title: product?.meta_title || product.productName,
+        description:
+          product?.meta_description ||
+          product.shortDescription ||
+          `Product details for ${product.productName}`,
+        card: "summary_large_image",
+        site: "@shrishiv",
+      },
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/product/${slug}/`,
       },
     };
   } catch (error) {

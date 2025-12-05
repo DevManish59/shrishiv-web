@@ -24,6 +24,8 @@ export interface ApiProduct {
   isFeatured: boolean | null;
   images: string[] | null;
   imageFiles: string[];
+  meta_title: string | null;
+  meta_description: string | null;
   attributeValues: Array<{
     id: number;
     attributeId: number;

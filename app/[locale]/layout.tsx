@@ -4,6 +4,7 @@ import LoadScripts from "@/ScriptLoader";
 import { AuthProvider } from "@/contexts/AuthContext";
 import LocaleProvider from "@/contexts/LocalProvider";
 import { LocalStorageCartProvider } from "@/contexts/LocalStorageCartContext";
+import HeaderDataProvider from "@/components/providers/HeaderDataProvider";
 // import { CartProvider } from "@/contexts/CartContext";
 
 export const dynamicParams = true;
@@ -22,7 +23,9 @@ export default async function LocaleLayout({
       <AuthProvider>
         {/* <CartProvider> */}
         <LocalStorageCartProvider>
-          <ModelViewerProvider preload={true}>{children}</ModelViewerProvider>
+          <ModelViewerProvider preload={true}>
+            <HeaderDataProvider>{children}</HeaderDataProvider>
+          </ModelViewerProvider>
         </LocalStorageCartProvider>
         {/* </CartProvider> */}
       </AuthProvider>

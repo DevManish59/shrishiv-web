@@ -2,9 +2,10 @@ import { Suspense } from "react";
 import { Loader2 } from "lucide-react";
 import { notFound } from "next/navigation";
 import DynamicPageContent from "@/components/DynamicPageContent";
+import { Metadata } from "next";
 
 interface PageProps {
-  params: { slug: string };
+  params: { slug: string; locale: string };
 }
 
 async function fetchWithErrorHandling(url: string, options: any) {
@@ -28,26 +29,38 @@ async function getDynamicPages(slug: string) {
   return fetchWithErrorHandling(url, options);
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; locale: string };
+}): Promise<Metadata> {
   try {
-    const parameter = await params;
-    const currentPageData = await getDynamicPages(parameter.slug);
-    const { name, description, title, pageUrl } = currentPageData;
+    const { slug, locale } = await params;
+    const currentPageData = await getDynamicPages(slug);
+
+    const { metaTitle, metaDescription, title, description, imageUrls } =
+      currentPageData;
+
+    const image = imageUrls?.[0] || "";
     return {
-      title: title || name,
-      description: description,
+      title: metaTitle || title,
+      description: metaDescription || description,
       openGraph: {
-        title: title || name,
-        description: description,
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/p/${pageUrl}`,
-        locale: "en-US",
+        title: metaTitle || title,
+        description: metaDescription || description,
+        url: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/product/${slug}`,
+        images: image ? [{ url: image }] : [],
+        locale: locale,
         type: "website",
       },
-
       twitter: {
-        title: title || name,
-        description: description,
+        title: metaTitle || title,
+        description: metaDescription || description,
         card: "summary_large_image",
+        site: "@shrishiv",
+      },
+      alternates: {
+        canonical: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/product/${slug}`,
       },
     };
   } catch (error) {
