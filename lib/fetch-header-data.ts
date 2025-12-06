@@ -69,7 +69,7 @@ export async function fetchHeaderDataServer() {
         }),
       },
       // Add timeout
-      signal: AbortSignal.timeout(5000), // 5 second timeout
+      signal: AbortSignal.timeout(15000), // 5 second timeout
       cache: "no-store", // Ensure fresh data on each request
     });
 
