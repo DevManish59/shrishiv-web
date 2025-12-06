@@ -3,7 +3,6 @@
 import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import Header from "@/components/layout/Header";
-import { DynamicCategory } from "@/types/header";
 
 // import { CartProvider } from "@/contexts/CartContext";
 // import { LocalStorageCartProvider } from "@/contexts/LocalStorageCartContext";
@@ -21,20 +20,18 @@ const Footer = dynamic(() => import("@/components/layout/Footer"));
 const inter = Inter({ subsets: ["latin"] });
 
 interface SharedLayoutProps {
-  readonly children: React.ReactNode;
-  readonly includeReviews?: boolean;
-  readonly menuData?: DynamicCategory[];
+  children: React.ReactNode;
+  includeReviews?: boolean;
 }
 
 export default function SharedLayout({
   children,
   includeReviews = false,
-  menuData = [],
 }: SharedLayoutProps) {
   return (
     <div className={inter.className}>
       <TopHeader />
-      <Header menuData={menuData} />
+      <Header />
       <main className="flex-1">{children}</main>
       {includeReviews && <ReviewSection />}
       <CommitmentSection />

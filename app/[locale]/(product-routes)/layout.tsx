@@ -1,16 +1,9 @@
 import SharedLayout from "@/components/layout/SharedLayout";
-import { getHeaderData } from "@/lib/header-data";
 
-export default async function ProductLayout({
+export default function ProductLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const headerData = await getHeaderData();
-
-  return (
-    <SharedLayout includeReviews={false} menuData={headerData.categories}>
-      {children}
-    </SharedLayout>
-  );
+  return <SharedLayout includeReviews={false}>{children}</SharedLayout>;
 }

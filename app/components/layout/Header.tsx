@@ -9,17 +9,28 @@ import LocalizedLink from "./LocalizedLink";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 import LoginModal from "../ui/login-modal";
 import CartModal from "../ui/cart-modal";
-import { Menu, Search, User, ShoppingBag, X, ChevronDown } from "lucide-react";
+import {
+  Menu,
+  Search,
+  User,
+  ShoppingBag,
+  X,
+  Loader2,
+  ChevronDown,
+} from "lucide-react";
 import { DynamicCategory } from "@/types/header";
-interface HeaderProps {
-  readonly menuData?: DynamicCategory[];
+interface ApiMenuData {
+  categories: DynamicCategory[];
 }
 
-export default function Header({ menuData = [] }: HeaderProps) {
+export default function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [menuData, setMenuData] = useState<DynamicCategory[]>([]);
+  const [menuLoading, setMenuLoading] = useState(true);
+  const [menuError, setMenuError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const searchRef = useRef<HTMLDivElement>(null!);
   const menuRef = useRef<HTMLDivElement>(null!);
@@ -58,6 +69,35 @@ export default function Header({ menuData = [] }: HeaderProps) {
     }
   }, [showSearch]);
 
+  // Fetch header data on component mount
+  useEffect(() => {
+    const fetchHeaderData = async () => {
+      try {
+        setMenuLoading(true);
+        setMenuError(null);
+        const response = await fetch("/api/header-data");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch header data");
+        }
+
+        const data: ApiMenuData = await response.json();
+        setMenuData(data.categories);
+        // Set the first category as selected for mobile menu
+        // if (data.categories.length > 0) {
+        //   setSelectedMobileCategory(data.categories[0].slug);
+        // }
+      } catch (error) {
+        console.error("Error fetching header data:", error);
+        setMenuError("Failed to load menu data");
+      } finally {
+        setMenuLoading(false);
+      }
+    };
+
+    fetchHeaderData();
+  }, []);
+
   // Handle mobile menu open/close
   const handleMobileMenu = (isOpen: boolean) => {
     setShowMobileMenu(isOpen);
@@ -90,17 +130,26 @@ export default function Header({ menuData = [] }: HeaderProps) {
           </button>
 
           <nav className="hidden md:flex items-center absolute left-0 space-x-6 h-full">
-            {menuData.slice(0, 5).map((category) => (
-              <div
-                key={category.slug}
-                className="relative h-full flex items-center cursor-pointer uppercase text-sm font-semibold hover:text-gray-600 transition-colors"
-                onMouseEnter={() => handleMenuEnter(category.slug)}
-                onMouseLeave={handleMenuLeave}
-                // onClick={Router.push}
-              >
-                {category.name}
+            {menuLoading ? (
+              <div className="flex items-center space-x-2">
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span className="text-sm text-gray-500">Loading...</span>
               </div>
-            ))}
+            ) : menuError ? (
+              <span className="text-sm text-red-500">Error loading menu</span>
+            ) : (
+              menuData.slice(0, 5).map((category) => (
+                <div
+                  key={category.slug}
+                  className="relative h-full flex items-center cursor-pointer uppercase text-sm font-semibold hover:text-gray-600 transition-colors"
+                  onMouseEnter={() => handleMenuEnter(category.slug)}
+                  onMouseLeave={handleMenuLeave}
+                  // onClick={Router.push}
+                >
+                  {category.name}
+                </div>
+              ))
+            )}
           </nav>
 
           {/* Center: Logo */}
