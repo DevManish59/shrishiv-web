@@ -5,13 +5,17 @@ import Image from "next/image";
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { motion, AnimatePresence } from "framer-motion";
 import LocalizedLink from "./LocalizedLink";
+// import { useCart } from "@/contexts/CartContext";
 import { useCart } from "@/contexts/LocalStorageCartContext";
 import LoginModal from "../ui/login-modal";
 import CartModal from "../ui/cart-modal";
 import { Menu, Search, User, ShoppingBag, X, ChevronDown } from "lucide-react";
-import { useHeaderData } from "@/components/providers/HeaderDataClientProvider";
+import { DynamicCategory } from "@/types/header";
+interface HeaderProps {
+  readonly menuData?: DynamicCategory[];
+}
 
-export default function Header() {
+export default function Header({ menuData = [] }: HeaderProps) {
   const [showSearch, setShowSearch] = useState(false);
   const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -24,9 +28,6 @@ export default function Header() {
   const [openItems, setOpenItems] = useState<string[]>([]);
 
   const { itemCount, openCart } = useCart();
-
-  // Get header data from context (fetched server-side)
-  const { categories: menuData } = useHeaderData();
 
   useClickOutside(searchRef, () => setShowSearch(false));
   useClickOutside(menuRef, () => setHoveredMenu(null));
@@ -89,19 +90,17 @@ export default function Header() {
           </button>
 
           <nav className="hidden md:flex items-center absolute left-0 space-x-6 h-full">
-            {menuData && menuData.length > 0
-              ? menuData.slice(0, 5).map((category) => (
-                  <div
-                    key={category.slug}
-                    className="relative h-full flex items-center cursor-pointer uppercase text-sm font-semibold hover:text-gray-600 transition-colors"
-                    onMouseEnter={() => handleMenuEnter(category.slug)}
-                    onMouseLeave={handleMenuLeave}
-                    // onClick={Router.push}
-                  >
-                    {category.name}
-                  </div>
-                ))
-              : null}
+            {menuData.slice(0, 5).map((category) => (
+              <div
+                key={category.slug}
+                className="relative h-full flex items-center cursor-pointer uppercase text-sm font-semibold hover:text-gray-600 transition-colors"
+                onMouseEnter={() => handleMenuEnter(category.slug)}
+                onMouseLeave={handleMenuLeave}
+                // onClick={Router.push}
+              >
+                {category.name}
+              </div>
+            ))}
           </nav>
 
           {/* Center: Logo */}

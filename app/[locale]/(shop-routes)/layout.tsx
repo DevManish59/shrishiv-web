@@ -1,11 +1,16 @@
-"use client";
-
 import SharedLayout from "@/components/layout/SharedLayout";
+import { getHeaderData } from "@/lib/header-data";
 
-export default function ShopLayout({
+export default async function ShopLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <SharedLayout includeReviews={true}>{children}</SharedLayout>;
+  const headerData = await getHeaderData();
+
+  return (
+    <SharedLayout includeReviews={true} menuData={headerData.categories}>
+      {children}
+    </SharedLayout>
+  );
 }

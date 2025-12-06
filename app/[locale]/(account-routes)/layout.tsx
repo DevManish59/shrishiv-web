@@ -1,11 +1,14 @@
-"use client";
-
 import SharedLayout from "@/components/layout/SharedLayout";
+import { getHeaderData } from "@/lib/header-data";
 
-export default function AccountLayout({
+export default async function AccountLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <SharedLayout>{children}</SharedLayout>;
+  const headerData = await getHeaderData();
+
+  return (
+    <SharedLayout menuData={headerData.categories}>{children}</SharedLayout>
+  );
 }

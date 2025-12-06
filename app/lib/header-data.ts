@@ -4,7 +4,7 @@ import { DynamicCategory, ParentCategory, SubCategory } from "@/types/header";
 
 type NewApiResponse = ParentCategory[];
 
-interface HeaderDataResponse {
+export interface HeaderDataResponse {
   categories: DynamicCategory[];
 }
 
@@ -48,8 +48,9 @@ function transformExternalData(
   return { categories: dynamicCategories };
 }
 
-export async function fetchHeaderDataServer() {
+export async function getHeaderData(): Promise<HeaderDataResponse> {
   try {
+    // Get language code from cookies (server-side)
     const cookieStore = await cookies();
     const currentLanguageCode =
       cookieStore.get(COOKIE_KEY_LANGUAGE_ISO)?.value || "en";
@@ -68,9 +69,8 @@ export async function fetchHeaderDataServer() {
           languageCode: currentLanguageCode,
         }),
       },
-      // Add timeout
-      // signal: AbortSignal.timeout(15000), // 5 second timeout
-      cache: "no-store", // Ensure fresh data on each request
+      // Enable Next.js fetch caching
+      next: { revalidate: 3600 }, // Revalidate every hour
     });
 
     if (!response.ok) {
@@ -79,9 +79,19 @@ export async function fetchHeaderDataServer() {
 
     const data = await response.json();
 
+    // Check if we have valid data, otherwise use fallback
+    if (!Array.isArray(data) || data.length === 0) {
+      console.log(
+        "External API returned empty or invalid data, using fallback"
+      );
+      return { categories: [] };
+    }
+
     // Transform external data to our format
     return transformExternalData(data);
   } catch (error) {
     console.error("Header data fetch error:", error);
+    // Return fallback data
+    return { categories: [] };
   }
 }
